@@ -1,9 +1,10 @@
 package core.basesyntax;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.zone.ZoneRulesException;
+import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -19,7 +20,23 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      **/
     public String todayDate(DateTimePart datePart) {
-        return "Today";
+        LocalDateTime localDate = LocalDateTime.now();
+        switch (datePart) {
+            case DAY:
+                return Integer.toString(localDate.getDayOfYear());
+            case YEAR:
+                return Integer.toString(localDate.getYear());
+            case FULL:
+                return localDate.toLocalDate().toString();
+            case MONTH:
+                return localDate.getMonth().toString();
+            case HOURS:
+                return Integer.toString(localDate.getHour());
+            case MINUTES:
+                return Integer.toString(localDate.getMinute());
+            default:
+                return Integer.toString(localDate.getSecond());
+        }
     }
 
     /**
@@ -30,7 +47,16 @@ public class JavaDateTimeApi {
      *                   - 2-й элемент массива - месяц;
      *                   - 3-й элемент массива - день (число);
      */
-    public Optional<LocalDate> getDate(Integer[] dateParams) {
+    public Optional<LocalDate> getDate(Integer[] dateParams)
+            throws DateTimeException {
+        if (dateParams.length == 3)
+            try {
+                LocalDate localDate = LocalDate.of(dateParams[0]
+                        , dateParams[1], dateParams[2]);
+                return Optional.of(localDate);
+            } catch (DateTimeException e) {
+
+            }
         return Optional.empty();
     }
 
@@ -39,7 +65,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return LocalTime.now();
+        return localTime.plusHours(hoursToAdd);
     }
 
     /**
@@ -47,7 +73,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        return LocalTime.now();
+        return localTime.plusMinutes(minutesToAdd);
     }
 
     /**
@@ -55,7 +81,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        return LocalTime.now();
+        return localTime.plusSeconds(secondsToAdd);
     }
 
     /**
@@ -63,7 +89,7 @@ public class JavaDateTimeApi {
      * Верните получившуюся дату
      */
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
-        return LocalDate.now();
+        return localDate.plusWeeks(numberOfWeeks);
     }
 
     /**
@@ -74,16 +100,30 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate + "is today";
+        LocalDate localDate = LocalDate.now();
+        return someDate.isAfter(localDate) ? someDate + " is after " + localDate
+                : someDate.isBefore(localDate) ? someDate + " is before " + localDate
+                : someDate.isEqual(localDate) ? someDate + " is today" : null;
     }
 
     /**
      * Даны две временные зоны.
      * Верните Optional часовой разницы между двумя временными зонами.
+     *
      * @return Optional positive Integer
      */
-    public Optional<Integer> diffBetweenZones(String firstZone, String secondZone) {
-        return Optional.empty();
+    public Optional<Integer> diffBetweenZones
+    (String firstZone, String secondZone) throws ZoneRulesException {
+        try {
+            LocalDateTime dt = LocalDateTime.now();
+            ZonedDateTime firstZonedTime = dt.atZone(ZoneId.of(firstZone));
+            ZonedDateTime secondZonedTime = dt.atZone(ZoneId.of(secondZone));
+            long diff = Math.abs(Duration.between
+                    (firstZonedTime, secondZonedTime).toHours());
+            return Optional.of((int) diff);
+        } catch (ZoneRulesException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -96,23 +136,36 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.now();
+        return OffsetDateTime.of(localTime, ZoneId.of("Europe/Warsaw")
+                .getRules().getOffset(Instant.now()));
     }
 
     /**
      * Дана строка в виде "yyyymmdd".
      * Необходимо вернуть Optional даты в LocalDate формате
      */
-    public Optional<LocalDate> parseDate(String date) {
-        return Optional.empty();
+    public Optional<LocalDate> parseDate(String date) throws DateTimeParseException {
+        try {
+            return Optional.of(LocalDate.parse
+                    (date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
      * Дана строка в виде "d MMM yyyy" (MMM - Sep, Oct, etc).
      * Необходимо вернуть Optional даты в LocalDate формате
      */
-    public Optional<LocalDate> customParseDate(String date) {
-        return Optional.empty();
+    public Optional<LocalDate> customParseDate(String date)
+            throws DateTimeParseException {
+        try {
+            DateTimeFormatter dtf = DateTimeFormatter
+                    .ofPattern("dd MMM yyyy", Locale.US);
+            return Optional.of(LocalDate.parse(date, dtf));
+        } catch (DateTimeException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -123,6 +176,8 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return "Date can't be formatted!";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern
+                ("dd LLLL yyyy HH:mm", Locale.ENGLISH);
+        return dateTime.format(dtf);
     }
 }
