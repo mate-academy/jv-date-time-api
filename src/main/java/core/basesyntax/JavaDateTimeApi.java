@@ -1,6 +1,10 @@
 package core.basesyntax;
 
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.zone.ZoneRulesException;
@@ -49,14 +53,15 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams)
             throws DateTimeException {
-        if (dateParams.length == 3)
+        if (dateParams.length == 3) {
             try {
-                LocalDate localDate = LocalDate.of(dateParams[0]
-                        , dateParams[1], dateParams[2]);
+                LocalDate localDate = LocalDate.of(dateParams[0],
+                        dateParams[1], dateParams[2]);
                 return Optional.of(localDate);
             } catch (DateTimeException e) {
-
+                e.printStackTrace();
             }
+        }
         return Optional.empty();
     }
 
@@ -176,8 +181,8 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern
-                ("dd LLLL yyyy HH:mm", Locale.ENGLISH);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
+                "dd LLLL yyyy HH:mm", Locale.ENGLISH);
         return dateTime.format(dtf);
     }
 }
