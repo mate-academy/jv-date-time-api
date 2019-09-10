@@ -53,7 +53,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException | ArrayIndexOutOfBoundsException exception) {
+        } catch (ArrayIndexOutOfBoundsException | DateTimeException exception) {
             return Optional.empty();
         }
     }
@@ -169,7 +169,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy kk:mm", ENGLISH));
+            return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", ENGLISH));
         } catch (DateTimeException exception) {
             return "dateTime can't be formatted!";
         }
