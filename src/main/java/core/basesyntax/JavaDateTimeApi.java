@@ -153,8 +153,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of
-                    (LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy", ENGLISH)));
+            return Optional.of(
+                    LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy", ENGLISH)));
         } catch (DateTimeParseException exception) {
             return Optional.empty();
         }
