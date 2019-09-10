@@ -1,19 +1,19 @@
 package core.basesyntax;
 
+import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
+import static java.util.Locale.ENGLISH;
+
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
-
-import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
-import static java.util.Locale.ENGLISH;
 
 public class JavaDateTimeApi {
 
@@ -153,7 +153,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy", ENGLISH)));
+            return Optional.of
+                    (LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy", ENGLISH)));
         } catch (DateTimeParseException exception) {
             return Optional.empty();
         }
