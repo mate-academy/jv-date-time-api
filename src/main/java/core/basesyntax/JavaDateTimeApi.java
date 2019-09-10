@@ -121,14 +121,14 @@ public class JavaDateTimeApi {
      *
      * @return Optional positive Integer
      */
-    public Optional<Integer> diffBetweenZones
-    (String firstZone, String secondZone) throws ZoneRulesException {
+    public Optional<Integer> diffBetweenZones(
+            String firstZone, String secondZone) throws ZoneRulesException {
         try {
             LocalDateTime dt = LocalDateTime.now();
             ZonedDateTime firstZonedTime = dt.atZone(ZoneId.of(firstZone));
             ZonedDateTime secondZonedTime = dt.atZone(ZoneId.of(secondZone));
-            long diff = Math.abs(Duration.between
-                    (firstZonedTime, secondZonedTime).toHours());
+            long diff = Math.abs(Duration.between(
+                    firstZonedTime, secondZonedTime).toHours());
             return Optional.of((int) diff);
         } catch (ZoneRulesException e) {
             return Optional.empty();
@@ -155,8 +155,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) throws DateTimeParseException {
         try {
-            return Optional.of(LocalDate.parse
-                    (date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(
+                    date, DateTimeFormatter.ofPattern("yyyyMMdd")));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
