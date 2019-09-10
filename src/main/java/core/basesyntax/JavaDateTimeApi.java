@@ -1,188 +1,123 @@
 package core.basesyntax;
 
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.zone.ZoneRulesException;
-import java.util.Locale;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class JavaDateTimeApi {
+public class JavaStreamApi {
 
     /**
-     * Верните текущую дату в виде строки в зависимости от запроса.
-     *
-     * @param datePart Запрос на часть даты или всю дата целиком:
-     *                 - FULL - текущая дата целиком год, месяц, день (число месяца)
-     *                 в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
-     *                 - YEAR - текущий год;
-     *                 - MONTH - название текущего месяца;
-     *                 - DAY - текущий день (число месяца);
+     * <p>1. Дано: List of Integer numbers.
+     * Вернуть сумму нечетных числел или 0, если таких несуществует</p>
      **/
-    public String todayDate(DateTimePart datePart) {
-        LocalDateTime localDate = LocalDateTime.now();
-        switch (datePart) {
-            case DAY:
-                return Integer.toString(localDate.getDayOfYear());
-            case YEAR:
-                return Integer.toString(localDate.getYear());
-            case FULL:
-                return localDate.toLocalDate().toString();
-            case MONTH:
-                return localDate.getMonth().toString();
-            case HOURS:
-                return Integer.toString(localDate.getHour());
-            case MINUTES:
-                return Integer.toString(localDate.getMinute());
-            default:
-                return Integer.toString(localDate.getSecond());
-        }
+    public Integer oddSum(List<Integer> numbers) {
+        return numbers.stream()
+                .filter(i -> i % 2 != 0)
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 
     /**
-     * Верните Optional даты соответствующей дате в массиве.
-     *
-     * @param dateParams Дан массив данных состоящий из 3-х элементов, где:
-     *                   - 1-й элемент массива - год;
-     *                   - 2-й элемент массива - месяц;
-     *                   - 3-й элемент массива - день (число);
-     */
-    public Optional<LocalDate> getDate(Integer[] dateParams)
-            throws DateTimeException {
-        if (dateParams.length == 3) {
-            try {
-                LocalDate localDate = LocalDate.of(dateParams[0],
-                        dateParams[1], dateParams[2]);
-                return Optional.of(localDate);
-            } catch (DateTimeException e) {
-                e.printStackTrace();
-            }
-        }
-        return Optional.empty();
+     * <p>2. Дана коллекция строк List of String elements
+     * (пример: Arrays.asList(«a1», «a2», «a3», «a1»)).
+     * Вернуть количество вхождений объекта `element`</p>
+     **/
+    public Long elementCount(List<String> elements, String element) {
+        return elements.stream().filter(s -> s.equals(element)).count();
     }
 
     /**
-     * Дано время и на сколько часов нужно его изменить.
-     * Верните измененное время на указаную величину.
-     */
-    public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return localTime.plusHours(hoursToAdd);
+     * <p>3. Дана коллекция строк List of String elements
+     * (пример: Arrays.asList(«a1», «a2», «a3», «a1»)).
+     * Вернуть Optional первого элемента коллекции</p>
+     **/
+    public Optional<String> firstElement(List<String> elements) {
+        return elements.stream().findFirst();
     }
 
     /**
-     * Дано время и на сколько минут нужно его изменить.
-     * Верните измененное время на указаную величину.
-     */
-    public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        return localTime.plusMinutes(minutesToAdd);
+     * <p>4. Дана коллекция строк List of String elements
+     * (приметр: Arrays.asList(«a1», «a2», «a3», «a1»)).
+     * Найти элемент в коллекции равный `element` или кинуть ошибку NoSuchElementException</p>
+     **/
+    public String findElement(List<String> elements, String element) {
+        return elements.stream()
+                .filter(s -> s.equals(element))
+                .findAny()
+                .orElseThrow();
     }
 
     /**
-     * Дано время и на сколько секунд нужно его изменить.
-     * Верните измененное время на указаную величину.
-     */
-    public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        return localTime.plusSeconds(secondsToAdd);
+     * <p>5. Дана коллекция чисел List of Integer numbers (пример: Arrays.asList(6, 2, 3, 7, 2, 5))
+     * Отнимите от каждого элемента, который стоит на непарной позиции (имеет не парный индекс) 1
+     * и верните среднее арифметическое всех нечетных чисел или киньте ошибку
+     * NoSuchElementException</p>
+     **/
+    public Double averageSumOdd(List<Integer> numbers) {
+        return IntStream.range(0, numbers.size())
+                .mapToDouble(i -> {
+                    if (i % 2 != 0) {
+                        return numbers.get(i) - 1;
+                    }
+                    return numbers.get(i);
+                })
+                .filter(i -> i % 2 != 0)
+                .average()
+                .orElseThrow();
     }
 
     /**
-     * Дана дата и на сколько недель нужно ее изменить.
-     * Верните получившуюся дату
-     */
-    public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
-        return localDate.plusWeeks(numberOfWeeks);
+     * <p>6. Дана коллекция класс People (с полями name — имя, age — возраст, sex — пол),
+     * вида Arrays.asList( new People(«Вася», 16, Sex.MAN),
+     * new People(«Петя», 23, Sex.MAN),
+     * new People(«Елена», 42, Sex.WOMEN),
+     * new People(«Иван Иванович», 69, Sex.MAN)).
+     * Задача: Выбрать мужчин-военнообязанных (от `fromAge` до `toAge` лет)</p>
+     **/
+    public List<People> manSelectByAge(List<People> peopleList, int fromAge, int toAge) {
+        return peopleList.stream()
+                .filter(i -> i.getSex() == People.Sex.MAN
+                        && i.getAge() <= toAge
+                        && i.getAge() >= fromAge)
+                .collect(Collectors.toList());
     }
 
     /**
-     * Дана произвольная дата getDate.
-     * Определите соотношение сегодня к someDate и верните строку:
-     * - "someDate is after текущая дата" - если getDate в будующем
-     * - "someDate is before текущая дата" - если getDate в прошлом
-     * - "someDate is today" - если someDate - сегодня
-     */
-    public String beforeOrAfter(LocalDate someDate) {
-        LocalDate localDate = LocalDate.now();
-        return someDate.isAfter(localDate) ? someDate + " is after " + localDate
-                : someDate.isBefore(localDate) ? someDate + " is before " + localDate
-                : someDate.isEqual(localDate) ? someDate + " is today" : null;
+     * <p>6. Дана коллекция класс People (с полями name — имя, age — возраст, sex — пол),
+     * вида Arrays.asList( new People(«Вася», 16, Sex.MAN),
+     * new People(«Петя», 23, Sex.MAN),
+     * new People(«Елена», 42, Sex.WOMEN),
+     * new People(«Иван Иванович», 69, Sex.MAN)).
+     * Задача: Найти всех потенциально работоспособных людей в выборке от fromAge до
+     * femaleToAge для женщин, и от fromAge до maleToAge для мужчин
+     * Пример: от 18 лет и учитывая что женщины выходят в 55 лет, а мужчина в 60</p>
+     **/
+    public List<People> workablePeople(int fromAge, int femaleToAge,
+                                       int maleToAge, List<People> peopleList) {
+        return peopleList.stream()
+                .filter(i -> (i.getAge() >= fromAge
+                        && i.getSex() == People.Sex.WOMEN
+                        && i.getAge() <= femaleToAge)
+                        || (i.getAge() >= fromAge
+                        && i.getSex() == People.Sex.MAN
+                        && i.getAge() <= maleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
-     * Даны две временные зоны.
-     * Верните Optional часовой разницы между двумя временными зонами.
-     *
-     * @return Optional positive Integer
-     */
-    public Optional<Integer> diffBetweenZones
-    (String firstZone, String secondZone) throws ZoneRulesException {
-        try {
-            LocalDateTime dt = LocalDateTime.now();
-            ZonedDateTime firstZonedTime = dt.atZone(ZoneId.of(firstZone));
-            ZonedDateTime secondZonedTime = dt.atZone(ZoneId.of(secondZone));
-            long diff = Math.abs(Duration.between
-                    (firstZonedTime, secondZonedTime).toHours());
-            return Optional.of((int) diff);
-        } catch (ZoneRulesException e) {
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Данны дата и время. Надо вернуть дату и время с местным временным смещением,
-     * пусть это будет для Украины "+02:00".
-     * Приведем пример: при вызове метода передается переменная типа LocalDateTime,
-     * в формате "2019-09-06T13:17", нам надо вернуть переменную типа OffsetDateTime,
-     * в формате "2019-09-06T13:17+02:00", где "+02:00" и будет смещение для нашей
-     * временной зоны.
-     * OffsetDateTime советуют использовать при записи даты в базу данных.
-     */
-    public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneId.of("Europe/Warsaw")
-                .getRules().getOffset(Instant.now()));
-    }
-
-    /**
-     * Дана строка в виде "yyyymmdd".
-     * Необходимо вернуть Optional даты в LocalDate формате
-     */
-    public Optional<LocalDate> parseDate(String date) throws DateTimeParseException {
-        try {
-            return Optional.of(LocalDate.parse
-                    (date, DateTimeFormatter.ofPattern("yyyyMMdd")));
-        } catch (DateTimeParseException e) {
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Дана строка в виде "d MMM yyyy" (MMM - Sep, Oct, etc).
-     * Необходимо вернуть Optional даты в LocalDate формате
-     */
-    public Optional<LocalDate> customParseDate(String date)
-            throws DateTimeParseException {
-        try {
-            DateTimeFormatter dtf = DateTimeFormatter
-                    .ofPattern("dd MMM yyyy", Locale.US);
-            return Optional.of(LocalDate.parse(date, dtf));
-        } catch (DateTimeException e) {
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Даны произвольные время и дата.
-     * Верните строку с датой и временем в формате
-     * "день(2 цифры) месяц(полное название на английском) год(4 цифры) час(24 часа):минуты",
-     * например: "01 January 2000 18:00",
-     * или сообщение "dateTime can't be formatted!"
-     */
-    public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
-                "dd LLLL yyyy HH:mm", Locale.ENGLISH);
-        return dateTime.format(dtf);
+     * <p>7. Дано коллекцию List of peoples. Класс People (с полями name — имя, age — возраст,
+     * sex — пол, List of Cats -  кошки этого человека).
+     * Дано класс Cat (name - имя кошки, age - возраст кошки).
+     * Задача: вивести все имена кошек в которых хозяева это девушки старше 18 лет</p>
+     **/
+    public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
+        return peopleList.stream()
+                .filter(i -> i.getSex() == People.Sex.WOMEN
+                        && i.getAge() >= femaleAge
+                        && !i.getCatList().isEmpty())
+                .flatMap(i -> i.getCatList().stream())
+                .map(i -> i.getName())
+                .collect(Collectors.toList());
     }
 }
