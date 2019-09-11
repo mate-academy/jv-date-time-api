@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.zone.ZoneRulesException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -27,16 +28,22 @@ public class JavaDateTimeApi {
      *                 - MONTH - название текущего месяца;
      *                 - DAY - текущий день (число месяца);
      **/
+
+    private static final String UKR_ZONE = "+02:00";
+    private static final DateTimeFormatter d_MMM_yyyy = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    private static final DateTimeFormatter dd_MMMM_yyyy_HH_mm =
+            DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
                 return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             case YEAR:
-                return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
+                return String.valueOf(LocalDate.now().getYear());
             case MONTH:
-                return LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM"));
+                return String.valueOf(LocalDate.now().getMonth());
             case DAY:
-                return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
+                return String.valueOf(LocalDate.now().getDayOfMonth());
             default: return null;
         }
     }
@@ -68,7 +75,7 @@ public class JavaDateTimeApi {
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
         if (localTime == null || hoursToAdd == null) {
-            return null;
+            throw new NoSuchElementException();
         }
         return localTime.plusHours(hoursToAdd);
     }
@@ -124,10 +131,7 @@ public class JavaDateTimeApi {
         if (someDate.isBefore(curDate)) {
             return someDate + " is before " + curDate;
         }
-        if (someDate.isEqual(curDate)) {
-            return someDate + " is today";
-        }
-        return "";
+        return someDate + " is today";
     }
 
     /**
@@ -163,7 +167,7 @@ public class JavaDateTimeApi {
         if (localTime == null) {
             return null;
         }
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(UKR_ZONE));
     }
 
     /**
@@ -193,7 +197,7 @@ public class JavaDateTimeApi {
         }
         LocalDate localDate;
         try {
-            localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd MMM yyyy"));
+            localDate = LocalDate.parse(date, d_MMM_yyyy);
         } catch (DateTimeParseException dtpe) {
             return Optional.empty();
         }
@@ -211,6 +215,6 @@ public class JavaDateTimeApi {
         if (dateTime == null) {
             return null;
         }
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"));
+        return dateTime.format(dd_MMMM_yyyy_HH_mm);
     }
 }
