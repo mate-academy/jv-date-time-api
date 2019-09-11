@@ -103,7 +103,7 @@ public class JavaDateTimeApi {
      */
     public String beforeOrAfter(LocalDate someDate) {
         if (someDate.isAfter(LocalDate.now())) {
-            return someDate.toString() + " is after " + LocalDate.now().toString();
+            return someDate + " is after " + LocalDate.now();
         } else if (someDate.isBefore(LocalDate.now())) {
             return someDate.toString() + " is before " + LocalDate.now().toString();
         }
