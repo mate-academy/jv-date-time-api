@@ -13,10 +13,10 @@ import java.time.zone.ZoneRulesException;
 import java.util.Locale;
 import java.util.Optional;
 
-import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
-
 public class JavaDateTimeApi {
     private static final DateTimeFormatter FORMATTER
+            = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.UK);
+    private static final DateTimeFormatter FORMATTER_PLUS_TIME
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.UK);
     private static final String OUR_TIME_ZONE = "+02:00";
 
@@ -131,7 +131,7 @@ public class JavaDateTimeApi {
             return Optional.empty();
         }
 
-        return Optional.of(Math.abs(24 - hourInFirstZone + hourInSecondZone));
+        return Optional.of(Math.abs(hourInFirstZone - hourInSecondZone));
     }
 
     /**
@@ -153,7 +153,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, BASIC_ISO_DATE));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter
+                    .ofPattern("yyyyMMdd", Locale.UK)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -180,7 +181,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(FORMATTER);
+            return dateTime.format(FORMATTER_PLUS_TIME);
         } catch (DateTimeParseException e) {
             return "Date can't be formatted!";
         }
