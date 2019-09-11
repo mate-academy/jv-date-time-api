@@ -14,6 +14,12 @@ import java.time.zone.ZoneRulesException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final DateTimeFormatter DATE_WITHOUT_SPACE = DateTimeFormatter
+            .ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter SHORT_DATE_FORMAT = DateTimeFormatter
+            .ofPattern("d MMM yyyy");
+    private static final DateTimeFormatter LONG_DATE_FORMAT = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy HH:mm");
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -35,7 +41,7 @@ public class JavaDateTimeApi {
             case DAY:
                 return String.valueOf(date.getDayOfMonth());
             default:
-                return "Today";
+                throw new DateTimeException("Incorrect part of time.");
         }
     }
 
@@ -137,7 +143,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(date, DATE_WITHOUT_SPACE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -149,7 +155,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy")));
+            return Optional.of(LocalDate.parse(date, SHORT_DATE_FORMAT));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -162,7 +168,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"));
+            return dateTime.format(LONG_DATE_FORMAT);
         } catch (DateTimeException e) {
             return "Date can't be formatted!";
         }
