@@ -30,14 +30,15 @@ public class JavaDateTimeApi {
      **/
 
     private static final String UKR_ZONE = "+02:00";
-    private static final DateTimeFormatter d_MMM_yyyy = DateTimeFormatter.ofPattern("dd MMM yyyy");
-    private static final DateTimeFormatter dd_MMMM_yyyy_HH_mm =
+    private static final DateTimeFormatter CUSTOM_FORMATTER =
+            DateTimeFormatter.ofPattern("dd MMM yyyy");
+    private static final DateTimeFormatter CUSTOM_FORMATTER_WITH_TIME =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
 
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
-                return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                return String.valueOf(LocalDate.now());
             case YEAR:
                 return String.valueOf(LocalDate.now().getYear());
             case MONTH:
@@ -86,7 +87,7 @@ public class JavaDateTimeApi {
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
         if (localTime == null || minutesToAdd == null) {
-            return null;
+            throw new NoSuchElementException();
         }
         return localTime.plusMinutes(minutesToAdd);
     }
@@ -97,7 +98,7 @@ public class JavaDateTimeApi {
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
         if (localTime == null || secondsToAdd == null) {
-            return null;
+            throw new NoSuchElementException();
         }
         return localTime.plusSeconds(secondsToAdd);
     }
@@ -108,7 +109,7 @@ public class JavaDateTimeApi {
      */
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
         if (localDate == null || numberOfWeeks == null) {
-            return null;
+            throw new NoSuchElementException();
         }
         return localDate.plusWeeks(numberOfWeeks);
     }
@@ -121,15 +122,15 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        LocalDate curDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.now();
         if (someDate == null) {
-            return null;
+            throw new NoSuchElementException();
         }
-        if (someDate.isAfter(curDate)) {
-            return someDate + " is after " + curDate;
+        if (someDate.isAfter(currentDate)) {
+            return someDate + " is after " + currentDate;
         }
-        if (someDate.isBefore(curDate)) {
-            return someDate + " is before " + curDate;
+        if (someDate.isBefore(currentDate)) {
+            return someDate + " is before " + currentDate;
         }
         return someDate + " is today";
     }
@@ -165,7 +166,7 @@ public class JavaDateTimeApi {
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
         if (localTime == null) {
-            return null;
+            throw new NoSuchElementException();
         }
         return OffsetDateTime.of(localTime, ZoneOffset.of(UKR_ZONE));
     }
@@ -176,7 +177,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         if (date == null) {
-            return null;
+            throw new NoSuchElementException();
         }
         LocalDate localDate;
         try {
@@ -193,11 +194,11 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         if (date == null) {
-            return null;
+            throw new NoSuchElementException();
         }
         LocalDate localDate;
         try {
-            localDate = LocalDate.parse(date, d_MMM_yyyy);
+            localDate = LocalDate.parse(date, CUSTOM_FORMATTER);
         } catch (DateTimeParseException dtpe) {
             return Optional.empty();
         }
@@ -213,8 +214,8 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         if (dateTime == null) {
-            return null;
+            throw new NoSuchElementException();
         }
-        return dateTime.format(dd_MMMM_yyyy_HH_mm);
+        return dateTime.format(CUSTOM_FORMATTER_WITH_TIME);
     }
 }
