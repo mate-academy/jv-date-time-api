@@ -2,14 +2,13 @@ package core.basesyntax;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
+import java.time.ZoneOffset;
+import java.time.Month;
 
 public class JavaDateTimeApiTest {
 
