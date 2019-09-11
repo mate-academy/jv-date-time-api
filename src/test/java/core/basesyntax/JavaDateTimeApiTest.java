@@ -15,7 +15,7 @@ public class JavaDateTimeApiTest {
 
     private JavaDateTimeApi javaDateTimeApi = new JavaDateTimeApi();
     private static final LocalDateTime LOCAL_DATE_TIME =
-            LocalDateTime.of(2000, 12, 31, 23, 59, 59);
+        LocalDateTime.of(2000, 12, 31, 23, 59, 59);
 
     @Test
     public void todayDateFull() {
@@ -28,7 +28,7 @@ public class JavaDateTimeApiTest {
     public void getDate() {
         Integer[] dateParams = {2018, 12, 21};
         Optional<LocalDate> expected =
-                Optional.of(LocalDate.of(2018, 12, 21));
+            Optional.of(LocalDate.of(2018, 12, 21));
         Optional<LocalDate> result = javaDateTimeApi.getDate(dateParams);
         Assert.assertEquals(expected, result);
     }
@@ -104,7 +104,8 @@ public class JavaDateTimeApiTest {
     @Test
     public void diffBetweenZones() {
         Optional<Integer> expected = Optional.of(6);
-        Optional<Integer> result = javaDateTimeApi.diffBetweenZones("America/Puerto_Rico", "Europe/Paris");
+        Optional<Integer> result = javaDateTimeApi
+            .diffBetweenZones("America/Puerto_Rico", "Europe/Paris");
         Assert.assertEquals(expected, result);
     }
 
@@ -118,7 +119,7 @@ public class JavaDateTimeApiTest {
     @Test
     public void offsetUkraine() {
         LocalDateTime localDateTime =
-                LocalDateTime.of(2019, Month.SEPTEMBER, 06, 13, 17);
+            LocalDateTime.of(2019, Month.SEPTEMBER, 06, 13, 17);
         OffsetDateTime expected = OffsetDateTime.of(localDateTime, ZoneOffset.of("+02:00"));
         OffsetDateTime result = javaDateTimeApi.offsetDateTime(localDateTime);
         Assert.assertEquals(expected, result);
