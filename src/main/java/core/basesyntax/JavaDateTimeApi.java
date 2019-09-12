@@ -11,6 +11,7 @@ import java.time.format.DateTimeParseException;
 import java.time.zone.ZoneRulesException;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.zip.DataFormatException;
 
 public class JavaDateTimeApi {
 
@@ -19,6 +20,8 @@ public class JavaDateTimeApi {
             = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.UK);
     private static final DateTimeFormatter UK_DATE_TIME_FORMAT
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.UK);
+    private static final DateTimeFormatter UK_DATE_FORMAT_SOLID
+            = DateTimeFormatter.ofPattern("yyyyMMdd", Locale.UK);
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -30,7 +33,7 @@ public class JavaDateTimeApi {
      *                 - MONTH - название текущего месяца;
      *                 - DAY - текущий день (число месяца);
      **/
-    public String todayDate(DateTimePart datePart) {
+    public String todayDate(DateTimePart datePart) throws DataFormatException {
         LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case YEAR:
@@ -39,8 +42,10 @@ public class JavaDateTimeApi {
                 return String.valueOf(localDate.getMonth());
             case DAY:
                 return String.valueOf(localDate.getDayOfMonth());
-            default:
+            case FULL:
                 return localDate.toString();
+            default:
+                throw new DataFormatException("Uncorrect date format");
         }
     }
 
@@ -145,8 +150,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter
-                            .ofPattern("yyyyMMdd", Locale.UK)));
+            return Optional.of(LocalDate.parse(date, UK_DATE_FORMAT_SOLID));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
