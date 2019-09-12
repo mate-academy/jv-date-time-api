@@ -17,12 +17,12 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
 
-    static final DateTimeFormatter formatDateFormatter = DateTimeFormatter.ofPattern(
+    private static final DateTimeFormatter formatDateFormatter = DateTimeFormatter.ofPattern(
             "dd LLLL yyyy HH:mm", Locale.ENGLISH);
-    static final DateTimeFormatter parseDateFormatter =
+    private static final DateTimeFormatter parseDateFormatter =
             DateTimeFormatter.ofPattern("yyyyMMdd");
-    static final String timeZone = "Europe/Warsaw";
-    static final DateTimeFormatter customParseFormatter = DateTimeFormatter
+    private static final String timeZone = "Europe/Warsaw";
+    private static final DateTimeFormatter customParseFormatter = DateTimeFormatter
             .ofPattern("dd MMM yyyy", Locale.US);
 
     /**
