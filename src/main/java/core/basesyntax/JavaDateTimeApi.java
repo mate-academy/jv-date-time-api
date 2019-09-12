@@ -1,13 +1,11 @@
 package core.basesyntax;
 
-
-import java.time.*;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.zone.ZoneRulesException;
 import java.util.Locale;
 import java.util.Optional;
-
 
 public class JavaDateTimeApi {
 
