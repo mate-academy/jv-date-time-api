@@ -33,7 +33,7 @@ public class JavaDateTimeApi {
      *                 - MONTH - название текущего месяца;
      *                 - DAY - текущий день (число месяца);
      **/
-    public String todayDate(DateTimePart datePart) throws DataFormatException {
+    public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case YEAR:
@@ -45,7 +45,7 @@ public class JavaDateTimeApi {
             case FULL:
                 return localDate.toString();
             default:
-                throw new DataFormatException("Uncorrect date format");
+                return "Wrong date format";
         }
     }
 
