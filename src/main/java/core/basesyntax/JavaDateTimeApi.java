@@ -1,5 +1,10 @@
 package core.basesyntax;
 
+import static core.basesyntax.DateTimeFormats.CUSTOM_PARSE_FORMAT;
+import static core.basesyntax.DateTimeFormats.DATE_FORMAT;
+import static core.basesyntax.DateTimeFormats.PARSE_FORMAT;
+import static core.basesyntax.DateTimeFormats.UKR_OFFSET;
+
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
@@ -35,7 +40,7 @@ public class JavaDateTimeApi {
             case DAY:
                 return String.valueOf(LocalDate.now().getDayOfMonth());
             default:
-                return null;
+                throw new IllegalArgumentException();
         }
     }
 
@@ -62,7 +67,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return localTime.plusHours(Long.valueOf(hoursToAdd));
+        return localTime.plusHours(hoursToAdd);
     }
 
     /**
@@ -70,7 +75,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        return localTime.plusMinutes(Long.valueOf(minutesToAdd));
+        return localTime.plusMinutes(minutesToAdd);
     }
 
     /**
@@ -78,7 +83,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        return localTime.plusSeconds(Long.valueOf(secondsToAdd));
+        return localTime.plusSeconds(secondsToAdd);
     }
 
     /**
@@ -86,7 +91,7 @@ public class JavaDateTimeApi {
      * Верните получившуюся дату
      */
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
-        return localDate.plusWeeks(Long.valueOf(numberOfWeeks));
+        return localDate.plusWeeks(numberOfWeeks);
     }
 
     /**
@@ -130,7 +135,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(UKR_OFFSET));
     }
 
     /**
@@ -139,7 +144,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(PARSE_FORMAT)));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -151,7 +156,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy")));
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern(CUSTOM_PARSE_FORMAT)));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -166,7 +172,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"));
+            return dateTime.format(DateTimeFormatter.ofPattern(DATE_FORMAT));
         } catch (Exception e) {
             return "Date can't be formatted!";
         }
