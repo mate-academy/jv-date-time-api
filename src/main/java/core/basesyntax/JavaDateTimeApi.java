@@ -18,6 +18,7 @@ public class JavaDateTimeApi {
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
+     *
      * @param datePart Запрос на часть даты или всю дата целиком:
      *                 - FULL - текущая дата целиком год, месяц, день (число месяца)
      *                 в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
@@ -39,11 +40,12 @@ public class JavaDateTimeApi {
                 return String.valueOf(dateTime.getDayOfWeek());
             default:
                 return null;
-            }
+        }
     }
 
     /**
      * Верните Optional даты соответствующей дате в массиве.
+     *
      * @param dateParams Дан массив данных состоящий из 3-х элементов, где:
      *                   - 1-й элемент массива - год;
      *                   - 2-й элемент массива - месяц;
@@ -110,6 +112,7 @@ public class JavaDateTimeApi {
     /**
      * Даны две временные зоны.
      * Верните Optional часовой разницы между двумя временными зонами.
+     *
      * @return Optional positive Integer
      */
     public Optional<Integer> diffBetweenZones(String firstZone, String secondZone) {
@@ -170,6 +173,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm",Locale.UK));
+        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.UK));
     }
 }
