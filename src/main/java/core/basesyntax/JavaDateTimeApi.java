@@ -15,6 +15,11 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
 
+    public static final String UA_ZONE = "+02:00";
+    public static final String PATTERN_DATE = "yyyyMMdd";
+    public static final String PATTERN_CUSTOM_DATE = "dd MMM yyyy";
+    public static final String PATTERN_FORMAT_DATE = "dd MMMM yyyy HH:mm";
+
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -138,7 +143,6 @@ public class JavaDateTimeApi {
      * временной зоны.
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
-    public static final String UA_ZONE = "+02:00";
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
         return OffsetDateTime.of(localTime, ZoneOffset.of(UA_ZONE));
@@ -148,7 +152,6 @@ public class JavaDateTimeApi {
      * Дана строка в виде "yyyymmdd".
      * Необходимо вернуть Optional даты в LocalDate формате
      */
-    public static final String PATTERN_DATE = "yyyyMMdd";
 
     public Optional<LocalDate> parseDate(String date) {
         try {
@@ -163,7 +166,6 @@ public class JavaDateTimeApi {
      * Дана строка в виде "d MMM yyyy" (MMM - Sep, Oct, etc).
      * Необходимо вернуть Optional даты в LocalDate формате
      */
-    public static final String PATTERN_CUSTOM_DATE = "dd MMM yyyy";
 
     public Optional<LocalDate> customParseDate(String date) {
         try {
@@ -181,7 +183,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      * или сообщение "dateTime can't be formatted!"
      */
-    public static final String PATTERN_FORMAT_DATE = "dd MMMM yyyy HH:mm";
 
     public String formatDate(LocalDateTime dateTime) {
         return dateTime.format(DateTimeFormatter.ofPattern(PATTERN_FORMAT_DATE, Locale.UK));
