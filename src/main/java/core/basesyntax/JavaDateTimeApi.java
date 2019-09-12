@@ -11,7 +11,6 @@ public class JavaDateTimeApi {
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
-     *
      * @param datePart Запрос на часть даты или всю дата целиком:
      *                 - FULL - текущая дата целиком год, месяц, день (число месяца)
      *                 в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
@@ -19,6 +18,7 @@ public class JavaDateTimeApi {
      *                 - MONTH - название текущего месяца;
      *                 - DAY - текущий день (число месяца);
      **/
+
     public String todayDate(DateTimePart datePart) {
         LocalDateTime dateTime = LocalDateTime.now();
         switch (datePart) {
@@ -37,7 +37,6 @@ public class JavaDateTimeApi {
 
     /**
      * Верните Optional даты соответствующей дате в массиве.
-     *
      * @param dateParams Дан массив данных состоящий из 3-х элементов, где:
      *                   - 1-й элемент массива - год;
      *                   - 2-й элемент массива - месяц;
@@ -48,7 +47,7 @@ public class JavaDateTimeApi {
             try {
                 return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
             } catch (DateTimeException e) {
-                e.printStackTrace();
+                Optional.empty();
             }
         }
         return Optional.empty();
