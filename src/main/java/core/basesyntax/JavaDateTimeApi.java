@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String UKR = "+02:00";
-    private static final String yyyyMMdd = "yyyyMMdd";
+    private static final String CUSTOM_FORMATTER = "yyyyMMdd";
     private static final String FULL_DATE = "dd MMM yyyy";
     private static final String FULL_DATE_TIME = "dd MMMM yyyy HH:mm";
 
@@ -149,7 +149,7 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> parseDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(yyyyMMdd);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CUSTOM_FORMATTER);
         LocalDate localDate;
         try {
             localDate = LocalDate.parse(date, formatter);
