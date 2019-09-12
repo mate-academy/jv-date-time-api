@@ -1,11 +1,19 @@
 package core.basesyntax;
 
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.time.zone.ZoneRulesException;
-import java.util.*;
+import java.util.Locale;
+import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String UKR_OFFSET = "+02:00";
@@ -123,6 +131,7 @@ public class JavaDateTimeApi {
     /**
      * Даны две временные зоны.
      * Верните Optional часовой разницы между двумя временными зонами.
+     *
      * @return Optional positive Integer
      */
     public Optional<Integer> diffBetweenZones(String firstZone, String secondZone) {
@@ -190,7 +199,7 @@ public class JavaDateTimeApi {
         //return dateTime.format(DateTimeFormatter.ofPattern(dateTime));
         try {
             return dateTime.format(DateTimeFormatter.ofPattern(DATE_TIME, Locale.UK));
-        } catch (Exception e){
+        } catch (Exception e) {
             return "Date can't be formatted!";
         }
     }
