@@ -31,7 +31,7 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      **/
 
-    public String todayDate(DateTimePart datePart) {
+    public String todayDate(DateTimePart datePart) throws Exception {
 
         switch (datePart) {
             case FULL:
@@ -40,8 +40,10 @@ public class JavaDateTimeApi {
                 return "" + LocalDate.now().getYear();
             case MONTH:
                 return LocalDate.now().getMonth().toString();
-            default:
+            case DAY:
                 return "" + LocalDate.now().getDayOfMonth();
+            default:
+                throw new Exception("Wrong request command");
         }
     }
 
@@ -69,7 +71,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return localTime.plusHours(Long.valueOf(hoursToAdd));
+        return localTime.plusHours(hoursToAdd);
     }
 
     /**
