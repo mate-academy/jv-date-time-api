@@ -15,6 +15,10 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String TIME_ZONE = "+02:00";
+    private static final String DATE_FORMAT = "d MMM yyyy";
+    private static final String FORMAT_ELSE = "yyyyMMdd";
+    private static final String DATE_TIME = "dd MMMM yyyy HH:mm";
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -38,8 +42,7 @@ public class JavaDateTimeApi {
                 return String.valueOf(dateTime.getMonth());
             case DAY:
                 return String.valueOf(dateTime.getDayOfWeek());
-            default:
-                return null;
+            default: throw  new DateTimeException("incorrect date");
         }
     }
 
@@ -135,7 +138,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(TIME_ZONE));
 
     }
 
@@ -146,7 +149,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter
-                    .ofPattern("yyyyMMdd", Locale.UK)));
+                    .ofPattern(FORMAT_ELSE, Locale.UK)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -159,7 +162,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter
-                    .ofPattern("d MMM yyyy", Locale.UK)));
+                    .ofPattern(DATE_FORMAT, Locale.UK)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -173,6 +176,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.UK));
+        return dateTime.format(DateTimeFormatter.ofPattern(DATE_TIME, Locale.UK));
     }
 }
