@@ -31,7 +31,7 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      **/
 
-    public String todayDate(DateTimePart datePart) throws Exception {
+    public String todayDate(DateTimePart datePart) {
 
         switch (datePart) {
             case FULL:
@@ -43,7 +43,7 @@ public class JavaDateTimeApi {
             case DAY:
                 return "" + LocalDate.now().getDayOfMonth();
             default:
-                throw new Exception("Wrong request command");
+                return "Wrong request!";
         }
     }
 
@@ -79,7 +79,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        return localTime.plusMinutes(Long.valueOf(minutesToAdd));
+        return localTime.plusMinutes(minutesToAdd);
     }
 
     /**
@@ -87,7 +87,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        return localTime.plusSeconds(Long.valueOf(secondsToAdd));
+        return localTime.plusSeconds(secondsToAdd);
     }
 
     /**
@@ -95,7 +95,7 @@ public class JavaDateTimeApi {
      * Верните получившуюся дату
      */
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
-        return localDate.plusWeeks(Long.valueOf(numberOfWeeks));
+        return localDate.plusWeeks(numberOfWeeks);
     }
 
     /**
