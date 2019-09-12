@@ -17,6 +17,10 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String TIME_ZONE = "+02:00";
+    private static final String YEARS_MOUNTH_DAY = "yyyyMMdd";
+    private static final String DAY_MOUNTH_YEAR = "dd MMM yyyy";
+    private static final String FULLDATE_AND_TIME = "dd LLLL yyyy HH:mm";
+
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -28,7 +32,7 @@ public class JavaDateTimeApi {
      *                 - MONTH - название текущего месяца;
      *                 - DAY - текущий день (число месяца);
      **/
-    public String todayDate(DateTimePart datePart) {
+    public String todayDate(DateTimePart datePart) throws DateTimeException {
         LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case FULL:
@@ -150,7 +154,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) throws DateTimeParseException {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate
+                    .parse(date, DateTimeFormatter.ofPattern(YEARS_MOUNTH_DAY)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -163,7 +168,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) throws DateTimeParseException {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter
-                    .ofPattern("dd MMM yyyy", Locale.US)));
+                    .ofPattern(DAY_MOUNTH_YEAR, Locale.US)));
         } catch (DateTimeException ex) {
             return Optional.empty();
         }
@@ -178,7 +183,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter
-                .ofPattern("dd LLLL yyyy HH:mm", Locale.ENGLISH);
+                .ofPattern(FULLDATE_AND_TIME, Locale.ENGLISH);
         return dateTime.format(dateTimeFormatter);
     }
 }
