@@ -127,7 +127,6 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        System.out.println();
         return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
     }
 
