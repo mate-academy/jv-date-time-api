@@ -1,6 +1,13 @@
 package core.basesyntax;
 
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.zone.ZoneRulesException;
 import java.util.Optional;
@@ -27,6 +34,7 @@ public class JavaDateTimeApi {
                 return String.valueOf(LocalDate.now().getYear());
             case FULL:
                 return LocalDate.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
+            default:
         }
         throw new DateTimeException("Wrong data, please check");
     }
