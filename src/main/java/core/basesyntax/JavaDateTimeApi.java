@@ -16,7 +16,7 @@ import java.util.Optional;
 public class JavaDateTimeApi {
     private static final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
-    DateTimeFormatter FORMATTER_FOR_CUSTOM_PARSE = DateTimeFormatter
+    private static final DateTimeFormatter FORMATTER_FOR_CUSTOM_PARSE = DateTimeFormatter
             .ofPattern("d MMM yyyy", Locale.ENGLISH);
 
     /**
