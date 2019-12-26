@@ -14,6 +14,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+    DateTimeFormatter FORMATTER_FOR_CUSTOM_PARSE = DateTimeFormatter
+            .ofPattern("d MMM yyyy", Locale.ENGLISH);
+
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -135,9 +140,8 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> parseDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         try {
-            return Optional.ofNullable(LocalDate.parse(date, formatter));
+            return Optional.ofNullable(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -148,10 +152,8 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern("d MMM yyyy", Locale.ENGLISH);
         try {
-            return Optional.of(LocalDate.parse(date, formatter));
+            return Optional.of(LocalDate.parse(date, FORMATTER_FOR_CUSTOM_PARSE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -165,10 +167,8 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
         try {
-            return dateTime.format(formatter);
+            return dateTime.format(FORMATTER_TIME);
         } catch (DateTimeException e) {
             return "Date can't be formatted!";
         }
