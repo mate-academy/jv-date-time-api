@@ -1,7 +1,6 @@
 package core.basesyntax;
 
 import java.time.DateTimeException;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -63,7 +62,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return localTime.plus(Duration.ofHours(hoursToAdd));
+        return localTime.plusHours(hoursToAdd);
     }
 
     /**
@@ -71,7 +70,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        return localTime.plus(Duration.ofMinutes(minutesToAdd));
+        return localTime.plusMinutes(minutesToAdd);
     }
 
     /**
@@ -79,7 +78,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        return localTime.plus(Duration.ofSeconds(secondsToAdd));
+        return localTime.plusSeconds(secondsToAdd);
     }
 
     /**
