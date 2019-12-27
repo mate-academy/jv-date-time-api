@@ -12,6 +12,11 @@ import java.time.zone.ZoneRulesException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    public static final DateTimeFormatter FORMATTER
+            = DateTimeFormatter.ofPattern("dd LLLL yyyy HH:mm");
+    public static final DateTimeFormatter CUSTOM_FORMATTER
+            = DateTimeFormatter.ofPattern("d MMM yyyy");
+
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -47,12 +52,9 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length == 0) {
-            return Optional.empty();
-        }
         try {
-            return Optional.ofNullable(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException e) {
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
             return Optional.empty();
         }
     }
@@ -97,12 +99,13 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isEqual(LocalDate.now())) {
+        LocalDate now = LocalDate.now();
+        if (someDate.isEqual(now)) {
             return someDate + " is today";
-        } else if (someDate.isAfter(LocalDate.now())) {
-            return someDate + " is after " + LocalDate.now();
+        } else if (someDate.isAfter(now)) {
+            return someDate + " is after " + now;
         }
-        return someDate + " is before " + LocalDate.now();
+        return someDate + " is before " + now;
     }
 
     /**
@@ -113,8 +116,8 @@ public class JavaDateTimeApi {
      */
     public Optional<Integer> diffBetweenZones(String firstZone, String secondZone) {
         try {
-            return Optional.ofNullable(LocalDateTime.now(ZoneId.of(secondZone)).getHour()
-                    - LocalDateTime.now(ZoneId.of(firstZone)).getHour());
+            return Optional.ofNullable(LocalDateTime.now(ZoneId.of(secondZone))
+                    .getHour() - LocalDateTime.now(ZoneId.of(firstZone)).getHour());
         } catch (ZoneRulesException e) {
             return Optional.empty();
         }
@@ -151,7 +154,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy")));
+            return Optional.of(LocalDate.parse(date, CUSTOM_FORMATTER));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -166,7 +169,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter.ofPattern("dd LLLL yyyy HH:mm"));
+            return dateTime.format(FORMATTER);
         } catch (DateTimeException e) {
             return "Date can't be formatted!";
         }
