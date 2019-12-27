@@ -24,9 +24,10 @@ public class JavaDateTimeApi {
      * - DAY - текущий день (число месяца);
      * В любом другом случае бросить DateTimeException
      **/
-    private LocalDate now = LocalDate.now();
+    private LocalDate now;
 
     public String todayDate(DateTimePart datePart) {
+        now = LocalDate.now();
         switch (datePart) {
             case FULL:
                 return now.toString();
@@ -97,6 +98,7 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
+        now = LocalDate.now();
         return now.isAfter(someDate) ? someDate + " is before " + now
                 : now.isEqual(someDate) ? someDate + " is today"
                 : someDate + " is after " + now;
@@ -137,7 +139,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
