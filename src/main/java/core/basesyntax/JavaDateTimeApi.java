@@ -26,6 +26,13 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
+
+    static final DateTimeFormatter FORMATTER_DAY_MONTH_YEAR = DateTimeFormatter
+            .ofPattern("dd MMM yyyy", Locale.ENGLISH);
+
+    static final DateTimeFormatter FORMATTER_DATE_TIME = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy kk:mm", Locale.ENGLISH);
+
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
@@ -37,7 +44,8 @@ public class JavaDateTimeApi {
             case DAY:
                 return String.valueOf(LocalDate.now().getDayOfMonth());
             default:
-                throw new DateTimeException(datePart.toString()); }
+                throw new DateTimeException("");
+        }
     }
 
     /**
@@ -115,13 +123,8 @@ public class JavaDateTimeApi {
         try {
             ZonedDateTime zonedDateTimeFirst = ZonedDateTime.now(ZoneId.of(firstZone));
             ZonedDateTime zonedDateTimeSecond = ZonedDateTime.now(ZoneId.of(secondZone));
-            if (zonedDateTimeFirst.getDayOfYear() != zonedDateTimeSecond.getDayOfYear()) {
-                return Optional.of(24 - Math.abs(zonedDateTimeFirst.getHour()
+            return Optional.of(Math.abs(zonedDateTimeFirst.getHour()
                         - zonedDateTimeSecond.getHour()));
-            } else {
-                return Optional.of(Math.abs(zonedDateTimeFirst.getHour()
-                        - zonedDateTimeSecond.getHour()));
-            }
         } catch (ZoneRulesException e) {
             return Optional.empty();
         }
@@ -147,7 +150,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -159,8 +162,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter
-                    .ofPattern("dd MMM yyyy", Locale.ENGLISH)));
+            return Optional.of(LocalDate.parse(date, FORMATTER_DAY_MONTH_YEAR));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -175,8 +177,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter
-                    .ofPattern("dd MMMM yyyy kk:mm", Locale.ENGLISH));
+            return dateTime.format(FORMATTER_DATE_TIME);
         } catch (DateTimeException e) {
             return "dateTime can't be formatted!";
         }
