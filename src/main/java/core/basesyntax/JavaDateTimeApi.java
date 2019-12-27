@@ -13,6 +13,12 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+
+    public static final DateTimeFormatter CUSTOM_PARSE_DATE_FORMATTER = DateTimeFormatter
+            .ofPattern("d MMM yyyy", Locale.US);
+    public static final DateTimeFormatter FORMAT_DATE_FORMATTER = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy H:mm", Locale.US);
+
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -95,8 +101,9 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isAfter(LocalDate.now()) ? someDate + " is after " + LocalDate.now()
-                : someDate.isBefore(LocalDate.now()) ? someDate + " is before " + LocalDate.now()
+        LocalDate today = LocalDate.now();
+        return someDate.isAfter(today) ? someDate + " is after " + today
+                : someDate.isBefore(today) ? someDate + " is before " + today
                 : someDate + " is today";
     }
 
@@ -134,7 +141,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("yyyyMMdd", Locale.US)));
+                    DateTimeFormatter.BASIC_ISO_DATE));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -144,10 +151,10 @@ public class JavaDateTimeApi {
      * Дана строка в виде "d MMM yyyy" (MMM - Sep, Oct, etc).
      * Необходимо вернуть Optional даты в LocalDate формате
      */
+
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("d MMM yyyy", Locale.US)));
+            return Optional.of(LocalDate.parse(date, CUSTOM_PARSE_DATE_FORMATTER));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -162,8 +169,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter
-                    .ofPattern("dd MMMM yyyy H:mm", Locale.US));
+            return dateTime.format(FORMAT_DATE_FORMATTER);
         } catch (Exception e) {
             return "dateTime can't be formatted!";
         }
