@@ -108,7 +108,7 @@ public class JavaDateTimeApi {
     public Optional<Integer> diffBetweenZones(String firstZone, String secondZone) {
         try {
             return Optional.of(Math.abs(ZonedDateTime.now(ZoneId.of(firstZone)).getHour()
-                    - ZonedDateTime.now(ZoneId.of(secondZone)).getHour()));
+                - ZonedDateTime.now(ZoneId.of(secondZone)).getHour()));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -133,8 +133,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.ofNullable(LocalDate
-                    .parse(date, DateTimeFormatter.ofPattern("yyyyMMdd", Locale.US)));
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern("yyyyMMdd", Locale.US)));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -146,8 +146,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate
-                    .parse(date, DateTimeFormatter.ofPattern("d MMM yyyy", Locale.US)));
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern("d MMM yyyy", Locale.US)));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -163,9 +163,9 @@ public class JavaDateTimeApi {
     public String formatDate(LocalDateTime dateTime) {
         try {
             return dateTime.format(DateTimeFormatter
-                    .ofPattern("dd MMMM yyyy HH:mm", Locale.US));
+                    .ofPattern("dd MMMM yyyy H:mm", Locale.US));
         } catch (Exception e) {
-            return "Date can't be formatted!";
+            return "dateTime can't be formatted!";
         }
     }
 }
