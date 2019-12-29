@@ -25,6 +25,7 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
+
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
@@ -173,7 +174,9 @@ public class JavaDateTimeApi {
                         .equals(month)))
                 .toArray()[0].toString();
         try {
-            LocalDate data = LocalDate.of(Integer.parseInt(splitedText[2]), Month.valueOf(str), Integer.parseInt(splitedText[0]));
+            LocalDate data = LocalDate.of(Integer.parseInt(splitedText[2]),
+                    Month.valueOf(str),
+                    Integer.parseInt(splitedText[0]));
             return Optional.of(data);
         } catch (DateTimeException e) {
             return Optional.empty();
@@ -190,6 +193,10 @@ public class JavaDateTimeApi {
     public String formatDate(LocalDateTime dateTime) {
         StringBuilder month = new StringBuilder(dateTime.getMonth().toString().toLowerCase());
         month.setCharAt(0, (char)(month.charAt(0) - 32));
-        return "0" + dateTime.getDayOfMonth() + " " + month + " " + dateTime.getYear() + " " + dateTime.getHour() + ":" + dateTime.getMinute();
+        return "0" + dateTime.getDayOfMonth()
+                + " " + month
+                + " " + dateTime.getYear()
+                + " " + dateTime.getHour()
+                + ":" + dateTime.getMinute();
     }
 }
