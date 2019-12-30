@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    public static final String TIME_OFFSET = "+02:00";
     public static final DateTimeFormatter CUSTUMER_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
     public static final DateTimeFormatter FORMATE_DATE
@@ -140,7 +141,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(TIME_OFFSET));
     }
 
     /**
