@@ -157,7 +157,6 @@ public class JavaDateTimeApi {
         try {
             DateTimeFormatter formatter = DateTimeFormatter
                     .ofPattern("dd MMM yyyy", Locale.ENGLISH);
-            System.out.println(date);
             LocalDate data = LocalDate.parse(date, formatter);
             return Optional.of(data);
         } catch (DateTimeException e) {
