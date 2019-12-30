@@ -18,13 +18,19 @@ public class JavaDateTimeApi {
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
      * @param datePart Запрос на часть даты или всю дата целиком:
-     *                 - FULL - текущая дата целиком год, месяц, день (число месяца)
-     *                 в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
-     *                 - YEAR - текущий год;
-     *                 - MONTH - название текущего месяца;
-     *                 - DAY - текущий день (число месяца);
-     *                 В любом другом случае бросить DateTimeException
+     * - FULL - текущая дата целиком год, месяц, день (число месяца)
+     * в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
+     * - YEAR - текущий год;
+     * - MONTH - название текущего месяца;
+     * - DAY - текущий день (число месяца);
+     * В любом другом случае бросить DateTimeException
      **/
+    private static final DateTimeFormatter NOT_FULL_MONTH_FORMATTER = DateTimeFormatter
+            .ofPattern("dd MMM yyyy", Locale.ENGLISH);
+    private static final DateTimeFormatter FULL_MONTH_FORMATTER = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy HH:mm",
+                    Locale.ENGLISH);
+    private static final int UKRAINIAN_OFFSET = 2;
 
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
@@ -134,7 +140,8 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
+        return OffsetDateTime.of(localTime,
+                ZoneOffset.ofHours(UKRAINIAN_OFFSET));
     }
 
     /**
@@ -143,7 +150,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.ofNullable(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+            return Optional.ofNullable(LocalDate.parse(date,
+                    DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -155,9 +163,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter
-                    .ofPattern("dd MMM yyyy", Locale.ENGLISH);
-            LocalDate data = LocalDate.parse(date, formatter);
+            LocalDate data = LocalDate.parse(date,
+                    NOT_FULL_MONTH_FORMATTER);
             return Optional.of(data);
         } catch (DateTimeException e) {
             return Optional.empty();
@@ -172,10 +179,8 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern("dd MMMM yyyy HH:mm",
-                        Locale.ENGLISH);
-        return formatter.format(dateTime);
+        return FULL_MONTH_FORMATTER
+                .format(dateTime);
     }
 
     private static LocalDate getCurrentDate() {
