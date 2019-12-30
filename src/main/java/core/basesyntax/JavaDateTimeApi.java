@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -15,6 +14,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String OFFSET = "+02:00";
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -26,11 +26,26 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
+
     public String todayDate(DateTimePart datePart) {
-        if (datePart != DateTimePart.FULL) {
-            throw new DateTimeException("");
+        LocalDate localDate = LocalDate.now();
+        String result = String.valueOf(localDate);
+        switch (datePart) {
+            case FULL:
+                break;
+            case YEAR:
+                result = String.valueOf(localDate.getYear());
+                break;
+            case MONTH:
+                result = String.valueOf(localDate.getMonth());
+                break;
+            case DAY:
+                result = String.valueOf(localDate.getDayOfMonth());
+                break;
+            default:
+                throw new DateTimeException("");
         }
-        return String.valueOf(LocalDate.now());
+        return result;
     }
 
     /**
@@ -132,7 +147,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(OFFSET));
     }
 
     /**
@@ -141,10 +156,9 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         LocalDate localDate = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         try {
-            localDate = LocalDate.of(Integer.valueOf(date.substring(0, 4)),
-                   Integer.valueOf(date.substring(4, 6)),
-                   Integer.valueOf(date.substring(6, 8)));
+            localDate = LocalDate.parse(date, formatter);
         } catch (DateTimeException e) {
             e.printStackTrace();
         }
@@ -156,15 +170,10 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        String[] array = date.split(" ");
         LocalDate localDate = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
         try {
-            for (Month month : Month.values()) {
-                if (String.valueOf(month).substring(0, 3).equalsIgnoreCase(array[1])) {
-                    localDate = LocalDate
-                            .of(Integer.valueOf(array[2]), month, Integer.valueOf(array[0]));
-                }
-            }
+            localDate = LocalDate.parse(date, formatter);
         } catch (DateTimeException e) {
             e.printStackTrace();
         }
@@ -179,13 +188,14 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        String formatter = null;
+        String result = null;
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
         try {
-            formatter = dateTime.format(DateTimeFormatter
-                    .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH));
+            result = dateTime.format(formatter);
         } catch (DateTimeException e) {
             e.printStackTrace();
         }
-        return formatter == null ? "Date can't be formatted!" : formatter;
+        return result == null ? "Date can't be formatted!" : result;
     }
 }
