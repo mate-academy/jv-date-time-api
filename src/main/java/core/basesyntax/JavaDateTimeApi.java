@@ -14,6 +14,10 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String OFFSET = "+02:00";
+    private static final String PATTERN1 = "d MMM yyyy";
+    private static final String PATTERN2 = "dd MMMM yyyy HH:mm";
+
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -29,11 +33,11 @@ public class JavaDateTimeApi {
         LocalDate now = LocalDate.now();
         if (datePart == DateTimePart.FULL) {
             return String.valueOf(now);
-        }else if (datePart == DateTimePart.YEAR) {
+        } else if (datePart == DateTimePart.YEAR) {
             return String.valueOf(now.getYear());
         } else if (datePart == DateTimePart.MONTH) {
             return String.valueOf(now.getMonth());
-        }else {
+        } else {
             return String.valueOf(now.getDayOfMonth());
         }
     }
@@ -129,7 +133,6 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        final String OFFSET = "+02:00";
         return localTime.atOffset(ZoneOffset.of(OFFSET));
     }
 
@@ -150,7 +153,6 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        final String PATTERN1 = "d MMM yyyy";
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(PATTERN1, Locale.ENGLISH);
         try {
             return Optional.of(LocalDate.parse(date, dateFormat));
@@ -167,7 +169,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        final String PATTERN2 = "dd MMMM yyyy HH:mm";
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(PATTERN2, Locale.ENGLISH);
         return dateTime.format(dateFormat);
     }
