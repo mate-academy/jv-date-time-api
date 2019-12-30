@@ -26,10 +26,16 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
-        return datePart == DateTimePart.FULL ? String.valueOf(LocalDate.now())
-                : datePart == DateTimePart.YEAR ? String.valueOf(LocalDate.now().getYear())
-                : datePart == DateTimePart.MONTH ? String.valueOf(LocalDate.now().getMonth())
-                : String.valueOf(LocalDate.now().getDayOfMonth());
+        LocalDate now = LocalDate.now();
+        if (datePart == DateTimePart.FULL) {
+            return String.valueOf(now);
+        }else if (datePart == DateTimePart.YEAR) {
+            return String.valueOf(now.getYear());
+        } else if (datePart == DateTimePart.MONTH) {
+            return String.valueOf(now.getMonth());
+        }else {
+            return String.valueOf(now.getDayOfMonth());
+        }
     }
 
     /**
@@ -123,7 +129,8 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return localTime.atOffset(ZoneOffset.of("+02:00"));
+        final String OFFSET = "+02:00";
+        return localTime.atOffset(ZoneOffset.of(OFFSET));
     }
 
     /**
@@ -143,7 +150,8 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
+        final String PATTERN1 = "d MMM yyyy";
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(PATTERN1, Locale.ENGLISH);
         try {
             return Optional.of(LocalDate.parse(date, dateFormat));
         } catch (DateTimeParseException e) {
@@ -159,8 +167,8 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        String pattern = "dd MMMM yyyy HH:mm";
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH);
+        final String PATTERN2 = "dd MMMM yyyy HH:mm";
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(PATTERN2, Locale.ENGLISH);
         return dateTime.format(dateFormat);
     }
 }
