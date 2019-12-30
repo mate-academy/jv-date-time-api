@@ -24,6 +24,12 @@ public class  JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
+    public static final String TIME = "+02:00";
+    public static final DateTimeFormatter FORMATTER_FIRST = DateTimeFormatter
+            .ofPattern("d MMM yyyy", Locale.ENGLISH);
+    public static final DateTimeFormatter FORMATTER_SECOND = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy k:mm", Locale.ENGLISH);
+
     public String todayDate(DateTimePart datePart) {
         LocalDate currentDate = LocalDate.now();
         switch (datePart) {
@@ -122,7 +128,7 @@ public class  JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(TIME));
     }
 
     /**
@@ -142,9 +148,8 @@ public class  JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
         try {
-            return Optional.of(LocalDate.parse(date, formatter));
+            return Optional.of(LocalDate.parse(date, FORMATTER_FIRST));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -159,8 +164,7 @@ public class  JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter
-                    .ofPattern("dd MMMM yyyy k:mm", Locale.ENGLISH));
+            return dateTime.format(FORMATTER_SECOND);
         } catch (DateTimeException e) {
             return "Date can't be formatted!";
         }
