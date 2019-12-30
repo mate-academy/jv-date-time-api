@@ -24,15 +24,20 @@ public class JavaDateTimeApi {
      **/
     public String todayDate(DateTimePart datePart) {
 
-        return datePart == DateTimePart.FULL ? LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("YYYY-MM-dd"))
-                : datePart == DateTimePart.YEAR ? LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("YYYY"))
-                : datePart == DateTimePart.MONTH ? LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("MM"))
-                : datePart == DateTimePart.DAY ? LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("DD"))
-                : "DateTimeException";
+        LocalDateTime today = LocalDateTime.now();
+        String res = "";
+        if (datePart == DateTimePart.FULL) {
+            res = String.valueOf(today.toLocalDate());
+        } else if (datePart == DateTimePart.YEAR) {
+            res = String.valueOf(today.getYear());
+        } else if (datePart == DateTimePart.MONTH) {
+            res = String.valueOf(today.getMonth());
+        } else if (datePart == DateTimePart.DAY) {
+            res = String.valueOf(today.getDayOfMonth());
+        } else {
+            res = "DateTimeException";
+        }
+        return res;
     }
 
     /**
@@ -91,9 +96,10 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isBefore(LocalDate.now()) ? someDate + " is before " + LocalDate.now()
-                : someDate.isEqual(LocalDate.now()) ? someDate + " is today"
-                : someDate + " is after " + LocalDate.now();
+        LocalDate today = LocalDate.now();
+        return someDate.isBefore(today) ? someDate + " is before " + today
+                : someDate.isEqual(today) ? someDate + " is today"
+                : someDate + " is after " + today;
     }
 
     /**
@@ -121,8 +127,9 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
+        final String shift = "+02:00";
 
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(shift));
     }
 
     /**
@@ -143,7 +150,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy");
+            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy");
             LocalDate localDate = LocalDate.parse(date, formatter);
             return Optional.of(localDate);
         } catch (Exception e) {
@@ -160,7 +167,8 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"));
+            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+            return dateTime.format(formatter);
         } catch (Exception e) {
             return "dateTime can't be formatted!";
         }
