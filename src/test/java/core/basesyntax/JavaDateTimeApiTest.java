@@ -103,7 +103,7 @@ public class JavaDateTimeApiTest {
 
     @Test
     public void diffBetweenZones() {
-        Optional<Integer> expected = Optional.of(6);
+        Optional<Integer> expected = Optional.of(5);
         Optional<Integer> result = javaDateTimeApi.diffBetweenZones("America/Puerto_Rico", "Europe/Paris");
         Assert.assertEquals(expected, result);
     }
