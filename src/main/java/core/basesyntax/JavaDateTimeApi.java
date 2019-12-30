@@ -15,7 +15,10 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String TIME_ZONE = "+02:00";
-    private static final Locale LOCAL_COUNTRY = Locale.US;
+    private static final DateTimeFormatter formatter_d_MMM_yyyy
+            = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.US);
+    private static final DateTimeFormatter formatter_dd_MMMM_yyyy_HH_mm
+            = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.US);
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -156,8 +159,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(
-                    LocalDate.parse(date, DateTimeFormatter
-                            .ofPattern("dd MMM yyyy", LOCAL_COUNTRY)));
+                    LocalDate.parse(date, formatter_d_MMM_yyyy));
         } catch (DateTimeException ex) {
             return Optional.empty();
         }
@@ -171,7 +173,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter
-                .ofPattern("dd MMMM YYYY HH:mm", LOCAL_COUNTRY));
+        return dateTime.format(formatter_dd_MMMM_yyyy_HH_mm);
     }
 }
