@@ -4,16 +4,13 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public class JavaDateTimeApi {
 
@@ -161,7 +158,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
+            DateTimeFormatter formatter = DateTimeFormatter
+                    .ofPattern("dd MMM yyyy", Locale.ENGLISH);
             System.out.println(date);
             LocalDate data = LocalDate.parse(date, formatter);
             return Optional.of(data);
@@ -179,10 +177,11 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern("dd MMMM yyyy HH:mm"
-                , Locale.ENGLISH);
+                .ofPattern("dd MMMM yyyy HH:mm",
+                        Locale.ENGLISH);
         return formatter.format(dateTime);
     }
+
     private static LocalDate getCurrentDate() {
         return LocalDate.now();
     }
