@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final ZoneOffset UKRAINE_OFFSET = ZoneOffset.of("+02:00");
     private static final DateTimeFormatter CUSTOM_DATE_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
     private static final DateTimeFormatter DATE_FORMATTER
@@ -136,7 +137,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, UKRAINE_OFFSET);
     }
 
     /**
