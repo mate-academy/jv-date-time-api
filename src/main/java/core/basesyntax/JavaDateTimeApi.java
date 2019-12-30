@@ -25,6 +25,15 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
+
+    private static final ZoneOffset UKRAINE_ZONE_OFFSET = ZoneOffset.of("+02:00");
+
+    private static final DateTimeFormatter CUSTOM_DATE_FORMAT = DateTimeFormatter
+                                .ofPattern("dd MMM yyyy", Locale.ENGLISH);
+
+    private static final DateTimeFormatter CUSTOM_DATE_AND_TIME_FORMAT = DateTimeFormatter
+                                .ofPattern("dd MMMM yyyy H:mm", Locale.ENGLISH);
+
     public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
         switch (datePart) {
@@ -47,9 +56,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return Optional.empty();
-        } catch (DateTimeException e) {
+        } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
             return Optional.empty();
         }
 
@@ -95,11 +102,12 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isBefore(LocalDate.now())) {
-            return someDate.toString() + " is before " + LocalDate.now();
+        LocalDate dateNow = LocalDate.now();
+        if (someDate.isBefore(dateNow)) {
+            return someDate.toString() + " is before " + dateNow;
         }
-        if (someDate.isAfter(LocalDate.now())) {
-            return someDate.toString() + " is after " + LocalDate.now();
+        if (someDate.isAfter(dateNow)) {
+            return someDate.toString() + " is after " + dateNow;
         }
         return someDate + " is today";
     }
@@ -128,7 +136,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, UKRAINE_ZONE_OFFSET);
     }
 
     /**
@@ -137,7 +145,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -149,8 +157,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH)));
+            return Optional.of(LocalDate.parse(date, CUSTOM_DATE_FORMAT));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -164,6 +171,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy H:mm", Locale.ENGLISH));
+        return dateTime.format(CUSTOM_DATE_AND_TIME_FORMAT);
     }
 }
