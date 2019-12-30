@@ -8,12 +8,15 @@ import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class JavaDateTimeApi {
-    private static final LocalDate CURRENT_DATE = LocalDate.now();
+
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -29,13 +32,13 @@ public class JavaDateTimeApi {
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
-                return CURRENT_DATE.toString();
+                return getCurrentDate().toString();
             case YEAR:
-                return CURRENT_DATE.getYear() + "";
+                return String.valueOf(getCurrentDate().getYear());
             case MONTH:
-                return CURRENT_DATE.getMonth().toString();
+                return getCurrentDate().getMonth().toString();
             case DAY:
-                return CURRENT_DATE.getDayOfMonth() + "";
+                return String.valueOf(getCurrentDate().getDayOfMonth());
             default:
                 throw new DateTimeException("Wrong date");
         }
@@ -101,7 +104,7 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        LocalDate now = CURRENT_DATE;
+        LocalDate now = getCurrentDate();
         if (someDate.isAfter(now)) {
             return someDate + " is after " + now;
         } else if (someDate.equals(now)) {
@@ -137,9 +140,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        System.out.println(localTime.toString());
         return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
-        //return OffsetDateTime.of(localTime, ZoneOffset.of(localTime.toString()));
     }
 
     /**
@@ -148,14 +149,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            StringBuilder formattedDate = new StringBuilder();
-            formattedDate
-                    .append(date, 0, 4)
-                    .append("-")
-                    .append(date, 4, 6)
-                    .append("-")
-                    .append(date.substring(6));
-            return Optional.ofNullable(LocalDate.parse(formattedDate));
+            return Optional.ofNullable(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -166,17 +160,10 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        String[] splitedText = date.split(" ");
-        String month = splitedText[1].toUpperCase();
-        String str = Stream.of(Month.values())
-                .filter(x -> (x.toString()
-                        .substring(0, month.length())
-                        .equals(month)))
-                .toArray()[0].toString();
         try {
-            LocalDate data = LocalDate.of(Integer.parseInt(splitedText[2]),
-                    Month.valueOf(str),
-                    Integer.parseInt(splitedText[0]));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
+            System.out.println(date);
+            LocalDate data = LocalDate.parse(date, formatter);
             return Optional.of(data);
         } catch (DateTimeException e) {
             return Optional.empty();
@@ -191,12 +178,12 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        StringBuilder month = new StringBuilder(dateTime.getMonth().toString().toLowerCase());
-        month.setCharAt(0, (char)(month.charAt(0) - 32));
-        return "0" + dateTime.getDayOfMonth()
-                + " " + month
-                + " " + dateTime.getYear()
-                + " " + dateTime.getHour()
-                + ":" + dateTime.getMinute();
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("dd MMMM yyyy HH:mm"
+                , Locale.ENGLISH);
+        return formatter.format(dateTime);
+    }
+    private static LocalDate getCurrentDate() {
+        return LocalDate.now();
     }
 }
