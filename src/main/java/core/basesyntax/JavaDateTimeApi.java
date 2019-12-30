@@ -32,17 +32,18 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate today = LocalDate.now();
         if (datePart == DateTimePart.FULL) {
-            return LocalDate.now().toString();
+            return today.toString();
         }
         if (datePart == DateTimePart.YEAR) {
-            return String.valueOf(LocalDate.now().getYear());
+            return String.valueOf(today.getYear());
         }
         if (datePart == DateTimePart.MONTH) {
-            return String.valueOf(LocalDate.now().getMonth());
+            return String.valueOf(today.getMonth());
         }
         if (datePart == DateTimePart.DAY) {
-            return String.valueOf(LocalDate.now().getDayOfMonth());
+            return String.valueOf(today.getDayOfMonth());
         }
         throw new NoSuchElementException();
     }
@@ -105,11 +106,12 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isBefore(LocalDate.now())) {
-            return someDate + " is before " + LocalDate.now();
+        LocalDate today = LocalDate.now();
+        if (someDate.isBefore(today)) {
+            return someDate + " is before " + today;
         }
-        if (someDate.isAfter(LocalDate.now())) {
-            return someDate + " is after " + LocalDate.now();
+        if (someDate.isAfter(today)) {
+            return someDate + " is after " + today;
         }
         return someDate + " is today";
     }
@@ -149,14 +151,12 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> parseDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CUSTOM_FORMATTER);
-        LocalDate localDate;
         try {
-            localDate = LocalDate.parse(date, formatter);
-        } catch (DateTimeParseException e) {
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.BASIC_ISO_DATE));
+        } catch (Exception e) {
             return Optional.empty();
         }
-        return Optional.of(localDate);
     }
 
     /**
