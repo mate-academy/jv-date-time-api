@@ -2,7 +2,7 @@ package core.basesyntax;
 
 import org.junit.Assert;
 import org.junit.Test;
-import java.time.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
@@ -102,7 +102,7 @@ public class JavaDateTimeApiTest {
 
     @Test
     public void diffBetweenZones() {
-        Optional<Integer> expected = Optional.of(6);
+        Optional<Integer> expected = Optional.of(5);
         Optional<Integer> result = javaDateTimeApi.diffBetweenZones("America/Puerto_Rico", "Europe/Paris");
         Assert.assertEquals(expected, result);
     }
