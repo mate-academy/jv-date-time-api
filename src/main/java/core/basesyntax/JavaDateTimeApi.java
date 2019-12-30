@@ -127,7 +127,7 @@ public class JavaDateTimeApi {
         try {
             dateFirst = ZonedDateTime.of(localDateTime, ZoneId.of(firstZone));
             dateSecond = ZonedDateTime.of(localDateTime, ZoneId.of(secondZone));
-            return Optional.of(Math.abs((int)Duration.between(dateFirst,dateSecond).toHours()));
+            return Optional.of(Math.abs((int)Duration.between(dateFirst, dateSecond).toHours()));
         } catch (DateTimeException e) {
             System.out.println(e.getMessage());
         }
