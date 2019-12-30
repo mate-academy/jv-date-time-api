@@ -7,11 +7,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 public class JavaDateTimeApi {
 
@@ -115,12 +115,14 @@ public class JavaDateTimeApi {
      * @return Optional positive Integer
      */
     public Optional<Integer> diffBetweenZones(String firstZone, String secondZone) {
-        TimeZone timeZone1 = TimeZone.getTimeZone(firstZone);
-        TimeZone timeZone2 = TimeZone.getTimeZone(secondZone);
-        return timeZone1.getRawOffset() == 0 ? Optional.empty()
-                : Optional.of((int) TimeUnit.MILLISECONDS
-                .toHours(Math.abs(timeZone1.getRawOffset() - timeZone2.getRawOffset()
-                        + timeZone1.getDSTSavings() - timeZone2.getDSTSavings())));
+        try {
+
+            int timeZone1 = ZonedDateTime.now(ZoneId.of(firstZone)).getHour();
+            int timeZone2 = ZonedDateTime.now(ZoneId.of(secondZone)).getHour();
+            return Optional.of(timeZone2 - timeZone1);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -174,4 +176,5 @@ public class JavaDateTimeApi {
             return "Date can't be formatted!";
         }
     }
+
 }
