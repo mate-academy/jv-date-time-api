@@ -18,6 +18,7 @@ public class JavaDateTimeApi {
 
     private static final String PATTERN_ONE = "dd MMM yyyy";
     private static final String PATTERN_TWO = "dd MMMM yyyy HH:mm";
+    private static final int UKRAINE_TIMEZONE = 2;
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -111,11 +112,11 @@ public class JavaDateTimeApi {
         LocalDate today = LocalDate.now();
         if (someDate.isAfter(today)) {
             return someDate + " is after " + today;
-        } else if (someDate.isBefore(today)) {
-            return someDate + " is before " + today;
-        } else {
-            return someDate + " is today";
         }
+        if (someDate.isBefore(today)) {
+            return someDate + " is before " + today;
+        }
+        return someDate + " is today";
     }
 
     /**
@@ -150,7 +151,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
+        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(UKRAINE_TIMEZONE));
     }
 
     /**
