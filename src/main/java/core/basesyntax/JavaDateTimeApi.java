@@ -53,7 +53,7 @@ public class JavaDateTimeApi {
         try {
             LocalDate date = LocalDate.of(dateParams[0], dateParams[1], dateParams[2]);
             return Optional.of(date);
-        } catch (DateTimeException|ArrayIndexOutOfBoundsException e) {
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
