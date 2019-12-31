@@ -15,6 +15,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String TIME_ZONE_PLUS_TWO = "+02:00";
+    private static final String DAY_MONTH_YEAR_HOURS_MINUTES = "dd LLLL YYYY HH:mm";
+    private static final String DAY_MON_YEAR = "d MMM yyyy";
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -103,7 +106,8 @@ public class JavaDateTimeApi {
         LocalDate now = LocalDate.now();
         if (someDate.isEqual(now)) {
             return someDate + " is today";
-        } else if (someDate.isAfter(now)) {
+        }
+        if (someDate.isAfter(now)) {
             return someDate + " is after " + now;
         }
         return someDate + " is before " + now;
@@ -134,7 +138,7 @@ public class JavaDateTimeApi {
      */
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(TIME_ZONE_PLUS_TWO));
     }
 
     /**
@@ -156,7 +160,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("d MMM yyyy", Locale.US)));
+                    DateTimeFormatter.ofPattern(DAY_MON_YEAR, Locale.US)));
         } catch (DateTimeException ex) {
             return Optional.empty();
         }
@@ -171,6 +175,6 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         return dateTime.format(DateTimeFormatter
-                .ofPattern("dd LLLL YYYY HH:mm", Locale.US));
+                .ofPattern(DAY_MONTH_YEAR_HOURS_MINUTES, Locale.US));
     }
 }
