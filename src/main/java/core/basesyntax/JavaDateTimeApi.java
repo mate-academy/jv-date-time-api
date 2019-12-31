@@ -173,7 +173,7 @@ public class JavaDateTimeApi {
 
         try {
             return dateTime
-                    .format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH));
+                    .format(GIVEN_DATE_TIME_FORMAT);
         } catch (DateTimeException e) {
             return "dateTime can't be formatted!";
         }
