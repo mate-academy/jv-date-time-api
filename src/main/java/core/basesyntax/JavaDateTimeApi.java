@@ -24,6 +24,13 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
+
+    private static final ZoneOffset OUR_ZONE_OFFSET = ZoneOffset.ofHours(2);
+    private static final DateTimeFormatter GIVEN_DATE_FORMAT = DateTimeFormatter
+            .ofPattern("d MMM yyyy",Locale.ENGLISH);
+    private static final DateTimeFormatter GIVEN_DATE_TIME_FORMAT = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+
     public String todayDate(DateTimePart datePart) {
         LocalDate today = LocalDate.now();
         switch (datePart) {
@@ -127,7 +134,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
+        return OffsetDateTime.of(localTime, OUR_ZONE_OFFSET);
     }
 
     /**
@@ -149,7 +156,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate
-                    .parse(date, DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH)));
+                    .parse(date, GIVEN_DATE_FORMAT));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
