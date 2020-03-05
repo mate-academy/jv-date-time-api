@@ -102,20 +102,6 @@ public class JavaDateTimeApiTest {
     }
 
     @Test
-    public void diffBetweenZones() {
-        Optional<Integer> expected = Optional.of(6);
-        Optional<Integer> result = javaDateTimeApi.diffBetweenZones("America/Puerto_Rico", "Europe/Paris");
-        Assert.assertEquals(expected, result);
-    }
-
-    @Test
-    public void diffBetweenZonesIncorrect() {
-        Optional<Integer> expected = Optional.empty();
-        Optional<Integer> result = javaDateTimeApi.diffBetweenZones("Europe/Lviv", "Europe/Paris");
-        Assert.assertEquals(expected, result);
-    }
-
-    @Test
     public void offsetUkraine() {
         LocalDateTime localDateTime =
                 LocalDateTime.of(2019, Month.SEPTEMBER, 06, 13, 17);
