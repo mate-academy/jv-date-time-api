@@ -26,10 +26,24 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
-        if (datePart != DateTimePart.FULL) {
-            throw new DateTimeException("Wrong date format");
+        switch (datePart) {
+            case FULL:
+                return LocalDate.now().toString();
+            case YEAR:
+                return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
+            case MONTH:
+                return LocalDate.now().format(DateTimeFormatter.ofPattern("MM"));
+            case DAY:
+                return LocalDate.now().format(DateTimeFormatter.ofPattern("dd"));
+            case HOURS:
+                return LocalTime.now().format(DateTimeFormatter.ofPattern("HH"));
+            case MINUTES:
+                return LocalTime.now().format(DateTimeFormatter.ofPattern("mm"));
+            case SECONDS:
+                return LocalTime.now().format(DateTimeFormatter.ofPattern("ss"));
+            default:
+                throw new DateTimeException("Wrong date format");
         }
-        return LocalDate.now().toString();
     }
 
     /**
@@ -109,8 +123,8 @@ public class JavaDateTimeApi {
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
         return ZonedDateTime
                 .of(LocalDateTime
-                                .parse(dateInString, DateTimeFormatter
-                                        .ofPattern("yyyy-MM-dd'T'HH:mm:ssz")), ZoneId.of("GMT"))
+                        .parse(dateInString, DateTimeFormatter
+                                .ofPattern("yyyy-MM-dd'T'HH:mm:ssz")), ZoneId.of("GMT"))
                 .withZoneSameInstant(ZoneId.of(zone))
                 .toLocalDateTime();
     }
