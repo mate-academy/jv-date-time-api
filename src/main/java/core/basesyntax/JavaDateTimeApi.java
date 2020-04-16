@@ -16,6 +16,15 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            new DateTimeFormatterBuilder()
+            .appendPattern("dd MMMM yyyy HH:mm")
+            .toFormatter(Locale.ENGLISH);
+    private static final DateTimeFormatter DATE_FORMATTER =
+            new DateTimeFormatterBuilder()
+            .appendPattern("dd MMM yyyy")
+            .toFormatter(Locale.ENGLISH);
+
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -146,10 +155,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                    .appendPattern("dd MMM yyyy")
-                    .toFormatter(Locale.ENGLISH);
-            return Optional.of(LocalDate.parse(date, formatter));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeParseException e) {
             e.printStackTrace();
             return Optional.empty();
@@ -164,9 +170,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return new DateTimeFormatterBuilder()
-                .appendPattern("dd MMMM yyyy HH:mm")
-                .toFormatter(Locale.ENGLISH)
-                .format(dateTime);
+        return DATE_TIME_FORMATTER.format(dateTime);
     }
 }
