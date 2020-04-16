@@ -57,9 +57,10 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        String date = dateParams.length != 0
-                ? "" + dateParams[0] + dateParams[1] + dateParams[2]
-                : "";
+        if (dateParams.length == 0) {
+            return Optional.empty();
+        }
+        String date = "" + dateParams[0] + dateParams[1] + dateParams[2];
         return getLocalDate(date, FORMATTER1);
     }
 
@@ -114,10 +115,11 @@ public class JavaDateTimeApi {
     /**
      * Дана дата в строковом формате и временная зона.
      * Верните LocalDateTime в этой временной зоне.
+     *
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return LocalDateTime.ofInstant(Instant.parse(dateInString),ZoneId.of(zone));
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     /**
