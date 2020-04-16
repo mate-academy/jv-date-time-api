@@ -1,5 +1,6 @@
 package core.basesyntax;
 
+import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,13 +34,18 @@ public class JavaDateTimeApi {
      **/
     public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
-        return datePart.equals(DateTimePart.FULL)
-                ? String.valueOf(localDate)
-                : datePart.equals(DateTimePart.YEAR)
-                ? String.valueOf(localDate.getYear())
-                : datePart.equals(DateTimePart.MONTH)
-                ? String.valueOf(localDate.getMonth())
-                : String.valueOf(localDate.getDayOfMonth());
+        switch (datePart) {
+            case FULL:
+                return String.valueOf(localDate);
+            case YEAR:
+                return String.valueOf(localDate.getYear());
+            case MONTH:
+                return String.valueOf(localDate.getMonth());
+            case DAY:
+                return String.valueOf(localDate.getDayOfMonth());
+            default:
+                throw new DateTimeException("Wrong value of datePart: " + datePart.toString());
+        }
     }
 
     /**
