@@ -24,6 +24,14 @@ public class JavaDateTimeApi {
             new DateTimeFormatterBuilder()
             .appendPattern("dd MMM yyyy")
             .toFormatter(Locale.ENGLISH);
+    private static final int MAX_MONTH_OF_YEAR = 12;
+    private static final int MIN_MONTH_OF_YEAR = 1;
+    private static final int MAX_DAY_OF_MONTH = 31;
+    private static final int MIN_DAY_OF_MONTH = 1;
+    private static final int DATE_PARAMS_NUMBER = 3;
+    private static final int YEAR_PARAM_INDEX = 0;
+    private static final int MONTH_PARAM_INDEX = 1;
+    private static final int DAY_PARAM_INDEX = 2;
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -36,6 +44,7 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
+
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case YEAR:
@@ -58,11 +67,15 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length < 3 || dateParams[1] > 12 || dateParams[1] < 1
-                || dateParams[2] > 31 || dateParams[2] < 1) {
+        if (dateParams.length != DATE_PARAMS_NUMBER
+                || dateParams[MONTH_PARAM_INDEX] > MAX_MONTH_OF_YEAR
+                || dateParams[MONTH_PARAM_INDEX] < MIN_MONTH_OF_YEAR
+                || dateParams[DAY_PARAM_INDEX] > MAX_DAY_OF_MONTH
+                || dateParams[DAY_PARAM_INDEX] < MIN_DAY_OF_MONTH) {
             return Optional.empty();
         }
-        return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        return Optional.of(LocalDate.of(dateParams[YEAR_PARAM_INDEX],
+                dateParams[MONTH_PARAM_INDEX], dateParams[DAY_PARAM_INDEX]));
     }
 
     /**
