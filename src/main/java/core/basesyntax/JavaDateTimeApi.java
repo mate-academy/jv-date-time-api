@@ -64,8 +64,7 @@ public class JavaDateTimeApi {
             return Optional.empty();
         }
         try {
-            LocalDate date = LocalDate.of(dateParams[0], dateParams[1], dateParams[2]);
-            return Optional.of(date);
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -150,8 +149,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
-            return Optional.of(localDate);
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
