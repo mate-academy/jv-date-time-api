@@ -14,9 +14,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter FORMATTER_1 = DateTimeFormatter
+    private static final DateTimeFormatter US_DATE_FORMATTER = DateTimeFormatter
             .ofPattern("d MMM yyyy", Locale.US);
-    private static final DateTimeFormatter FORMATTER_2 = DateTimeFormatter
+    private static final DateTimeFormatter US_DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.US);
     private static final String UTC_2 = "+02:00";
     /**
@@ -146,7 +146,7 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        return parseDateByFormatter(date, FORMATTER_1);
+        return parseDateByFormatter(date, US_DATE_FORMATTER);
     }
 
     /**
@@ -158,7 +158,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(FORMATTER_2);
+            return dateTime.format(US_DATE_TIME_FORMATTER);
         } catch (DateTimeParseException e) {
             return "dateTime can't be formatted!";
         }
