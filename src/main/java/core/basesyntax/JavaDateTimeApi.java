@@ -13,6 +13,12 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+
+    public static final String PATTERN_FOR_2D_MONTH_4D = "dd MMMM yyyy HH:mm";
+    public static final String PATTERN_FOR_D_MMM_YYYY = "d MMM yyyy";
+    public static final String PATTERN_FOR_YYYYMMDD = "yyyyMMdd";
+    public static final int KYIV_TIME_ZONE = 2;
+
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -118,7 +124,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
+        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(KYIV_TIME_ZONE));
     }
 
     /**
@@ -127,7 +133,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(PATTERN_FOR_YYYYMMDD);
             return Optional.of(LocalDate.parse(date, dateTimeFormatter));
         } catch (DateTimeException e) {
             e.getMessage();
@@ -142,7 +148,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             DateTimeFormatter dateTimeFormatter
-                    = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.UK);
+                    = DateTimeFormatter.ofPattern(PATTERN_FOR_D_MMM_YYYY, Locale.UK);
             return Optional.of(LocalDate.parse(date, dateTimeFormatter));
         } catch (DateTimeException e) {
             e.getMessage();
@@ -159,12 +165,12 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         DateTimeFormatter dateTimeFormatter
-                = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+                = DateTimeFormatter.ofPattern(PATTERN_FOR_2D_MONTH_4D, Locale.ENGLISH);
         try {
             return dateTime.format(dateTimeFormatter);
         } catch (DateTimeException e) {
             e.getMessage();
         }
-        return null;
+        return "dateTime can't be formatted!";
     }
 }
