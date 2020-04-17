@@ -2,6 +2,7 @@ package core.basesyntax;
 
 import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -10,25 +11,15 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
-            new DateTimeFormatterBuilder()
-            .appendPattern("dd MMMM yyyy HH:mm")
-            .toFormatter(Locale.ENGLISH);
+            DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final DateTimeFormatter DATE_FORMATTER =
-            new DateTimeFormatterBuilder()
-            .appendPattern("dd MMM yyyy")
-            .toFormatter(Locale.ENGLISH);
-    private static final int MAX_MONTH_OF_YEAR = 12;
-    private static final int MIN_MONTH_OF_YEAR = 1;
-    private static final int MAX_DAY_OF_MONTH = 31;
-    private static final int MIN_DAY_OF_MONTH = 1;
-    private static final int DATE_PARAMS_NUMBER = 3;
+            DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
     private static final int YEAR_PARAM_INDEX = 0;
     private static final int MONTH_PARAM_INDEX = 1;
     private static final int DAY_PARAM_INDEX = 2;
@@ -67,15 +58,13 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length != DATE_PARAMS_NUMBER
-                || dateParams[MONTH_PARAM_INDEX] > MAX_MONTH_OF_YEAR
-                || dateParams[MONTH_PARAM_INDEX] < MIN_MONTH_OF_YEAR
-                || dateParams[DAY_PARAM_INDEX] > MAX_DAY_OF_MONTH
-                || dateParams[DAY_PARAM_INDEX] < MIN_DAY_OF_MONTH) {
-            return Optional.empty();
+        try {
+            return Optional.of(LocalDate.of(dateParams[YEAR_PARAM_INDEX],
+                    dateParams[MONTH_PARAM_INDEX], dateParams[DAY_PARAM_INDEX]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
-        return Optional.of(LocalDate.of(dateParams[YEAR_PARAM_INDEX],
-                dateParams[MONTH_PARAM_INDEX], dateParams[DAY_PARAM_INDEX]));
+        return Optional.empty();
     }
 
     /**
