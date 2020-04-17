@@ -46,7 +46,7 @@ public class JavaDateTimeApi {
             case DAY:
                 return String.valueOf(getCurrentDate().getDayOfMonth());
             default:
-                throw new DateTimeException("Invalid date input");
+                throw new DateTimeException("Invalid date input: " + datePart.toString());
         }
     }
 
