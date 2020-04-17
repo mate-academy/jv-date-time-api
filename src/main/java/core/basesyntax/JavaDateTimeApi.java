@@ -14,7 +14,6 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final int UA_TIME_ZONE = 2;
-    private final LocalDate dateNow = LocalDate.now();
     private final DateTimeFormatter formatterDate =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.getDefault());
     private final DateTimeFormatter formatterDateTime =
@@ -33,6 +32,7 @@ public class JavaDateTimeApi {
      **/
 
     public String todayDate(DateTimePart datePart) {
+        LocalDate dateNow = LocalDate.now();
         switch (datePart) {
             case FULL:
                 return String.valueOf(dateNow);
@@ -103,6 +103,7 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
+        LocalDate dateNow = LocalDate.now();
         if (someDate.isAfter(dateNow)) {
             return someDate + " is after " + dateNow;
         }
