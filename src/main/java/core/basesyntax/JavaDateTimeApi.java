@@ -7,6 +7,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -22,15 +23,9 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     private static final DateTimeFormatter FORMATTER1 = DateTimeFormatter.ofPattern("yyyyMMdd");
-    private static String REGEX1 = "[12]\\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])";
     private static final DateTimeFormatter FORMATTER2 = DateTimeFormatter.ofPattern("d MMM yyyy");
-    private static String REGEX2 =
-            "^(([0-9])|([0-2][0-9])|([3][0-1]))"
-                    + "\\ (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\ \\d{4}$";
     private static final DateTimeFormatter FORMATTER3 =
             DateTimeFormatter.ofPattern("dd MMMM YYYY HH:mm");
-    private static final int MAX_MONTH = 12;
-    private static final int DATE_PARAMS = 3;
     private static final int TIME_SHIFT = 2;
 
     public String todayDate(DateTimePart datePart) {
@@ -49,9 +44,15 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        return (dateParams.length == DATE_PARAMS && dateParams[1] <= MAX_MONTH)
-                ? Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]))
-                : Optional.empty();
+        StringBuilder date = new StringBuilder();
+        date = dateParams.length == 0 ? date
+                : date.append(dateParams[0]).append(dateParams[1]).append(dateParams[2]);
+        try {
+            LocalDate localDate = LocalDate.parse(date, FORMATTER1);
+            return Optional.of(localDate);
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -127,8 +128,12 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> parseDate(String date) {
-        return date.matches(REGEX1)
-                ? Optional.of(LocalDate.parse(date, FORMATTER1)) : Optional.empty();
+        try {
+            LocalDate localDate = LocalDate.parse(date, FORMATTER1);
+            return Optional.of(localDate);
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -136,8 +141,12 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        return date.matches(REGEX2)
-                ? Optional.of(LocalDate.parse(date, FORMATTER2)) : Optional.empty();
+        try {
+            LocalDate localDate = LocalDate.parse(date, FORMATTER2);
+            return Optional.of(localDate);
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
