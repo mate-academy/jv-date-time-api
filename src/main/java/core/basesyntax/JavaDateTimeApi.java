@@ -60,8 +60,9 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (RuntimeException e) {
-            return Optional.empty();
+            System.out.println(e.getMessage());
         }
+        return Optional.empty();
     }
 
     /**
@@ -142,8 +143,9 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.parse(date, PARSE_DATE_FORMATTER));
         } catch (DateTimeException e) {
-            return Optional.empty();
+            System.out.println(e.getMessage());
         }
+        return Optional.empty();
     }
 
     /**
@@ -154,8 +156,9 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.parse(date, CUSTOM_PARSE_DATE_FORMATTER));
         } catch (DateTimeException e) {
-            return Optional.empty();
+            System.out.println(e.getMessage());
         }
+        return Optional.empty();
     }
 
     /**
