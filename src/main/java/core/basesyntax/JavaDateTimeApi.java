@@ -14,8 +14,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER_TO_PARSE_DATE =
-            DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DateTimeFormatter DATE_TIME_FORMATTER_TO_CUSTOM_PARSE_DATE =
             DateTimeFormatter.ofPattern("d MMM yyyy");
     private static final DateTimeFormatter DATE_TIME_FORMATTER_TO_FORMAT_DATE =
@@ -142,7 +140,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DATE_TIME_FORMATTER_TO_PARSE_DATE));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             System.out.println(e.getMessage());
         }
