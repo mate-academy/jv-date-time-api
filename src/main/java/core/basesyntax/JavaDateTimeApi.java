@@ -58,9 +58,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            return dateParams.length == 0 ? Optional.empty()
-                    : Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException e) {
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (RuntimeException e) {
             return Optional.empty();
         }
     }
@@ -106,8 +105,8 @@ public class JavaDateTimeApi {
      */
     public String beforeOrAfter(LocalDate someDate) {
         LocalDate nowDate = LocalDate.now();
-        return nowDate.isAfter(someDate) ? someDate + " is before " + nowDate
-                : nowDate.isBefore(someDate) ? someDate + " is after " + nowDate
+        return someDate.isAfter(nowDate) ? someDate + " is after " + nowDate
+                : someDate.isBefore(nowDate) ? someDate + " is before " + nowDate
                 : someDate + " is today";
     }
 
