@@ -141,8 +141,9 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
-            return Optional.empty();
+            e.getMessage();
         }
+        return Optional.empty();
     }
 
     /**
@@ -153,8 +154,9 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.parse(date, DATE_TIME_FORMATTER));
         } catch (DateTimeException e) {
-            return Optional.empty();
+            e.getMessage();
         }
+        return Optional.empty();
     }
 
     /**
