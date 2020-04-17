@@ -14,13 +14,13 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
 
-    private final LocalDate localDate = LocalDate.now();
-    private final DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private final DateTimeFormatter formatterDateWithoutSpace
+    private static final DateTimeFormatter FORMATTER_DATE
+            = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter FORMATTER_DATE_WITHOUT_SPACE
             = DateTimeFormatter.ofPattern("yyyyMMdd");
-    private final DateTimeFormatter formatterDateMonthAbbreviated
+    private static final DateTimeFormatter FORMATTER_DATE_MONTH_ABBREVIATED
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-    private final DateTimeFormatter formatterDateMonthFull
+    private static final DateTimeFormatter FORMATTER_DATE_MONTH_FULL
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
 
     /**
@@ -35,16 +35,19 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
-        if (datePart.equals(DateTimePart.YEAR)) {
-            return String.valueOf(localDate.getYear());
+        LocalDate localDate = LocalDate.now();
+        switch (datePart) {
+            case FULL:
+                return localDate.format(FORMATTER_DATE);
+            case YEAR:
+                return String.valueOf(localDate.getYear());
+            case MONTH:
+                return String.valueOf(localDate.getMonth());
+            case DAY:
+                return String.valueOf(localDate.getDayOfMonth());
+            default:
+                throw new DateTimeException("Invalid DateTimePart : " + datePart);
         }
-        if (datePart.equals(DateTimePart.MONTH)) {
-            return String.valueOf(localDate.getMonth());
-        }
-        if (datePart.equals(DateTimePart.DAY)) {
-            return String.valueOf(localDate.getDayOfMonth());
-        }
-        return localDate.format(formatterDate);
     }
 
     /**
@@ -57,10 +60,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            if (dateParams.length == 3) {
-                return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-            }
-        } catch (DateTimeException e) {
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
             e.printStackTrace();
         }
         return Optional.empty();
@@ -106,6 +107,7 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
+        LocalDate localDate = LocalDate.now();
         if (someDate.isBefore(localDate)) {
             return someDate + " is before " + localDate;
         }
@@ -144,7 +146,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, formatterDateWithoutSpace));
+            return Optional.of(LocalDate.parse(date, FORMATTER_DATE_WITHOUT_SPACE));
         } catch (DateTimeException e) {
             e.printStackTrace();
         }
@@ -157,7 +159,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, formatterDateMonthAbbreviated));
+            return Optional.of(LocalDate.parse(date, FORMATTER_DATE_MONTH_ABBREVIATED));
         } catch (DateTimeException e) {
             e.printStackTrace();
         }
@@ -173,7 +175,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(formatterDateMonthFull);
+            return dateTime.format(FORMATTER_DATE_MONTH_FULL);
         } catch (DateTimeException e) {
             e.printStackTrace();
         }
