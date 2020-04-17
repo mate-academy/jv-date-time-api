@@ -164,10 +164,10 @@ public class JavaDateTimeApi {
 
     private Optional<LocalDate> getOptional(String date, DateTimeFormatter formatter) {
         try {
-            LocalDate localDate = LocalDate.parse(date, formatter);
-            return Optional.of(localDate);
+            return Optional.of(LocalDate.parse(date, formatter));
         } catch (DateTimeParseException e) {
-            return Optional.empty();
+            e.printStackTrace();
         }
+        return Optional.empty();
     }
 }
