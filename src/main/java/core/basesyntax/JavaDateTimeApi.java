@@ -60,13 +60,13 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        Optional<LocalDate> result;
+
         try {
-            result = Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
-            return Optional.empty();
+            e.getMessage();
         }
-        return result;
+        return Optional.empty();
     }
 
     /**
@@ -150,13 +150,12 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> parseDate(String date) {
-        Optional<LocalDate> result;
         try {
-            result = Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
         } catch (DateTimeParseException e) {
-            return Optional.empty();
+            e.getMessage();
         }
-        return result;
+        return Optional.empty();
     }
 
     /**
@@ -164,13 +163,12 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        Optional<LocalDate> result;
         try {
-            result = Optional.of(LocalDate.parse(date, FORMATTER1));
+            return Optional.of(LocalDate.parse(date, FORMATTER1));
         } catch (DateTimeParseException e) {
-            return Optional.empty();
+            e.getMessage();
         }
-        return result;
+        return Optional.empty();
     }
 
     /**
