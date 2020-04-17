@@ -14,8 +14,6 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String TIME_ZONE = "+02:00";
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
-    private static final LocalDate TIME_NOW = LocalDate.now();
     private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.UK);
     private static final DateTimeFormatter FORMATTER_DATE
@@ -33,15 +31,16 @@ public class JavaDateTimeApi {
      **/
 
     public String todayDate(DateTimePart datePart) {
+        LocalDate time = LocalDate.now();
         switch (datePart) {
             case DAY:
-                return String.valueOf(TIME_NOW.getDayOfMonth());
+                return String.valueOf(time.getDayOfMonth());
             case MONTH:
-                return String.valueOf(TIME_NOW.getMonth());
+                return String.valueOf(time.getMonth());
             case YEAR:
-                return String.valueOf(TIME_NOW.getYear());
+                return String.valueOf(time.getYear());
             case FULL:
-                return String.valueOf(TIME_NOW);
+                return String.valueOf(time);
             default:
                 throw new DateTimeException("No such Date");
         }
@@ -106,10 +105,11 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isAfter(TIME_NOW) ? String.valueOf(someDate)
-                + " is after " + String.valueOf(TIME_NOW)
-                : someDate.isBefore(TIME_NOW) ? String.valueOf(someDate)
-                + " is before " + String.valueOf(TIME_NOW)
+        LocalDate time = LocalDate.now();
+        return someDate.isAfter(time) ? String.valueOf(someDate)
+                + " is after " + String.valueOf(time)
+                : someDate.isBefore(time) ? String.valueOf(someDate)
+                + " is before " + String.valueOf(time)
                 : String.valueOf(someDate) + " is today";
     }
 
@@ -141,7 +141,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
