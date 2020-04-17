@@ -9,6 +9,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -16,12 +17,12 @@ public class JavaDateTimeApi {
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
      * @param datePart Запрос на часть даты или всю дата целиком:
-     *                 - FULL - текущая дата целиком год, месяц, день (число месяца)
-     *                 в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
-     *                 - YEAR - текущий год;
-     *                 - MONTH - название текущего месяца;
-     *                 - DAY - текущий день (число месяца);
-     *                 В любом другом случае бросить DateTimeException
+     * - FULL - текущая дата целиком год, месяц, день (число месяца)
+     * в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
+     * - YEAR - текущий год;
+     * - MONTH - название текущего месяца;
+     * - DAY - текущий день (число месяца);
+     * В любом другом случае бросить DateTimeException
      **/
 
     private static final String UA_OFFSET = "+02:00";
@@ -53,9 +54,10 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (Exception e) {
-            return Optional.empty();
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
+        return Optional.empty();
     }
 
     /**
@@ -137,9 +139,10 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
-        } catch (Exception e) {
-            return Optional.empty();
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
         }
+        return Optional.empty();
     }
 
     /**
@@ -149,9 +152,10 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd MMM yyyy")));
-        } catch (Exception e) {
-            return Optional.empty();
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
         }
+        return Optional.empty();
     }
 
     /**
