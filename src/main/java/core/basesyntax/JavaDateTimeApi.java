@@ -14,9 +14,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter DD_MMM_YYYY_FORMATTER
+    private static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter DD_MMMM_YYYY_HHMM_FORMATTER
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final String OFFSET_FOR_UKRAINE = "+02:00";
 
@@ -151,7 +151,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DD_MMM_YYYY_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -166,7 +166,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DD_MMMM_YYYY_HHMM_FORMATTER);
+            return dateTime.format(DATE_TIME_FORMATTER);
         } catch (DateTimeParseException e) {
             return "Date can't be formatted!";
         }
