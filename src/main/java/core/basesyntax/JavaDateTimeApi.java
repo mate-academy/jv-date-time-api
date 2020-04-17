@@ -14,7 +14,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter FORMATTER_1 = DateTimeFormatter
             .ofPattern("d MMM yyyy", Locale.US);
     private static final DateTimeFormatter FORMATTER_2 = DateTimeFormatter
@@ -58,13 +57,11 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            String date = dateParams.length != 0
-                    ? LocalDate.of(dateParams[0], dateParams[1], dateParams[2]).toString()
-                    : "";
-            return parseDateByFormatter(date, FORMATTER);
-        } catch (DateTimeException e) {
-            return Optional.empty();
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
         }
+        return Optional.empty();
     }
 
     /**
