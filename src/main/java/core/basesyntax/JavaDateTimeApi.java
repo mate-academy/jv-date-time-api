@@ -53,14 +53,9 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length == 0) {
-            return Optional.empty();
-        }
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-            //Could I put here also an ArrayOutOfBoundsException
-            // or it is better to leave it inside an if-clause?
-        } catch (DateTimeException e) {
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
@@ -108,8 +103,8 @@ public class JavaDateTimeApi {
         LocalDate localDate = LocalDate.now();
         if (someDate.isBefore(localDate)) {
             return someDate + " is before " + localDate;
-        } else if (someDate
-                .isAfter(localDate)) {
+        }
+        if (someDate.isAfter(localDate)) {
             return someDate + " is after " + localDate;
         }
         return someDate + " is today";
