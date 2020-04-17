@@ -14,9 +14,11 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final int UA_TIME_ZONE = 2;
-    private static final String PATTERN_DATA = "d MMM yyyy";
-    private static final String PATTERN_TIME = "dd MMMM yyyy HH:mm";
     private final LocalDate dateNow = LocalDate.now();
+    private final DateTimeFormatter formatterDate =
+            DateTimeFormatter.ofPattern("d MMM yyyy", Locale.getDefault());
+    private final DateTimeFormatter formatterDateTime =
+            DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.getDefault());
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -31,16 +33,18 @@ public class JavaDateTimeApi {
      **/
 
     public String todayDate(DateTimePart datePart) {
-        if (datePart == DateTimePart.FULL) {
-            return String.valueOf(dateNow);
-        } else if (datePart == DateTimePart.YEAR) {
-            return String.valueOf(dateNow.getYear());
-        } else if (datePart == DateTimePart.MONTH) {
-            return String.valueOf(dateNow.getMonth());
-        } else if (datePart == DateTimePart.DAY) {
-            return String.valueOf(dateNow.getDayOfMonth());
+        switch (datePart) {
+            case FULL:
+                return String.valueOf(dateNow);
+            case YEAR:
+                return String.valueOf(dateNow.getYear());
+            case MONTH:
+                return String.valueOf(dateNow.getMonth());
+            case DAY:
+                return String.valueOf(dateNow.getDayOfMonth());
+            default:
+                throw new DateTimeException("Invalid input date type");
         }
-        throw new DateTimeException("Invalid input date type");
     }
 
     /**
@@ -101,7 +105,8 @@ public class JavaDateTimeApi {
     public String beforeOrAfter(LocalDate someDate) {
         if (someDate.isAfter(dateNow)) {
             return someDate + " is after " + dateNow;
-        } else if (someDate.isBefore(dateNow)) {
+        }
+        if (someDate.isBefore(dateNow)) {
             return someDate + " is before " + dateNow;
         }
         return someDate + " is today";
@@ -148,8 +153,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern(PATTERN_DATA, Locale.getDefault())));
+            return Optional.of(LocalDate.parse(date, formatterDate));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -164,7 +168,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter.ofPattern(PATTERN_TIME, Locale.getDefault()));
+            return dateTime.format(formatterDateTime);
         } catch (DateTimeException e) {
             return "Date can't be formatted!";
         }
