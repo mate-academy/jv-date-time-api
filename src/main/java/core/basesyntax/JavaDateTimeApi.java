@@ -14,12 +14,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter FORMATTER_YYYY_MM_DD = DateTimeFormatter
-            .ofPattern("yyyyMMdd");
     private static final DateTimeFormatter FORMATTER_D_MMM_YYYY = DateTimeFormatter
             .ofPattern("d MMM yyyy", Locale.ENGLISH);
     private static final DateTimeFormatter FORMATTER_FULL = DateTimeFormatter
             .ofPattern("dd MMMM YYYY HH:mm", Locale.ENGLISH);
+    private static final String KIYV_TIMEZONE = "+02:00";
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -57,9 +56,11 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        String date = dateParams.length < 1
-                ? "" : "" + dateParams[0] + dateParams[1] + dateParams[2];
-        return getOptionalDate(date, FORMATTER_YYYY_MM_DD);
+        boolean trueMonth = dateParams.length > 0 && (dateParams[1] > 0 && dateParams[1] < 13);
+        boolean trueDayOfMonth = dateParams.length > 0 && (dateParams[2] > 0 && dateParams[2] < 32);
+        return trueMonth && trueDayOfMonth
+                ? Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]))
+                : Optional.empty();
     }
 
     /**
@@ -127,7 +128,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(KIYV_TIMEZONE));
     }
 
     /**
@@ -135,7 +136,7 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> parseDate(String date) {
-        return getOptionalDate(date, FORMATTER_YYYY_MM_DD);
+        return parseDateByFormatter(date, DateTimeFormatter.BASIC_ISO_DATE);
     }
 
     /**
@@ -143,7 +144,7 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        return getOptionalDate(date, FORMATTER_D_MMM_YYYY);
+        return parseDateByFormatter(date, FORMATTER_D_MMM_YYYY);
     }
 
     /**
@@ -157,7 +158,7 @@ public class JavaDateTimeApi {
         return dateTime.format(FORMATTER_FULL);
     }
 
-    private Optional<LocalDate> getOptionalDate(String date, DateTimeFormatter formatter) {
+    private Optional<LocalDate> parseDateByFormatter(String date, DateTimeFormatter formatter) {
         try {
             LocalDate localDate = LocalDate.parse(date, formatter);
             return Optional.of(localDate);
