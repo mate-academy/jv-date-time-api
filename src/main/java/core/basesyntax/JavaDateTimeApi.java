@@ -13,6 +13,13 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String TIME_ZONE = "+02:00";
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
+    private static final LocalDate TIME_NOW = LocalDate.now();
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
+            = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.UK);
+    private static final DateTimeFormatter FORMATTER_DATE
+            = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -24,17 +31,17 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
+
     public String todayDate(DateTimePart datePart) {
-        LocalDate time = LocalDate.now();
         switch (datePart) {
             case DAY:
-                return String.valueOf(time.getDayOfMonth());
+                return String.valueOf(TIME_NOW.getDayOfMonth());
             case MONTH:
-                return String.valueOf(time.getMonth());
+                return String.valueOf(TIME_NOW.getMonth());
             case YEAR:
-                return String.valueOf(time.getYear());
+                return String.valueOf(TIME_NOW.getYear());
             case FULL:
-                return String.valueOf(time);
+                return String.valueOf(TIME_NOW);
             default:
                 throw new DateTimeException("No such Date");
         }
@@ -99,13 +106,11 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        LocalDate time = LocalDate.now();
-        if (someDate.isAfter(time)) {
-            return String.valueOf(someDate) + " is after " + String.valueOf(time);
-        } else if (someDate.isBefore(time)) {
-            return String.valueOf(someDate) + " is before " + String.valueOf(time);
-        }
-        return String.valueOf(someDate) + " is today";
+        return someDate.isAfter(TIME_NOW) ? String.valueOf(someDate)
+                + " is after " + String.valueOf(TIME_NOW)
+                : someDate.isBefore(TIME_NOW) ? String.valueOf(someDate)
+                + " is before " + String.valueOf(TIME_NOW)
+                : String.valueOf(someDate) + " is today";
     }
 
     /**
@@ -127,7 +132,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(TIME_ZONE));
     }
 
     /**
@@ -136,8 +141,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-            return Optional.of(LocalDate.parse(date, dateTimeFormatter));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -149,9 +153,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            DateTimeFormatter dateTimeFormatter
-                    = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.UK);
-            return Optional.of(LocalDate.parse(date, dateTimeFormatter));
+            return Optional.of(LocalDate.parse(date, DATE_TIME_FORMATTER));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -165,10 +167,8 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter dateTimeFormatter
-                = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
         try {
-            return dateTime.format(dateTimeFormatter);
+            return dateTime.format(FORMATTER_DATE);
         } catch (DateTimeException e) {
             throw new DateTimeException("dateTime can't be formatted!", e);
         }
