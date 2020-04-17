@@ -1,5 +1,6 @@
 package core.basesyntax;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -7,7 +8,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -44,15 +44,13 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        StringBuilder date = new StringBuilder();
-        date = dateParams.length == 0 ? date
-                : date.append(dateParams[0]).append(dateParams[1]).append(dateParams[2]);
         try {
-            LocalDate localDate = LocalDate.parse(date, FORMATTER1);
-            return Optional.of(localDate);
-        } catch (DateTimeParseException e) {
-            return Optional.empty();
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            e.getMessage();
         }
+        return Optional.empty();
+
     }
 
     /**
@@ -129,11 +127,11 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            LocalDate localDate = LocalDate.parse(date, FORMATTER1);
-            return Optional.of(localDate);
-        } catch (DateTimeParseException e) {
-            return Optional.empty();
+            return Optional.of(LocalDate.parse(date, FORMATTER1));
+        } catch (DateTimeException e) {
+            e.getMessage();
         }
+        return Optional.empty();
     }
 
     /**
@@ -142,11 +140,11 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            LocalDate localDate = LocalDate.parse(date, FORMATTER2);
-            return Optional.of(localDate);
-        } catch (DateTimeParseException e) {
-            return Optional.empty();
+            return Optional.of(LocalDate.parse(date, FORMATTER2));
+        } catch (DateTimeException e) {
+            e.getMessage();
         }
+        return Optional.empty();
     }
 
     /**
