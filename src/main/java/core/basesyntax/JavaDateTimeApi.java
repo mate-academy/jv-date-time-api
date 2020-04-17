@@ -19,7 +19,6 @@ public class JavaDateTimeApi {
     private static final DateTimeFormatter DD_MMMM_YYYY_HHMM_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final String OFFSET_FOR_UKRAINE = "+02:00";
-    private static final int VALID_ARRAY_LENGTH = 3;
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -114,7 +113,6 @@ public class JavaDateTimeApi {
     /**
      * Дана дата в строковом формате и временная зона.
      * Верните LocalDateTime в этой временной зоне.
-     *
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
