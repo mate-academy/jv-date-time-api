@@ -52,7 +52,7 @@ public class JavaDateTimeApi {
             case DAY:
                 return today.format(DD);
             default:
-                throw new DateTimeException("Wrong date!");
+                throw new DateTimeException("Wrong date!!!");
         }
     }
 
