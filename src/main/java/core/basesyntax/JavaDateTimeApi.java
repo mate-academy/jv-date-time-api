@@ -24,9 +24,9 @@ public class JavaDateTimeApi {
      * В любом другом случае бросить DateTimeException
      **/
     public static final DateTimeFormatter DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("dd MMMM yyyy k:mm", Locale.US);
+            DateTimeFormatter.ofPattern("dd MMMM yyyy k:mm", Locale.ENGLISH);
     public static final DateTimeFormatter CUSTOM_DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("d MMM yyyy", Locale.US);
+            DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
     public LocalDate localDate = LocalDate.now();
 
     public String todayDate(DateTimePart datePart) throws DateTimeException {
