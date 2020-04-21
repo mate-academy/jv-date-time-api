@@ -28,7 +28,6 @@ public class JavaDateTimeApi {
     private static final String zoneUkraine = "+02:00";
     private static final String dateOptional = "d MMM yyyy";
     private static final String hours24 = "dd MMMM yyyy HH:mm";
-    private static final String parseDate = "yyyyMMdd";
 
     public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
@@ -140,7 +139,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(parseDate)));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (Exception e) {
             return Optional.empty();
         }
