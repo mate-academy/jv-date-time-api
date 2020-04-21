@@ -150,9 +150,13 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        boolean isValidDay = Integer.parseInt(date.substring(0, 2)) < 32;
-        LocalDate localDate = isValidDay ? LocalDate.parse(date, CUSTOM_PARSE_DATE) : null;
-        return Optional.ofNullable(localDate);
+        LocalDate localDate;
+        try {
+            localDate = LocalDate.parse(date, CUSTOM_PARSE_DATE);
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
+        return Optional.of(localDate);
     }
 
     /**
