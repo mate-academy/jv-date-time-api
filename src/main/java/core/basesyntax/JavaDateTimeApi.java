@@ -23,9 +23,9 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
-    public static final DateTimeFormatter FORMATTER
+    private static final DateTimeFormatter FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy");
-    public static final DateTimeFormatter RANDOM_FORMATTER
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
     private static final int TIME_ZONE = 2;
     public LocalDate currentDate = LocalDate.now();
@@ -169,6 +169,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(RANDOM_FORMATTER);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
