@@ -52,7 +52,6 @@ public class JavaDateTimeApi {
         } catch (Exception e) {
             return Optional.empty();
         }
-        return result;
     }
 
     /**
@@ -136,7 +135,6 @@ public class JavaDateTimeApi {
         } catch (Exception e) {
             return Optional.empty();
         }
-        return result;
     }
 
     /**
@@ -146,12 +144,11 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         Optional<LocalDate> result = Optional.empty();
         try {
-            result = Optional.ofNullable(LocalDate
+            return Optional.ofNullable(LocalDate
                     .parse(date, DateTimeFormatter.ofPattern(CUSTOM_FORMATTER)));
         } catch (Exception e) {
             return Optional.empty();
         }
-        return result;
     }
 
     /**
