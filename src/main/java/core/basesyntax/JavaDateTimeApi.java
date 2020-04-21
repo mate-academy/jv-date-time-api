@@ -169,6 +169,10 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DATE_TIME_FORMATTER);
+        try {
+            return dateTime.format(DATE_TIME_FORMATTER);
+        } catch (DateTimeException e) {
+            return "dateTime can't be formatted!";
+        }
     }
 }
