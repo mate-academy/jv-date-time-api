@@ -16,9 +16,9 @@ public class JavaDateTimeApi {
 
     public static final String PATTERN_FOR_2D_MONTH_4D = "dd MMMM yyyy HH:mm";
     public static final String PATTERN_FOR_D_MMM_YYYY = "d MMM yyyy";
-    public static final DateTimeFormatter FORMATTER1
+    public static final DateTimeFormatter FORMATTER_2D_MONTH_4D
             = DateTimeFormatter.ofPattern(PATTERN_FOR_2D_MONTH_4D, Locale.ENGLISH);
-    public static final DateTimeFormatter FORMATTER2
+    public static final DateTimeFormatter FORMATTER_2D_MMM_YYYY
             = DateTimeFormatter.ofPattern(PATTERN_FOR_D_MMM_YYYY, Locale.UK);
     public static final int KYIV_TIME_ZONE = 2;
 
@@ -149,7 +149,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, FORMATTER2));
+            return Optional.of(LocalDate.parse(date, FORMATTER_2D_MMM_YYYY));
         } catch (DateTimeException e) {
             e.getMessage();
         }
@@ -165,7 +165,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(FORMATTER1);
+            return dateTime.format(FORMATTER_2D_MONTH_4D);
         } catch (DateTimeException e) {
             e.getMessage();
         }
