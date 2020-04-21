@@ -26,6 +26,8 @@ public class JavaDateTimeApi {
      **/
 
     private static final String UA_OFFSET = "+02:00";
+    private static final String FORMATTER_DATE = "dd MMM yyyy";
+    private static final String FORMATTER_DATE_AND_TIME = "dd MMMM yyyy H:m";
 
     public String todayDate(DateTimePart datePart) {
         LocalDate today = LocalDate.now();
@@ -151,7 +153,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd MMM yyyy")));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(FORMATTER_DATE)));
         } catch (DateTimeParseException e) {
             e.printStackTrace();
         }
@@ -166,6 +168,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy H:m"));
+        return dateTime.format(DateTimeFormatter.ofPattern(FORMATTER_DATE_AND_TIME));
     }
 }
