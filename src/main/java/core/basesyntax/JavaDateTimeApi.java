@@ -28,6 +28,7 @@ public class JavaDateTimeApi {
     private static final DateTimeFormatter CUSTOM_DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
     private static final LocalDate localDate = LocalDate.now();
+    private static final int TIME_Offset = 2;
 
     public String todayDate(DateTimePart datePart) throws DateTimeException {
 
@@ -123,7 +124,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
     }
 
     /**
@@ -159,7 +160,10 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DATE_TIME_FORMATTER);
-
+        try {
+            return dateTime.format(DATE_TIME_FORMATTER);
+        } catch (DateTimeException e) {
+            throw new DateTimeException("dateTime can't be formatted!", e);
+        }
     }
 }
