@@ -131,7 +131,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         Optional<LocalDate> result = Optional.empty();
         try {
-            result = Optional.ofNullable(LocalDate
+            return Optional.of(LocalDate
                     .parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
         } catch (Exception e) {
             return Optional.empty();
