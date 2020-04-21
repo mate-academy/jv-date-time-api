@@ -32,15 +32,16 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate today = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return LocalDate.now().toString();
+                return today.toString();
             case YEAR:
-                return String.valueOf(LocalDate.now().getYear());
+                return String.valueOf(today.getYear());
             case MONTH:
-                return LocalDate.now().getMonth().toString();
+                return today.getMonth().toString();
             case DAY:
-                return String.valueOf(LocalDate.now().getDayOfMonth());
+                return String.valueOf(today.getDayOfMonth());
             default:
                 throw new DateTimeException("Invalid input value.");
         }
