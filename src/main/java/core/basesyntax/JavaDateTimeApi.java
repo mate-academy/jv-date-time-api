@@ -13,7 +13,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    public static final DateTimeFormatter DATE_TIME_FORMATTER =
+    private static final DateTimeFormatter D_MMM_YYYY = DateTimeFormatter
+            .ofPattern("d MMM yyyy", Locale.ENGLISH);
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final ZoneOffset UA_OFFSET = ZoneOffset.ofHours(2);
 
@@ -153,8 +155,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(
-                    date, DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH)));
+            return Optional.of(LocalDate.parse(date, D_MMM_YYYY));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
