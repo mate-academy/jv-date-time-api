@@ -1,5 +1,7 @@
 package core.basesyntax;
 
+import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
+
 import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -11,8 +13,6 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
-
-import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
 
 public class JavaDateTimeApi {
     private static final String DATE_FORMATTER = "dd MMM yyyy";
@@ -63,7 +63,7 @@ public class JavaDateTimeApi {
             return dateParams.length > 0
                     ? Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]))
                     : Optional.empty();
-        } catch (DateTimeException | ArrayIndexOutOfBoundsException  e) {
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
@@ -155,7 +155,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMATTER, Locale.US)));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter
+                    .ofPattern(DATE_FORMATTER, Locale.US)));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
