@@ -13,12 +13,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    public static final DateTimeFormatter DATE_FORMATTER =
+    private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-    public static final DateTimeFormatter DATE_TIME_FORMATTER =
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
-    public static final int TIME_OFFSET = 2;
-    LocalDate currentDate = LocalDate.now();
+    private static final int TIME_OFFSET = 2;
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -34,16 +33,16 @@ public class JavaDateTimeApi {
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
-                return currentDate.toString();
+                return LocalDate.now().toString();
             case YEAR:
-                return String.valueOf(currentDate.getYear());
+                return String.valueOf(LocalDate.now().getYear());
             case MONTH:
-                return String.valueOf(currentDate.getMonth());
+                return String.valueOf(LocalDate.now().getMonth());
             case DAY:
-                return String.valueOf(currentDate.getDayOfMonth());
+                return String.valueOf(LocalDate.now().getDayOfMonth());
             default:
-                break;
-        } throw new DateTimeException(datePart.name());
+                throw new DateTimeException("Invalid data!");
+        } 
     }
 
     /**
@@ -102,11 +101,11 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isAfter(currentDate)) {
-            return someDate + " is after " + currentDate;
+        if (someDate.isAfter(LocalDate.now())) {
+            return someDate + " is after " + LocalDate.now();
         }
-        if (someDate.isBefore(currentDate)) {
-            return someDate + " is before " + currentDate;
+        if (someDate.isBefore(LocalDate.now())) {
+            return someDate + " is before " + LocalDate.now();
         }
         return someDate + " is today";
     }
