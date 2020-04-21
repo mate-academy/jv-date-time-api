@@ -40,11 +40,10 @@ public class JavaDateTimeApi {
             case DAY:
                 return String.valueOf(localNow.getDayOfMonth());
             case FULL:
-                break;
+                return localNow.toString();
             default:
                 throw new DateTimeException("Time not allowed here");
         }
-        return String.valueOf(localNow);
     }
 
     /**
