@@ -13,11 +13,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter FORMATTER1 = DateTimeFormatter
-            .ofPattern("yyyyMMdd");
-    private static final DateTimeFormatter FORMATTER2 = DateTimeFormatter
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
             .ofPattern("d MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter FORMATTER3 = DateTimeFormatter
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM YYYY HH:mm", Locale.ENGLISH);
     private static final int OFFSET_UA = 2;
 
@@ -140,7 +138,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, FORMATTER1));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             e.getMessage();
         }
@@ -153,7 +151,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, FORMATTER2));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeException e) {
             e.getMessage();
         }
@@ -169,7 +167,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(FORMATTER3);
+            return dateTime.format(DATE_TIME_FORMATTER);
         } catch (DateTimeException e) {
             return "Date can't be formatted!";
         }
