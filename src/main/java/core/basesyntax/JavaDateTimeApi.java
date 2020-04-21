@@ -14,11 +14,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMM yyyy", Locale.ENGLISH);
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
-    public static final ZoneOffset offset = ZoneOffset.of("+02:00");
+    private static final ZoneOffset OFFSET = ZoneOffset.of("+02:00");
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -132,7 +132,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, offset);
+        return OffsetDateTime.of(localTime, OFFSET);
     }
 
     /**
