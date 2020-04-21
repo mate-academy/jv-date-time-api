@@ -23,11 +23,11 @@ public class JavaDateTimeApi {
      * - DAY - текущий день (число месяца);
      * В любом другом случае бросить DateTimeException
      **/
-    public static final DateTimeFormatter DATE_TIME_FORMATTER =
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("dd MMMM yyyy k:mm", Locale.ENGLISH);
-    public static final DateTimeFormatter CUSTOM_DATE_TIME_FORMATTER =
+    private static final DateTimeFormatter CUSTOM_DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-    public LocalDate localDate = LocalDate.now();
+    private static final LocalDate localDate = LocalDate.now();
 
     public String todayDate(DateTimePart datePart) throws DateTimeException {
 
@@ -95,11 +95,11 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return localDate.equals(someDate) ? someDate.toString()
+        return localDate.equals(someDate) ? someDate
                 + " is today"
-                : localDate.isAfter(someDate) ? someDate.toString()
-                + " is before " + localDate.toString()
-                : someDate.toString() + " is after " + localDate.toString();
+                : localDate.isAfter(someDate) ? someDate
+                + " is before " + localDate
+                : someDate + " is after " + localDate;
     }
 
     /**
