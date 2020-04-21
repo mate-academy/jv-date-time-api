@@ -24,14 +24,6 @@ public class JavaDateTimeApi {
      * - DAY - текущий день (число месяца);
      * В любом другом случае бросить DateTimeException
      **/
-    private static final DateTimeFormatter FULL = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter YYYY = DateTimeFormatter
-            .ofPattern("yyyy");
-    private static final DateTimeFormatter MM = DateTimeFormatter
-            .ofPattern("MM");
-    private static final DateTimeFormatter DD = DateTimeFormatter
-            .ofPattern("dd");
     private static final String UA_OFFSET = "+02:00";
     private static final DateTimeFormatter DD_MMMM_YYYY_HH_MM = DateTimeFormatter
             .ofPattern("dd MMMM YYYY HH:mm", Locale.ENGLISH);
@@ -44,13 +36,13 @@ public class JavaDateTimeApi {
         LocalDate today = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return today.format(FULL);
+                return today.toString();
             case YEAR:
-                return today.format(YYYY);
+                return String.valueOf(today.getYear());
             case MONTH:
-                return today.format(MM);
+                return String.valueOf(today.getMonth());
             case DAY:
-                return today.format(DD);
+                return String.valueOf(today.getDayOfMonth());
             default:
                 throw new DateTimeException("Wrong date!!!");
         }
@@ -65,12 +57,9 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length == 0) {
-            return Optional.empty();
-        }
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException e) {
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
@@ -152,7 +141,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, YYYYMMDD));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
