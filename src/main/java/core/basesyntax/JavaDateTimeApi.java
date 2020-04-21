@@ -16,12 +16,11 @@ public class JavaDateTimeApi {
 
     private static final DateTimeFormatter FORMATTER_DATE
             = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter FORMATTER_DATE_WITHOUT_SPACE
-            = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DateTimeFormatter FORMATTER_DATE_MONTH_ABBREVIATED
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter FORMATTER_DATE_MONTH_FULL
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+    private static final ZoneOffset UKRAINE_ZONE_OFF_SET = ZoneOffset.of("+02:00");
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -137,7 +136,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, UKRAINE_ZONE_OFF_SET);
     }
 
     /**
@@ -146,7 +145,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, FORMATTER_DATE_WITHOUT_SPACE));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             e.printStackTrace();
         }
@@ -175,7 +174,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(FORMATTER_DATE_MONTH_FULL);
+            return dateTime.format(DATE_TIME_FORMATTER);
         } catch (DateTimeException e) {
             e.printStackTrace();
         }
