@@ -14,11 +14,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    static final DateTimeFormatter DATE_FORMAT
+    public static final DateTimeFormatter DATE_FORMAT
             = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
-    static final DateTimeFormatter DATE_TIME_FORMATTER
+    public static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
-    static final LocalDate TODAY_DATE = LocalDate.now();
+    public static final ZoneOffset ZONE = ZoneOffset.ofHours(2);
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -32,14 +32,15 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
-        String result = datePart == DateTimePart.FULL ? TODAY_DATE.toString()
-                : (datePart == DateTimePart.DAY
-                ? TODAY_DATE.format(DateTimeFormatter.ofPattern("dd"))
-                : (datePart == DateTimePart.MONTH
-                ? TODAY_DATE.format(DateTimeFormatter.ofPattern("MM"))
-                : (datePart == DateTimePart.YEAR
-                ? TODAY_DATE.format(DateTimeFormatter.ofPattern("yyyy"))
-                : null)));
+        LocalDate todayDate = LocalDate.now();
+        String result = datePart == DateTimePart.FULL ? todayDate.toString()
+                : datePart == DateTimePart.DAY
+                ? todayDate.getDayOfMonth() + ""
+                : datePart == DateTimePart.MONTH
+                ? todayDate.getMonth() + ""
+                : datePart == DateTimePart.YEAR
+                ? todayDate.getYear() + ""
+                : null;
         if (result == null) {
             throw new DateTimeException("Invalid datePart");
         }
@@ -103,9 +104,10 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return TODAY_DATE.compareTo(someDate) == 0 ? someDate + " is today"
-                : (TODAY_DATE.compareTo(someDate) == 1 ? someDate + " is before " + TODAY_DATE
-                : someDate + " is after " + TODAY_DATE);
+        LocalDate todayDate = LocalDate.now();
+        return someDate.isEqual(todayDate) ? someDate + " is today"
+                : someDate.isBefore(todayDate) ? someDate + " is before " + todayDate
+                : someDate + " is after " + todayDate;
     }
 
     /**
@@ -129,7 +131,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
+        return OffsetDateTime.of(localTime, ZONE);
     }
 
     /**
@@ -151,8 +153,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            LocalDate optional = LocalDate.parse(date, DATE_FORMAT);
-            return Optional.of(optional);
+            return Optional.of(LocalDate.parse(date, DATE_FORMAT));
         } catch (DateTimeParseException e) {
             e.getMessage();
         }
