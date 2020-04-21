@@ -27,15 +27,15 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
 
-    private static final String CUSTOM_DATE_FORMATTER = "d MMM yyyy";
-    private static final String FULL_FORMATTER = "dd MMMM yyyy H:mm";
+    private static final String DATE_FORMATTER = "d MMM yyyy";
+    private static final String DATE_TIME_FORMATTER = "dd MMMM yyyy H:mm";
     private static final String UKRAINE = "+02:00";
 
     public String todayDate(DateTimePart datePart) {
         LocalDate time = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return time.format(DateTimeFormatter.ISO_LOCAL_DATE);
+                return time.toString();
 
             case YEAR:
                 return String.valueOf(time.getYear());
@@ -163,7 +163,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern(CUSTOM_DATE_FORMATTER, Locale.ENGLISH)));
+                    DateTimeFormatter.ofPattern(DATE_FORMATTER, Locale.ENGLISH)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -178,7 +178,8 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter.ofPattern(FULL_FORMATTER, Locale.ENGLISH));
+            return dateTime.format(
+                    DateTimeFormatter.ofPattern(DATE_TIME_FORMATTER, Locale.ENGLISH));
         } catch (DateTimeParseException e) {
             return "dateTime can't be formatted!";
         }
