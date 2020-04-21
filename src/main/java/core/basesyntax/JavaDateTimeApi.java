@@ -25,9 +25,9 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
 
-    private static final String zoneUkraine = "+02:00";
-    private static final String dateOptional = "d MMM yyyy";
-    private static final String hours24 = "dd MMMM yyyy HH:mm";
+    private static final String ZONE_UKRAINE = "+02:00";
+    private static final String DATE_OPTIONAL = "d MMM yyyy";
+    private static final String HOURS_24 = "dd MMMM yyyy HH:mm";
 
     public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
@@ -130,7 +130,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of(zoneUkraine));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(ZONE_UKRAINE));
     }
 
     /**
@@ -151,7 +151,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(dateOptional)));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_OPTIONAL)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -167,6 +167,6 @@ public class JavaDateTimeApi {
     public String formatDate(LocalDateTime dateTime) {
 
         return dateTime
-                .format(DateTimeFormatter.ofPattern(hours24));
+                .format(DateTimeFormatter.ofPattern(HOURS_24));
     }
 }
