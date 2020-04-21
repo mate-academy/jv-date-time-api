@@ -10,20 +10,17 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoField;
 import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final LocalDate LOCAL_DATE = LocalDate.now();
     private static final int DAYS_OF_MONTH = 31;
     private static final int MONTHS_OF_YEAR = 12;
-    private static final DateTimeFormatter CUSTOM_FORMATTER1
-            = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter CUSTOM_FORMATTER2
+    private static final DateTimeFormatter DATE_FORMAT
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter CUSTOM_FORMATTER3
+    private static final DateTimeFormatter DATE_TIME_FORMAT
             = DateTimeFormatter.ofPattern("dd MMMM yyyy k:m", Locale.ENGLISH);
+    private static final int UKR_ZONE = 2;
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -38,15 +35,16 @@ public class JavaDateTimeApi {
      **/
 
     public String todayDate(DateTimePart datePart) {
+        final LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return CUSTOM_FORMATTER1.format(LOCAL_DATE);
+                return localDate.toString();
             case DAY:
-                return String.valueOf(LOCAL_DATE.get(ChronoField.DAY_OF_WEEK));
+                return String.valueOf(localDate.getDayOfMonth());
             case MONTH:
-                return String.valueOf(LOCAL_DATE.get(ChronoField.MONTH_OF_YEAR));
+                return localDate.getMonth().name();
             case YEAR:
-                return String.valueOf(LOCAL_DATE.get(ChronoField.YEAR));
+                return String.valueOf(localDate.getYear());
             default:
                 throw new DateTimeException("Incorrect value: " + datePart);
         }
@@ -108,9 +106,10 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return LOCAL_DATE.isAfter(someDate) ? someDate + " is before " + LOCAL_DATE
-                : LOCAL_DATE.isBefore(someDate)
-                ? someDate + " is after " + LOCAL_DATE : someDate + " is today";
+        final LocalDate localDate = LocalDate.now();
+        return localDate.isAfter(someDate) ? someDate + " is before " + localDate
+                : localDate.isBefore(someDate)
+                ? someDate + " is after " + localDate : someDate + " is today";
     }
 
     /**
@@ -121,12 +120,7 @@ public class JavaDateTimeApi {
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        try {
-            return Instant.parse(dateInString).atZone(ZoneId.of(zone)).toLocalDateTime();
-        } catch (DateTimeParseException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return Instant.parse(dateInString).atZone(ZoneId.of(zone)).toLocalDateTime();
     }
 
     /**
@@ -140,7 +134,7 @@ public class JavaDateTimeApi {
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
         return OffsetDateTime.of(localTime,
-                ZoneOffset.ofHours(2));
+                ZoneOffset.ofHours(UKR_ZONE));
     }
 
     /**
@@ -151,7 +145,7 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         return Optional.empty();
     }
@@ -162,7 +156,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, CUSTOM_FORMATTER2));
+            return Optional.of(LocalDate.parse(date, DATE_FORMAT));
         } catch (DateTimeParseException e) {
             System.out.println(e.getMessage());
         }
@@ -177,6 +171,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(CUSTOM_FORMATTER3);
+        return dateTime.format(DATE_TIME_FORMAT);
     }
 }
