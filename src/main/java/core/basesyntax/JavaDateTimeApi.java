@@ -48,7 +48,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         Optional<LocalDate> result = Optional.empty();
         try {
-            result = Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (Exception e) {
             return Optional.empty();
         }
