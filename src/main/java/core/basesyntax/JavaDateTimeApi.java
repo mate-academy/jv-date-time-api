@@ -132,7 +132,7 @@ public class JavaDateTimeApi {
         Optional<LocalDate> result = Optional.empty();
         try {
             return Optional.of(LocalDate
-                    .parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+                    .parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (Exception e) {
             return Optional.empty();
         }
