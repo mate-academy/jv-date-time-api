@@ -27,8 +27,11 @@ public class JavaDateTimeApi {
      **/
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
             .ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
+    private static final DateTimeFormatter DATE_TIME_FORMATTER_FULL = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
+            .ofPattern("dd MMM yyyy", Locale.ENGLISH);
+    private static final ZoneOffset UKRAINE_OFFSET = ZoneOffset.ofHours(2);
 
     public String todayDate(DateTimePart datePart) {
         LocalDate now = LocalDate.now();
@@ -106,13 +109,11 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        String string = DATE_FORMATTER.format(someDate);
         LocalDate now = LocalDate.now();
-        string += someDate.isAfter(now)
+        return someDate + (someDate.isAfter(now)
                     ? " is after " + now
                     : (someDate.isBefore(now)
-                    ? " is before " + now : " is today");
-        return string;
+                    ? " is before " + now : " is today"));
     }
 
     /**
@@ -136,7 +137,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
+        return OffsetDateTime.of(localTime, UKRAINE_OFFSET);
     }
 
     /**
@@ -158,8 +159,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            LocalDate localDate = LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH));
+            LocalDate localDate = LocalDate.parse(date, DATE_TIME_FORMATTER);
             return Optional.of(localDate);
         } catch (DateTimeParseException e) {
             e.printStackTrace();
@@ -175,6 +175,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DATE_TIME_FORMATTER);
+        return dateTime.format(DATE_TIME_FORMATTER_FULL);
     }
 }
