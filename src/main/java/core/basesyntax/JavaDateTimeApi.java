@@ -13,8 +13,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter PARSE_DATE = DateTimeFormatter
-            .ofPattern("yyyyMMdd");
     private static final DateTimeFormatter CUSTOM_PARSE_DATE = DateTimeFormatter
             .ofPattern("d MMM yyyy");
     private static final DateTimeFormatter FORMAT_DATE = DateTimeFormatter
@@ -140,7 +138,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         LocalDate localDate;
         try {
-            localDate = LocalDate.parse(date, PARSE_DATE);
+            localDate = LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
