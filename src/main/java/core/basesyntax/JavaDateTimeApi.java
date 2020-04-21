@@ -30,13 +30,20 @@ public class JavaDateTimeApi {
     private static final LocalDate localDate = LocalDate.now();
     private static final int TIME_Offset = 2;
 
-    public String todayDate(DateTimePart datePart) throws DateTimeException {
+    public String todayDate(DateTimePart datePart) {
 
-        return (DateTimePart.FULL.equals(datePart)) ? String.valueOf(localDate)
-                : (DateTimePart.YEAR.equals(datePart)) ? String.valueOf(localDate.getYear())
-                : (DateTimePart.MONTH.equals(datePart)) ? String.valueOf(localDate.getMonth())
-                : (DateTimePart.DAY.equals(datePart)) ? String.valueOf(localDate.getDayOfMonth())
-                : ("Wrong datePart: " + datePart.toString());
+        switch (datePart) {
+            case FULL:
+                return String.valueOf(LocalDate.now());
+            case YEAR:
+                return String.valueOf(LocalDate.now().getDayOfYear());
+            case MONTH:
+                return String.valueOf(LocalDate.now().getMonth());
+            case DAY:
+                return String.valueOf(LocalDate.now().getDayOfMonth());
+            default:
+                throw new IllegalStateException("Unexpected value: " + datePart);
+        }
 
     }
 
