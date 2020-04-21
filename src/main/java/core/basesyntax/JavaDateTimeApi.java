@@ -1,5 +1,6 @@
 package core.basesyntax;
 
+import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,8 +23,18 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
+    public static final String LOCAL_TIMEZONE = "+02:00";
+    public static final String CUSTOM_FORMATTER = "dd MMM yyyy";
+    public static final String FULL_FORMATTER = "dd MMMM yyyy HH:mm";
+
     public String todayDate(DateTimePart datePart) {
-        return LocalDate.now().toString();
+        switch (datePart) {
+            case FULL: return LocalDate.now().toString();
+            case YEAR: return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
+            case MONTH: return LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM"));
+            case DAY: return LocalDate.now().format(DateTimeFormatter.ofPattern("dd"));
+            default: throw new DateTimeException("Invalid: " + datePart);
+        }
     }
 
     /**
@@ -110,7 +121,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(LOCAL_TIMEZONE));
     }
 
     /**
@@ -136,7 +147,7 @@ public class JavaDateTimeApi {
         Optional<LocalDate> result = Optional.empty();
         try {
             result = Optional.ofNullable(LocalDate
-                    .parse(date, DateTimeFormatter.ofPattern("dd MMM yyyy")));
+                    .parse(date, DateTimeFormatter.ofPattern(CUSTOM_FORMATTER)));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -151,6 +162,11 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm").format(dateTime);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FULL_FORMATTER);
+        try {
+            return dateTimeFormatter.format(dateTime);
+        } catch (Exception e) {
+            return "Date can't be formatted!";
+        }
     }
 }
