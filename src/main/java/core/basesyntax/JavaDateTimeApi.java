@@ -13,8 +13,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-
-    private static final String PATTERN_DATE_TIME = "dd MMMM yyyy HH:mm";
+    public static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final ZoneOffset UA_OFFSET = ZoneOffset.ofHours(2);
 
     /**
@@ -168,10 +168,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        try {
-            return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy H:m", Locale.ENGLISH));
-        } catch (DateTimeException e) {
-            return "Date can't be formatted!";
-        }
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
