@@ -12,6 +12,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String UA_ZONE = "+02:00";
+    private static final DateTimeFormatter FORMATTER_1 = DateTimeFormatter
+            .ofPattern("d MMM yyyy");
+    private static final DateTimeFormatter FORMATTER_2 = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy H:m");
+
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -94,9 +100,10 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isEqual(LocalDate.now()) ? someDate + " is today"
-                : (someDate.isAfter(LocalDate.now()) ? someDate + " is after " + LocalDate.now()
-                : someDate + " is before " + LocalDate.now());
+        LocalDate currentDate = LocalDate.now();
+        return someDate.isEqual(currentDate) ? someDate + " is today"
+                : (someDate.isAfter(currentDate) ? someDate + " is after " + currentDate
+                : someDate + " is before " + currentDate);
     }
 
     /**
@@ -118,7 +125,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(UA_ZONE));
     }
 
     /**
@@ -127,7 +134,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -139,7 +146,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy")));
+            return Optional.of(LocalDate.parse(date, FORMATTER_1));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -154,7 +161,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy H:m"));
+            return dateTime.format(FORMATTER_2);
         } catch (DateTimeException e) {
             return "dateTime can't be formatted!";
         }
