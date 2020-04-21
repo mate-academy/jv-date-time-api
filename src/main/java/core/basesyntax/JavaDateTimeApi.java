@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final int TIME_ZONE = 2;
-    private static final DateTimeFormatter CUSTOM_PARSE_DATE_FORMATTER = DateTimeFormatter
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
             .ofPattern("d MMM yyyy", Locale.ENGLISH);
     private static final DateTimeFormatter FORMAT_DATE_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy k:m", Locale.ENGLISH);
@@ -156,7 +156,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, CUSTOM_PARSE_DATE_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
