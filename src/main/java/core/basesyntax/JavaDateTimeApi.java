@@ -28,7 +28,7 @@ public class JavaDateTimeApi {
     private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
     private static final int TIME_ZONE = 2;
-    public LocalDate currentDate = LocalDate.now();
+    private LocalDate currentDate = LocalDate.now();
 
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
