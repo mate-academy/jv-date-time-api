@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,8 +23,9 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
-    private static final DateTimeFormatter FORMATTER1 = DateTimeFormatter.ofPattern("d MMM yyyy");
-    private static final DateTimeFormatter FORMATTER2 =
+    private static final DateTimeFormatter FORMATTER_DATE =
+            DateTimeFormatter.ofPattern("d MMM yyyy");
+    private static final DateTimeFormatter FORMATTER_DATE_TIME =
             DateTimeFormatter.ofPattern("dd MMMM YYYY HH:mm");
     private static final int TIME_SHIFT = 2;
 
@@ -113,7 +115,9 @@ public class JavaDateTimeApi {
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return LocalDateTime.from(ZonedDateTime.parse(dateInString + "[" + zone + "]"));
+        return ZonedDateTime.parse(dateInString)
+                .withZoneSameInstant(ZoneId.of(zone))
+                .toLocalDateTime();
     }
 
     /**
@@ -148,7 +152,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, FORMATTER1));
+            return Optional.of(LocalDate.parse(date, FORMATTER_DATE));
         } catch (DateTimeException e) {
             e.getMessage();
         }
@@ -163,6 +167,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(FORMATTER2);
+        return dateTime.format(FORMATTER_DATE_TIME);
     }
 }
