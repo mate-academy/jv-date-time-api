@@ -1,22 +1,13 @@
 package core.basesyntax;
 
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
     public static final ZoneOffset OFFSET_DATE_TIME_ZONE = ZoneOffset.of("+02:00");
-    public static final DateTimeFormatter PARSE_DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyyMMdd");
-    public static final DateTimeFormatter CUSTOM_PARSE_DATE_FORMATTER =
+    public static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
     public static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
@@ -118,8 +109,7 @@ public class JavaDateTimeApi {
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return ZonedDateTime.parse(dateInString + "[" + ZoneId.of(zone) + "]")
-                .toLocalDateTime();
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     /**
@@ -141,7 +131,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, PARSE_DATE_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             System.out.println(e.getMessage());
         }
@@ -154,7 +144,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, CUSTOM_PARSE_DATE_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeException e) {
             System.out.println(e.getMessage());
         }
