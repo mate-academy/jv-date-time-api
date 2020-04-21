@@ -13,6 +13,10 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final DateTimeFormatter US_DATE_TIME_FORMATTER = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy HH:mm", Locale.US);
+    private static final DateTimeFormatter US_DATE_FORMATTER = DateTimeFormatter
+            .ofPattern("d MMM yyyy", Locale.US);
 
     public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
@@ -76,7 +80,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("yyyyMMdd")));
+                    DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -84,8 +88,7 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH)));
+            return Optional.of(LocalDate.parse(date,US_DATE_FORMATTER));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -93,14 +96,9 @@ public class JavaDateTimeApi {
 
     public String formatDate(LocalDateTime dateTime) {
         try {
-            return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy H:m", Locale.ENGLISH));
+            return dateTime.format(US_DATE_TIME_FORMATTER);
         } catch (DateTimeException e) {
             return "dateTime can't be formatted!";
         }
     }
 }
-
-
-
-
-
