@@ -18,6 +18,7 @@ public class JavaDateTimeApi {
             .ofPattern("dd MMM yyyy", Locale.ENGLISH);
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+    public static final ZoneOffset offset = ZoneOffset.of("+02:00");
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -130,7 +131,6 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        ZoneOffset offset = ZoneOffset.of("+02:00");
         return OffsetDateTime.of(localTime, offset);
     }
 
