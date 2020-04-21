@@ -9,6 +9,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -137,9 +138,13 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> parseDate(String date) {
-        boolean isValidMonth = Integer.parseInt(date.substring(4, 6)) < 13;
-        LocalDate localDate = isValidMonth ? LocalDate.parse(date, PARSE_DATE) : null;
-        return Optional.ofNullable(localDate);
+        LocalDate localDate;
+        try {
+            localDate = LocalDate.parse(date, PARSE_DATE);
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
+        return Optional.of(localDate);
     }
 
     /**
