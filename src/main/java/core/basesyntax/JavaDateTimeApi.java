@@ -10,16 +10,14 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter FORMATTER_OF_PARSE_DATE = DateTimeFormatter
-            .ofPattern("yyyyMMdd");
-    private static final DateTimeFormatter FORMATTER_OF_CUSTOM_PARSE_DATE = DateTimeFormatter
+    private static final int TIME_ZONE = 2;
+    private static final DateTimeFormatter CUSTOM_PARSE_DATE_FORMATTER = DateTimeFormatter
             .ofPattern("d MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter FORMATTER_OF_FORMAT_DATE = DateTimeFormatter
+    private static final DateTimeFormatter FORMAT_DATE_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy k:m", Locale.ENGLISH);
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -37,7 +35,7 @@ public class JavaDateTimeApi {
         LocalDate now = LocalDate.now();
         switch (datePart) {
             case FULL: {
-                return now.format(DateTimeFormatter.ISO_DATE);
+                return String.valueOf(now);
             }
             case YEAR: {
                 return String.valueOf(now.getYear());
@@ -75,7 +73,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return localTime.plus(hoursToAdd, ChronoUnit.HOURS);
+        return localTime.plusHours(hoursToAdd);
     }
 
     /**
@@ -83,7 +81,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        return localTime.plus(minutesToAdd, ChronoUnit.MINUTES);
+        return localTime.plusMinutes(minutesToAdd);
     }
 
     /**
@@ -91,7 +89,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        return localTime.plus(secondsToAdd, ChronoUnit.SECONDS);
+        return localTime.plusSeconds(secondsToAdd);
     }
 
     /**
@@ -99,7 +97,7 @@ public class JavaDateTimeApi {
      * Верните получившуюся дату
      */
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
-        return localDate.plus(numberOfWeeks, ChronoUnit.WEEKS);
+        return localDate.plusWeeks(numberOfWeeks);
     }
 
     /**
@@ -137,7 +135,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
+        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(TIME_ZONE));
     }
 
     /**
@@ -146,7 +144,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, FORMATTER_OF_PARSE_DATE));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -158,7 +156,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, FORMATTER_OF_CUSTOM_PARSE_DATE));
+            return Optional.of(LocalDate.parse(date, CUSTOM_PARSE_DATE_FORMATTER));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -172,6 +170,6 @@ public class JavaDateTimeApi {
      * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(FORMATTER_OF_FORMAT_DATE);
+        return dateTime.format(FORMAT_DATE_FORMATTER);
     }
 }
