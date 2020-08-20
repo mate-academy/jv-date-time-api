@@ -163,13 +163,8 @@ public class JavaDateTimeApi {
      * Верните строку с датой и временем в формате
      * "день(2 цифры) месяц(полное название на английском) год(4 цифры) час(24 часа):минуты",
      * например: "01 January 2000 18:00",
-     * или сообщение "dateTime can't be formatted!"
      */
     public String formatDate(LocalDateTime dateTime) {
-        try {
-            return dateTime.format(MONTH_WRITTEN);
-        } catch (DateTimeException message) {
-            return "dateTime can't be formatted!";
-        }
+        return dateTime.format(MONTH_WRITTEN);
     }
 }
