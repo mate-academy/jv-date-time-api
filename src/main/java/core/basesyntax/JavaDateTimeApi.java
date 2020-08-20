@@ -13,16 +13,21 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter dateTimeFull = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter dateTimeYear = DateTimeFormatter.ofPattern("yyyy");
-    private static final DateTimeFormatter dateTimeMonth = DateTimeFormatter.ofPattern("LL");
-    private static final DateTimeFormatter dateTimeDay = DateTimeFormatter.ofPattern("dd");
-    private static final DateTimeFormatter dateTimeCustom = DateTimeFormatter
+    private static final DateTimeFormatter DATETIME_FULL = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter DATETIME_YEAR = DateTimeFormatter
+            .ofPattern("yyyy");
+    private static final DateTimeFormatter DATETIME_MONTH = DateTimeFormatter
+            .ofPattern("LL");
+    private static final DateTimeFormatter DATETIME_DAY = DateTimeFormatter
+            .ofPattern("dd");
+    private static final DateTimeFormatter DATETIME_CUSTOM = DateTimeFormatter
             .ofPattern("d MMM yyyy");
-    private static final DateTimeFormatter dateTimeSpecial = DateTimeFormatter
+    private static final DateTimeFormatter DATETIME_SPECIAL = DateTimeFormatter
             .ofPattern("dd LLLL yyyy HH:mm");
-    private static final DateTimeFormatter dateTimeWithoutSpaces = DateTimeFormatter
+    private static final DateTimeFormatter DATETIME_WITHOUT_SPACES = DateTimeFormatter
             .ofPattern("yyyyMMdd");
+    private static final String UKRAINE_OFFSET = "+02:00";
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -39,16 +44,16 @@ public class JavaDateTimeApi {
         LocalDate localDate = LocalDate.now();
 
         if (datePart == DateTimePart.FULL) {
-            return localDate.format(dateTimeFull);
+            return localDate.format(DATETIME_FULL);
         }
         if (datePart == DateTimePart.YEAR) {
-            return localDate.format(dateTimeYear);
+            return localDate.format(DATETIME_YEAR);
         }
         if (datePart == DateTimePart.MONTH) {
-            return localDate.format(dateTimeMonth);
+            return localDate.format(DATETIME_MONTH);
         }
         if (datePart == DateTimePart.DAY) {
-            return localDate.format(dateTimeDay);
+            return localDate.format(DATETIME_DAY);
         } else {
             throw new DateTimeException("Incorrect format");
         }
@@ -137,7 +142,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(UKRAINE_OFFSET));
     }
 
     /**
@@ -146,7 +151,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date,dateTimeWithoutSpaces));
+            return Optional.of(LocalDate.parse(date,DATETIME_WITHOUT_SPACES));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -158,7 +163,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date,dateTimeCustom));
+            return Optional.of(LocalDate.parse(date,DATETIME_CUSTOM));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -171,6 +176,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(dateTimeSpecial);
+        return dateTime.format(DATETIME_SPECIAL);
     }
 }
