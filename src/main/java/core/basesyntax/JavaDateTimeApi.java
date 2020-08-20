@@ -1,26 +1,28 @@
 package core.basesyntax;
 
-import java.time.LocalDate;
 import java.time.DateTimeException;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private final static DateTimeFormatter dateTimeFull = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private final static DateTimeFormatter dateTimeYear = DateTimeFormatter.ofPattern("yyyy");
-    private final static DateTimeFormatter dateTimeMonth = DateTimeFormatter.ofPattern("LL");
-    private final static DateTimeFormatter dateTimeDay = DateTimeFormatter.ofPattern("dd");
-    private final static DateTimeFormatter dateTimeCustom = DateTimeFormatter.ofPattern("d MMM yyyy");
-    private final static DateTimeFormatter dateTimeSpecial = DateTimeFormatter.ofPattern("dd LLLL yyyy HH:mm");
-    private final static DateTimeFormatter dateTimeWithoutSpaces = DateTimeFormatter.ofPattern("yyyyMMdd");
-    private final static DateTimeFormatter dateTimeZone = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    private static final DateTimeFormatter dateTimeFull = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter dateTimeYear = DateTimeFormatter.ofPattern("yyyy");
+    private static final DateTimeFormatter dateTimeMonth = DateTimeFormatter.ofPattern("LL");
+    private static final DateTimeFormatter dateTimeDay = DateTimeFormatter.ofPattern("dd");
+    private static final DateTimeFormatter dateTimeCustom = DateTimeFormatter
+            .ofPattern("d MMM yyyy");
+    private static final DateTimeFormatter dateTimeSpecial = DateTimeFormatter
+            .ofPattern("dd LLLL yyyy HH:mm");
+    private static final DateTimeFormatter dateTimeWithoutSpaces = DateTimeFormatter
+            .ofPattern("yyyyMMdd");
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -121,7 +123,8 @@ public class JavaDateTimeApi {
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return ZonedDateTime.parse(dateInString).withZoneSameInstant(ZoneId.of(zone)).toLocalDateTime();
+        return ZonedDateTime.parse(dateInString)
+                .withZoneSameInstant(ZoneId.of(zone)).toLocalDateTime();
     }
 
     /**
@@ -144,7 +147,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date,dateTimeWithoutSpaces));
-        } catch (DateTimeParseException e){
+        } catch (DateTimeParseException e) {
             return Optional.empty();
         }
     }
@@ -156,7 +159,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date,dateTimeCustom));
-        } catch (DateTimeParseException e){
+        } catch (DateTimeParseException e) {
             return Optional.empty();
         }
     }
