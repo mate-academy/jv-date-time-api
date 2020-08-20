@@ -1,15 +1,25 @@
 package core.basesyntax;
 
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
-    private static final DateTimeFormatter PARSE_FORMATTER = DateTimeFormatter.ofPattern("d MMM yyyy");
-    private static final DateTimeFormatter CONCAT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy HH:mm");
+    private static final DateTimeFormatter PARSE_FORMATTER = DateTimeFormatter
+            .ofPattern("d MMM yyyy");
+    private static final DateTimeFormatter CONCAT_DATE_FORMATTER = DateTimeFormatter
+            .ofPattern("yyyyMMdd");
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -21,6 +31,7 @@ public class JavaDateTimeApi {
      *                 - DAY - текущий день (число месяца);
      *                 В любом другом случае бросить DateTimeException
      **/
+
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL : return LocalDateTime.now().format(DATE_FORMATTER);
@@ -102,8 +113,11 @@ public class JavaDateTimeApi {
      * Верните LocalDateTime в этой временной зоне.
      * @return LocalDateTime
      */
+
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-       return ZonedDateTime.parse(dateInString).withZoneSameInstant(ZoneId.of(zone)).toLocalDateTime();
+        return ZonedDateTime.parse(dateInString)
+                .withZoneSameInstant(ZoneId.of(zone))
+                .toLocalDateTime();
     }
 
     /**
