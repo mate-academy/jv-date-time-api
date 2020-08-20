@@ -169,7 +169,7 @@ public class JavaDateTimeApi {
         try {
             return dateTime.format(MONTH_WRITTEN);
         } catch (DateTimeException message) {
-            return "Date can't be formatted!";
+            return "dateTime can't be formatted!";
         }
     }
 }
