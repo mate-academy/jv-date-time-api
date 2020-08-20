@@ -33,7 +33,7 @@ public class JavaDateTimeApi {
             case FULL:
                 return LOCAL_DATE.toString();
             default:
-                return "Today";
+                throw new IllegalArgumentException("The required parameter is missing");
         }
     }
 
