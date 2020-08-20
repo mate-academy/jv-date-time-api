@@ -15,7 +15,7 @@ import java.util.Optional;
 public class JavaDateTimeApi {
 
     private static final String UKRAINE_OFFSET = "+02:00";
-    private static final DateTimeFormatter MONTH_FORMATTER
+    private static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
     private static final DateTimeFormatter OUT_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM y HH:mm", Locale.ENGLISH);
