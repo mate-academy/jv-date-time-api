@@ -1,12 +1,13 @@
 package core.basesyntax;
 
 import java.time.DateTimeException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
@@ -56,16 +57,12 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams == null || dateParams.length != 3) {
+        try {
+            LocalDate date = LocalDate.of(dateParams[0], dateParams[1], dateParams[2]);
+            return Optional.of(date);
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
-        LocalDate date;
-        try {
-            date = LocalDate.of(dateParams[0], dateParams[1], dateParams[2]);
-        } catch (DateTimeException e) {
-            date = null;
-        }
-        return Optional.ofNullable(date);
     }
 
     /**
@@ -124,8 +121,7 @@ public class JavaDateTimeApi {
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateInString + "[" + zone + "]");
-        return LocalDateTime.from(zonedDateTime);
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     /**
@@ -163,7 +159,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         LocalDate localDate;
         try {
-            localDate = LocalDate.parse(date, MONTH_FORMATTER);
+            localDate = LocalDate.parse(date, DATE_FORMATTER);
         } catch (DateTimeParseException ignored) {
             localDate = null;
         }
@@ -177,6 +173,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return OUT_FORMATTER.format(dateTime);
+        return DATE_TIME_FORMATTER.format(dateTime);
     }
 }
