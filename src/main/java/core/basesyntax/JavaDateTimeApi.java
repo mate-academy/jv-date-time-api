@@ -1,22 +1,24 @@
 package core.basesyntax;
 
 import java.time.DateTimeException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
 
-    final DateTimeFormatter dateFormatter
+    private static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-    final DateTimeFormatter dateTimeFormatter
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+    private static final String UKRAINE_OFFSET = "+02:00";
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -54,12 +56,9 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length != 3) {
-            return Optional.empty();
-        }
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException e) {
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
@@ -117,8 +116,7 @@ public class JavaDateTimeApi {
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateInString + "[" + zone + "]");
-        return LocalDateTime.from(zonedDateTime);
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     /**
@@ -131,7 +129,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(UKRAINE_OFFSET));
     }
 
     /**
@@ -139,13 +137,11 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> parseDate(String date) {
-        LocalDate localDate;
         try {
-            localDate = LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
-        return Optional.of(localDate);
     }
 
     /**
@@ -153,13 +149,11 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        LocalDate localDate;
         try {
-            localDate = LocalDate.parse(date, dateFormatter);
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
-        return Optional.of(localDate);
     }
 
     /**
@@ -169,6 +163,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTimeFormatter.format(dateTime);
+        return DATE_TIME_FORMATTER.format(dateTime);
     }
 }
