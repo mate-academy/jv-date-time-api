@@ -9,6 +9,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.FormatStyle;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
@@ -17,8 +18,6 @@ import java.util.stream.Collectors;
 public class JavaDateTimeApi {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
-            .ofPattern("dd MMM yyyy", Locale.ENGLISH);
     private static final ZoneOffset ZONE_OFFSET_UKRAINE = ZoneOffset.of("+02:00");
 
     public String todayDate(DateTimePart datePart) {
@@ -92,7 +91,9 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter
+                    .ofLocalizedDate(FormatStyle.MEDIUM)
+                    .withLocale(Locale.UK)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
