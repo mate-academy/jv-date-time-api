@@ -61,8 +61,9 @@ public class JavaDateTimeApi {
             LocalDate date = LocalDate.of(dateParams[0], dateParams[1], dateParams[2]);
             return Optional.of(date);
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
-            return Optional.empty();
+            System.out.println(e.getMessage()); // this should be logged, but for now we can sout this
         }
+        return Optional.empty();
     }
 
     /**
