@@ -1,5 +1,6 @@
 package core.basesyntax;
 
+import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,10 +11,8 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class JavaDateTimeApi {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
@@ -38,10 +37,8 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            return Optional.ofNullable(LocalDate.parse(Arrays.stream(dateParams)
-                    .map(String::valueOf)
-                    .collect(Collectors.joining("-"))));
-        } catch (DateTimeParseException e) {
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
