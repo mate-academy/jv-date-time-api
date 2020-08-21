@@ -14,9 +14,9 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String OFFSET_UKRAINE = "+02:00";
-    private static final DateTimeFormatter SHORT_MONTH = DateTimeFormatter
-            .ofPattern("d MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter FULL_DATE = DateTimeFormatter
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
+            .ofPattern("dd MMM yyyy", Locale.ENGLISH);
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
 
     /**
@@ -154,7 +154,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, SHORT_MONTH));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -167,6 +167,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return FULL_DATE.format(dateTime);
+        return DATE_TIME_FORMATTER.format(dateTime);
     }
 }
