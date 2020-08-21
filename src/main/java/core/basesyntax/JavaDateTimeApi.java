@@ -1,6 +1,13 @@
 package core.basesyntax;
 
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
@@ -50,8 +57,9 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            return dateParams.length == 3 ?
-                    Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2])) : Optional.empty();
+            return dateParams.length == 3
+                    ? Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]))
+                    : Optional.empty();
         } catch (DateTimeException e) {
             return Optional.empty();
         }
