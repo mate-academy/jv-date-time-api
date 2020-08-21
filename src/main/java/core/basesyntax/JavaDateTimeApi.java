@@ -19,6 +19,7 @@ public class JavaDateTimeApi {
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
 
     public static final String TWO_HOURS_PLUS = "+02:00";
+
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -34,11 +35,16 @@ public class JavaDateTimeApi {
     public String todayDate(DateTimePart datePart) {
         LocalDate now = LocalDate.now();
         switch (datePart) {
-            case YEAR: return String.valueOf(now.getYear());
-            case MONTH: return String.valueOf(now.getMonth());
-            case DAY: return String.valueOf(now.getDayOfMonth());
-            case FULL: return String.valueOf(now);
-            default: throw new DateTimeException("Unsupported date format [" + datePart + "]");
+            case YEAR:
+                return String.valueOf(now.getYear());
+            case MONTH:
+                return String.valueOf(now.getMonth());
+            case DAY:
+                return String.valueOf(now.getDayOfMonth());
+            case FULL:
+                return String.valueOf(now);
+            default:
+                throw new DateTimeException("Unsupported date format [" + datePart + "]");
         }
     }
 
@@ -107,6 +113,7 @@ public class JavaDateTimeApi {
     /**
      * Дана дата в строковом формате и временная зона.
      * Верните LocalDateTime в этой временной зоне.
+     *
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
@@ -132,7 +139,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-           return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (Exception e) {
             return Optional.empty();
         }
