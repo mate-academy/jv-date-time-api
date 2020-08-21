@@ -13,14 +13,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter DATETIME_FULL = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter DATETIME_YEAR = DateTimeFormatter
-            .ofPattern("yyyy");
-    private static final DateTimeFormatter DATETIME_MONTH = DateTimeFormatter
-            .ofPattern("LL");
-    private static final DateTimeFormatter DATETIME_DAY = DateTimeFormatter
-            .ofPattern("dd");
     private static final DateTimeFormatter DATETIME_CUSTOM = DateTimeFormatter
             .ofPattern("d MMM yyyy");
     private static final DateTimeFormatter DATETIME_SPECIAL = DateTimeFormatter
@@ -44,16 +36,16 @@ public class JavaDateTimeApi {
         LocalDate localDate = LocalDate.now();
 
         if (datePart == DateTimePart.FULL) {
-            return localDate.format(DATETIME_FULL);
+            return localDate.toString();
         }
         if (datePart == DateTimePart.YEAR) {
-            return localDate.format(DATETIME_YEAR);
+            return String.valueOf(localDate.getYear());
         }
         if (datePart == DateTimePart.MONTH) {
-            return localDate.format(DATETIME_MONTH);
+            return localDate.getMonth().toString();
         }
         if (datePart == DateTimePart.DAY) {
-            return localDate.format(DATETIME_DAY);
+            return String.valueOf(localDate.getDayOfMonth());
         } else {
             throw new DateTimeException("Incorrect format");
         }
@@ -151,7 +143,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date,DATETIME_WITHOUT_SPACES));
+            return Optional.of(LocalDate.parse(date, DATETIME_WITHOUT_SPACES));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -163,7 +155,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date,DATETIME_CUSTOM));
+            return Optional.of(LocalDate.parse(date, DATETIME_CUSTOM));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
