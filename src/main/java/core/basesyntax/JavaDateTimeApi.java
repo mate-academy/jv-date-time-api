@@ -13,12 +13,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter DATETIME_CUSTOM = DateTimeFormatter
-            .ofPattern("d MMM yyyy");
-    private static final DateTimeFormatter DATETIME_SPECIAL = DateTimeFormatter
-            .ofPattern("dd LLLL yyyy HH:mm");
-    private static final DateTimeFormatter DATETIME_WITHOUT_SPACES = DateTimeFormatter
-            .ofPattern("yyyyMMdd");
     private static final String UKRAINE_OFFSET = "+02:00";
 
     /**
@@ -143,7 +137,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DATETIME_WITHOUT_SPACES));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -155,7 +149,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DATETIME_CUSTOM));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy")));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -168,6 +162,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DATETIME_SPECIAL);
+        return dateTime.format(DateTimeFormatter.ofPattern("dd LLLL yyyy HH:mm"));
     }
 }
