@@ -10,14 +10,15 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class JavaDateTimeApi {
-    private static final LocalDate TODAY = LocalDate.now();
     private static final ZoneOffset UKRAINE_ZONE_OFFSET = ZoneOffset.of("+02:00");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER_WITH_MONTH_OF_YEAR_BY_WORDS
+            = DateTimeFormatter.ofPattern("d MMM yyyy").withLocale(Locale.ENGLISH);
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
+            = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm").withLocale(Locale.ENGLISH);
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -31,15 +32,16 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate today = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return String.valueOf(TODAY);
+                return String.valueOf(today);
             case DAY:
-                return String.valueOf(TODAY.getDayOfMonth());
+                return String.valueOf(today.getDayOfMonth());
             case YEAR:
-                return String.valueOf(TODAY.getYear());
+                return String.valueOf(today.getYear());
             case MONTH:
-                return String.valueOf(TODAY.getMonth());
+                return String.valueOf(today.getMonth());
             default:
                 throw new DateTimeException("Illegal DateTimePart");
         }
@@ -54,11 +56,9 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        String date = Arrays.stream(dateParams).map(String::valueOf)
-                .collect(Collectors.joining("-"));
         try {
-            return Optional.of(LocalDate.parse(date));
-        } catch (DateTimeParseException e) {
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
@@ -103,9 +103,10 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.equals(TODAY) ? String.format("%s is today", someDate)
-                : someDate.isBefore(TODAY) ? String.format("%s is before %s", someDate, TODAY)
-                        : String.format("%s is after %s", someDate, TODAY);
+        LocalDate today = LocalDate.now();
+        return someDate.equals(today) ? String.format("%s is today", someDate)
+                : someDate.isBefore(today) ? String.format("%s is before %s", someDate, today)
+                : String.format("%s is after %s", someDate, today);
     }
 
     /**
@@ -137,7 +138,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -150,7 +151,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(
-                    date, DateTimeFormatter.ofPattern("dd MMM yyyy").withLocale(Locale.ENGLISH)));
+                    date, DATE_TIME_FORMATTER_WITH_MONTH_OF_YEAR_BY_WORDS));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -163,7 +164,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(
-                DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm").withLocale(Locale.ENGLISH));
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
