@@ -15,10 +15,10 @@ public class JavaDateTimeApi {
     public static final DateTimeFormatter DD_MMM_YYYY_ENGLISH =
             DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
 
-    public static final DateTimeFormatter YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyyMMdd");
-
     public static final DateTimeFormatter DD_MMMM_YYYY_HH_MM_ENGLISH =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+
+    public static final String TWO_HOURS_PLUS = "+02:00";
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -123,7 +123,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(TWO_HOURS_PLUS));
     }
 
     /**
@@ -132,7 +132,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, YYYY_MM_DD));
+           return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -157,6 +157,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return DD_MMMM_YYYY_HH_MM_ENGLISH.format(dateTime);
+        return dateTime.format(DD_MMMM_YYYY_HH_MM_ENGLISH);
     }
 }
