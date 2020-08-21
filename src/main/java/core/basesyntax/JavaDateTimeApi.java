@@ -1,37 +1,31 @@
 package core.basesyntax;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class JavaDateTimeApi {
-    private static final LocalDate LOCAL_DATE = LocalDate.now();
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMM yyyy", Locale.ENGLISH);
+    private static final ZoneOffset ZONE_OFFSET_UKRAINE = ZoneOffset.of("+02:00");
 
     public String todayDate(DateTimePart datePart) {
+        LocalDate currentDate = LocalDate.now();
         switch (datePart) {
             case DAY:
-                return "" + LOCAL_DATE.getDayOfMonth();
+                return "" + currentDate.getDayOfMonth();
             case MONTH:
-                return LOCAL_DATE.getMonth().toString();
+                return currentDate.getMonth().toString();
             case YEAR:
-                return "" + LOCAL_DATE.getYear();
+                return "" + currentDate.getYear();
             case FULL:
-                return LOCAL_DATE.toString();
+                return currentDate.toString();
             default:
                 throw new IllegalArgumentException("The required parameter is missing");
         }
@@ -48,15 +42,15 @@ public class JavaDateTimeApi {
     }
 
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return localTime.plus(hoursToAdd, ChronoUnit.HOURS);
+        return localTime.plusHours(hoursToAdd);
     }
 
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        return localTime.plus(minutesToAdd, ChronoUnit.MINUTES);
+        return localTime.plusMinutes(minutesToAdd);
     }
 
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        return localTime.plus(secondsToAdd, ChronoUnit.SECONDS);
+        return localTime.plusSeconds(secondsToAdd);
     }
 
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
@@ -64,11 +58,12 @@ public class JavaDateTimeApi {
     }
 
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isAfter(LOCAL_DATE)) {
-            return String.format("%s is after %s", someDate, LOCAL_DATE);
+        LocalDate currentDate = LocalDate.now();
+        if (someDate.isAfter(currentDate)) {
+            return String.format("%s is after %s", someDate, currentDate);
         }
-        if (someDate.isBefore(LOCAL_DATE)) {
-            return String.format("%s is before %s", someDate, LOCAL_DATE);
+        if (someDate.isBefore(currentDate)) {
+            return String.format("%s is before %s", someDate, currentDate);
         }
         return String.format("%s is today", someDate);
     }
@@ -78,7 +73,7 @@ public class JavaDateTimeApi {
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZONE_OFFSET_UKRAINE);
     }
 
     public Optional<LocalDate> parseDate(String date) {
@@ -98,6 +93,6 @@ public class JavaDateTimeApi {
     }
 
     public String formatDate(LocalDateTime dateTime) {
-        return DATE_TIME_FORMATTER.format(dateTime);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
