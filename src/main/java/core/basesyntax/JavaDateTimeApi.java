@@ -9,13 +9,12 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String OFFSET_UKRAINE = "+02:00";
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
-            .ofPattern("dd MMM yyyy", Locale.ENGLISH);
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
 
@@ -55,12 +54,10 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length != 3) {
-            return Optional.empty();
-        }
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException e) {
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
             return Optional.empty();
         }
     }
@@ -154,7 +151,9 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter
+                    .ofLocalizedDate(FormatStyle.MEDIUM)
+                    .localizedBy(Locale.UK)));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
