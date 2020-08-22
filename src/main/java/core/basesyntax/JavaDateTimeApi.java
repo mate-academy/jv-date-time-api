@@ -23,8 +23,6 @@ public class JavaDateTimeApi {
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter YEAR_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy");
-    private static final DateTimeFormatter MONTH_DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("MM");
     private static final DateTimeFormatter DAY_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("dd");
     private static final DateTimeFormatter ENG_FORMATTER =
@@ -50,7 +48,7 @@ public class JavaDateTimeApi {
             case YEAR:
                 return DANE_NOW.format(YEAR_DATE_FORMATTER);
             case MONTH:
-                return DANE_NOW.format(MONTH_DATE_FORMATTER);
+                return DANE_NOW.getMonth().toString();
             case DAY:
                 return DANE_NOW.format(DAY_DATE_FORMATTER);
             default:
@@ -68,7 +66,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         if (isValidArrayDate(dateParams)) {
-            LocalDate date = LocalDate.of(dateParams[YEAR], dateParams[MONTH], dateParams[DAY]);
+            LocalDate date =
+                    LocalDate.of(dateParams[YEAR], dateParams[MONTH], dateParams[DAY]);
             return Optional.of(date);
         }
         return Optional.empty();
