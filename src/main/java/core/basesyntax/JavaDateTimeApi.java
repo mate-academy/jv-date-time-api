@@ -18,13 +18,19 @@ public class JavaDateTimeApi {
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
      * @param datePart Запрос на часть даты или всю дата целиком:
-     *                 - FULL - текущая дата целиком год, месяц, день (число месяца)
-     *                 в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
-     *                 - YEAR - текущий год;
-     *                 - MONTH - название текущего месяца;
-     *                 - DAY - текущий день (число месяца);
-     *                 В любом другом случае бросить DateTimeException
+     * - FULL - текущая дата целиком год, месяц, день (число месяца)
+     * в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
+     * - YEAR - текущий год;
+     * - MONTH - название текущего месяца;
+     * - DAY - текущий день (число месяца);
+     * В любом другом случае бросить DateTimeException
      **/
+    public static final ZoneOffset ZONE = ZoneOffset.ofHours(2);
+    public static final DateTimeFormatter FIRST_FORMATTER = DateTimeFormatter
+            .ofPattern("dd MMM uuuu", Locale.ENGLISH);
+    public static final DateTimeFormatter SECOND_FORMATTER = DateTimeFormatter
+            .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
@@ -124,7 +130,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(2));
+        return OffsetDateTime.of(localTime, ZONE);
     }
 
     /**
@@ -145,8 +151,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("dd MMM uuuu", Locale.ENGLISH)));
+            return Optional.of(LocalDate.parse(date, FIRST_FORMATTER));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -159,6 +164,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH));
+        return dateTime.format(SECOND_FORMATTER);
     }
 }
