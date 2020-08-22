@@ -182,7 +182,8 @@ public class JavaDateTimeApi {
     }
 
     private boolean isValidArrayDate(Integer[] dateParams) {
-        return dateParams.length == 3 && dateParams[YEAR] > 0
+        return dateParams.length == 3
+                && dateParams[YEAR] > 0
                 && dateParams[MONTH] > 0
                 && dateParams[MONTH] <= 12
                 && dateParams[DAY] > 0
