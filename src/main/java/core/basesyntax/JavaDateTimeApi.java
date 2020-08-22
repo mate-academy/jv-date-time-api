@@ -99,8 +99,9 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isAfter(now) ? someDate + " is after " + now : someDate.isBefore(now)
-                ? someDate + " is before " + now : someDate + " is today";
+        return someDate.isAfter(now) ? someDate + " is after " + now
+                : someDate.isBefore(now) ? someDate + " is before " + now
+                : someDate + " is today";
     }
 
     /**
