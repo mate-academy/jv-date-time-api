@@ -21,10 +21,6 @@ public class JavaDateTimeApi {
     private static final LocalDate DANE_NOW = LocalDate.now();
     private static final DateTimeFormatter FULL_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter YEAR_DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy");
-    private static final DateTimeFormatter DAY_DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("dd");
     private static final DateTimeFormatter ENG_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
     private static final DateTimeFormatter FUL_ENG_FORMATTER =
@@ -46,11 +42,11 @@ public class JavaDateTimeApi {
             case FULL:
                 return DANE_NOW.format(FULL_DATE_FORMATTER);
             case YEAR:
-                return DANE_NOW.format(YEAR_DATE_FORMATTER);
+                return Integer.toString(DANE_NOW.getYear());
             case MONTH:
                 return DANE_NOW.getMonth().toString();
             case DAY:
-                return DANE_NOW.format(DAY_DATE_FORMATTER);
+                return Integer.toString(DANE_NOW.getDayOfMonth());
             default:
                 throw new DateTimeException("Unusual type");
         }
