@@ -85,13 +85,13 @@ public class JavaDateTimeApi {
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
         return LocalDateTime
                 .from(ZonedDateTime.parse(dateInString)
-                .withZoneSameInstant(ZoneId.of(zone)));
+                        .withZoneSameInstant(ZoneId.of(zone)));
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        ZonedDateTime uaTime = ZonedDateTime.of(localTime, ZONE);
-        ZonedDateTime someTime = uaTime.withZoneSameInstant(ZONE);
-        return OffsetDateTime.from(someTime);
+        return OffsetDateTime
+                .from(ZonedDateTime.of(localTime, ZONE)
+                        .withZoneSameInstant(ZONE));
     }
 
     public Optional<LocalDate> parseDate(String date) {
