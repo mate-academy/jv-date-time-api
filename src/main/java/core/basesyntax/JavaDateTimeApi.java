@@ -18,12 +18,9 @@ public class JavaDateTimeApi {
     private static final int MONTH = 1;
     private static final int DAY = 2;
     private static final ZoneOffset UA_TIME_ZONE = ZoneOffset.of("+02:00");
-    private static final LocalDate DANE_NOW = LocalDate.now();
-    private static final DateTimeFormatter FULL_DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter ENG_FORMATTER =
+    private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter FUL_ENG_FORMATTER =
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
 
     /**
@@ -38,15 +35,16 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate dateNow = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return DANE_NOW.format(FULL_DATE_FORMATTER);
+                return dateNow.toString();
             case YEAR:
-                return Integer.toString(DANE_NOW.getYear());
+                return Integer.toString(dateNow.getYear());
             case MONTH:
-                return DANE_NOW.getMonth().toString();
+                return dateNow.getMonth().toString();
             case DAY:
-                return Integer.toString(DANE_NOW.getDayOfMonth());
+                return Integer.toString(dateNow.getDayOfMonth());
             default:
                 throw new DateTimeException("Unusual type");
         }
@@ -61,10 +59,12 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (isValidArrayDate(dateParams)) {
+        try {
             LocalDate date =
                     LocalDate.of(dateParams[YEAR], dateParams[MONTH], dateParams[DAY]);
             return Optional.of(date);
+        } catch (DateTimeException | IndexOutOfBoundsException e) {
+            System.out.println("Check input Array");
         }
         return Optional.empty();
     }
@@ -109,11 +109,12 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isAfter(DANE_NOW)) {
-            return someDate + " is after " + DANE_NOW;
+        LocalDate dateNow = LocalDate.now();
+        if (someDate.isAfter(dateNow)) {
+            return someDate + " is after " + dateNow;
         }
-        if (someDate.isBefore(DANE_NOW)) {
-            return someDate + " is before " + DANE_NOW;
+        if (someDate.isBefore(dateNow)) {
+            return someDate + " is before " + dateNow;
         }
         return someDate + " is today";
     }
@@ -161,7 +162,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, ENG_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -174,15 +175,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return FUL_ENG_FORMATTER.format(dateTime);
-    }
-
-    private boolean isValidArrayDate(Integer[] dateParams) {
-        return dateParams.length == 3
-                && dateParams[YEAR] > 0
-                && dateParams[MONTH] > 0
-                && dateParams[MONTH] <= 12
-                && dateParams[DAY] > 0
-                && dateParams[DAY] <= 31;
+        return DATE_TIME_FORMATTER.format(dateTime);
     }
 }
