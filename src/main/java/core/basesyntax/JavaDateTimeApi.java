@@ -14,8 +14,10 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String UKRAINE_TIME_ZONE = "+02:00";
-    private static final DateTimeFormatter CUSTOM_FORMATTER = DateTimeFormatter.ofPattern("d MMM yyyy");
-    private static final DateTimeFormatter INFORMATIVE_DATETIME_FORMAT = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+    private static final DateTimeFormatter CUSTOM_FORMATTER
+            = DateTimeFormatter.ofPattern("d MMM yyyy");
+    private static final DateTimeFormatter INFORMATIVE_DATETIME_FORMAT
+            = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -30,6 +32,9 @@ public class JavaDateTimeApi {
      **/
     public String todayDate(DateTimePart datePart) {
         LocalDate currentDate = LocalDate.now();
+        if (datePart.equals(DateTimePart.FULL)) {
+            return currentDate.toString();
+        }
         if (datePart.equals(DateTimePart.DAY)) {
             return String.valueOf(currentDate.getDayOfMonth());
         }
@@ -39,7 +44,7 @@ public class JavaDateTimeApi {
         if (datePart.equals(DateTimePart.YEAR)) {
             return String.valueOf(currentDate.getYear());
         }
-        return currentDate.toString();
+        throw new DateTimeException("Illegal datePart value");
     }
 
     /**
@@ -53,7 +58,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (IndexOutOfBoundsException | DateTimeException e) {
+        } catch (IndexOutOfBoundsException | DateTimeException problemWithParameters) {
             return Optional.empty();
         }
     }
@@ -107,6 +112,7 @@ public class JavaDateTimeApi {
     /**
      * Дана дата в строковом формате и временная зона.
      * Верните LocalDateTime в этой временной зоне.
+     *
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
@@ -134,7 +140,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException unparsableString) {
             return Optional.empty();
         }
     }
@@ -146,7 +152,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date, CUSTOM_FORMATTER));
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException unparsableString) {
             return Optional.empty();
         }
     }
