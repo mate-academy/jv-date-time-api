@@ -41,7 +41,7 @@ public class JavaDateTimeApi {
             case DAY:
                 return String.valueOf(now.getDayOfMonth());
             default:
-                return "today";
+                throw new DateTimeException("Invalid date format");
         }
     }
 
