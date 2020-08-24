@@ -132,12 +132,11 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            StringBuilder result = new StringBuilder(date.substring(0, 4))
-                    .append("-")
-                    .append(date, 4, 6)
-                    .append("-")
-                    .append(date, 6, 8);
-            return Optional.of(LocalDate.parse(result.toString()));
+            return Optional.of(LocalDate.parse(date.substring(0, 4)
+                    .concat("-")
+                    .concat(date.substring(4, 6))
+                    .concat("-")
+                    .concat(date.substring(6, 8))));
         } catch (RuntimeException exception) {
             return Optional.empty();
         }
