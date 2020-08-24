@@ -12,13 +12,9 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter BASIC_ISO_DATE = DateTimeFormatter
-            .ofPattern("yyyyMMdd");
-    private static final DateTimeFormatter ISO_LOCAL_DATE = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm");
-    private static final DateTimeFormatter PARSE_FORMATTER = DateTimeFormatter
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
             .ofPattern("d MMM yyyy");
 
     /**
@@ -35,7 +31,7 @@ public class JavaDateTimeApi {
 
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
-            case FULL : return LocalDateTime.now().format(ISO_LOCAL_DATE);
+            case FULL : return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
             case YEAR : return String.valueOf(LocalDateTime.now().getYear());
             case MONTH : return String.valueOf(LocalDateTime.now().getMonthValue());
             case DAY : return String.valueOf(LocalDateTime.now().getDayOfMonth());
@@ -141,7 +137,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, BASIC_ISO_DATE));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -153,7 +149,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, PARSE_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
