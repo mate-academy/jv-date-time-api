@@ -1,12 +1,13 @@
 package core.basesyntax;
 
 import java.time.DateTimeException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
@@ -16,44 +17,41 @@ public class JavaDateTimeApi {
     private static final int FIRST_INDEX = 0;
     private static final int SECOND_INDEX = 1;
     private static final int THIRD_INDEX = 2;
-    private static final int MAX_MONTH = 12;
-    private static final int MAX_DAYS = 31;
-    private static final ZoneId ZONE = ZoneId.of("+02:00");
-    private static final LocalDate NOW = LocalDate.now();
-    private static final DateTimeFormatter NATIVE
+    private static final ZoneOffset UKRAINE_TIMEZONE = ZoneOffset.of("+02:00");
+    private static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter FORMAT_TIME
-            = DateTimeFormatter.ofPattern("dd LLLL yyyy HH:mm", Locale.ENGLISH);
     private static final DateTimeFormatter DATE_TIME_FORMATTER
-            = DateTimeFormatter.ofPattern("yyyyMMdd", Locale.ENGLISH);
+            = DateTimeFormatter.ofPattern("dd LLLL yyyy HH:mm", Locale.ENGLISH);
 
     public String todayDate(DateTimePart datePart) {
+        LocalDate now = LocalDate.now();
+        String currentDate;
         switch (datePart) {
             case FULL:
-                NOW.toString();
+                currentDate = now.toString();
                 break;
             case DAY:
-                NOW.getDayOfMonth();
+                currentDate = String.valueOf(now.getDayOfMonth());
                 break;
             case YEAR:
-                NOW.getYear();
+                currentDate = String.valueOf(now.getYear());
                 break;
             case MONTH:
-                NOW.getMonthValue();
+                currentDate = String.valueOf(now.getMonthValue());
                 break;
             default:
                 throw new DateTimeException("It's not correct data/time format");
         }
-        return String.valueOf(NOW);
+        return currentDate;
     }
 
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        return dateParams.length == 0
-                || dateParams[SECOND_INDEX] > MAX_MONTH
-                || dateParams[THIRD_INDEX] > MAX_DAYS
-                ? Optional.empty()
-                : Optional.of(LocalDate.of(dateParams[FIRST_INDEX],
-                dateParams[SECOND_INDEX], dateParams[THIRD_INDEX]));
+        try {
+            return Optional.of(LocalDate.of(dateParams[FIRST_INDEX],
+                    dateParams[SECOND_INDEX], dateParams[THIRD_INDEX]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            return Optional.empty();
+        }
     }
 
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
@@ -73,28 +71,25 @@ public class JavaDateTimeApi {
     }
 
     public String beforeOrAfter(LocalDate someDate) {
-        return NOW.isAfter(someDate)
-                ? someDate + " is before " + NOW
-                : NOW.equals(someDate)
+        LocalDate now = LocalDate.now();
+        return now.isAfter(someDate)
+                ? someDate + " is before " + now
+                : now.equals(someDate)
                 ? someDate + " is today"
-                : someDate + " is after " + NOW;
+                : someDate + " is after " + now;
     }
 
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return LocalDateTime
-                .from(ZonedDateTime.parse(dateInString)
-                        .withZoneSameInstant(ZoneId.of(zone)));
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime
-                .from(ZonedDateTime.of(localTime, ZONE)
-                        .withZoneSameInstant(ZONE));
+        return OffsetDateTime.of(localTime, UKRAINE_TIMEZONE);
     }
 
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DATE_TIME_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -102,13 +97,13 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, NATIVE));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
     }
 
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(FORMAT_TIME);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
