@@ -15,14 +15,11 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
 
-    private static LocalDate localDate = LocalDate.now();
     private static final ZoneOffset UKRAINIAN_OFFSET = ZoneOffset.of("+02:00");
-    private static final DateTimeFormatter DD_MMMM_Y_HH_MM
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM y HH:mm", Locale.ENGLISH);
-    private static final DateTimeFormatter DD_MMM_YYYY
+    private static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter YYYYMMDD
-            = DateTimeFormatter.ofPattern("yyyyMMdd", Locale.ENGLISH);
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -62,8 +59,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            localDate = LocalDate.of(dateParams[0], dateParams[1], dateParams[2]);
-            return Optional.ofNullable(localDate);
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
             return Optional.empty();
         }
@@ -109,7 +105,7 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        localDate = LocalDate.now();
+        LocalDate localDate = LocalDate.now();
         StringBuilder builder = new StringBuilder(String.valueOf(someDate));
         builder.append(someDate.isAfter(localDate)
                 ? " is after " + localDate
@@ -147,8 +143,9 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> parseDate(String date) {
+        LocalDate localDate;
         try {
-            localDate = LocalDate.parse(date, YYYYMMDD);
+            localDate = LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
         } catch (DateTimeParseException e) {
             localDate = null;
         }
@@ -160,8 +157,9 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
+        LocalDate localDate;
         try {
-            localDate = LocalDate.parse(date, DD_MMM_YYYY);
+            localDate = LocalDate.parse(date, DATE_FORMATTER);
             return Optional.ofNullable(localDate);
         } catch (DateTimeParseException e) {
             return Optional.empty();
@@ -175,6 +173,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return DD_MMMM_Y_HH_MM.format(dateTime);
+        return DATE_TIME_FORMATTER.format(dateTime);
     }
 }
