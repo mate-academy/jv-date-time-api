@@ -42,7 +42,7 @@ public class JavaDateTimeApi {
             case DAY:
                 return String.valueOf(date.getDayOfMonth());
             default:
-                throw new DateTimeException("DateTimeException");
+                throw new DateTimeException("Incorrect value of datePart");
         }
     }
 
@@ -58,7 +58,7 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+            System.out.println("Something went wrong: " + e.getMessage());
         }
         return Optional.empty();
     }
@@ -103,8 +103,9 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isAfter(LocalDate.now()) ? someDate + " is after " + LocalDate.now()
-                : someDate.isBefore(LocalDate.now()) ? someDate + " is before " + LocalDate.now()
+        LocalDate currentDate = LocalDate.now();
+        return someDate.isAfter(currentDate) ? someDate + " is after " + currentDate
+                : someDate.isBefore(currentDate) ? someDate + " is before " + currentDate
                 : someDate + " is today";
     }
 
