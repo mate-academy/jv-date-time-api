@@ -19,9 +19,9 @@ public class JavaDateTimeApi {
     private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM y HH:mm", Locale.ENGLISH);
     private static final ZoneOffset UKRAINE_TIMEZONE_OFFSET = ZoneOffset.of("+02:00");
-    private static final LocalDate today = LocalDate.now();
 
     public String todayDate(DateTimePart datePart) {
+        LocalDate today = LocalDate.now();
         switch (datePart) {
             case FULL:
                 return today.toString();
@@ -62,6 +62,7 @@ public class JavaDateTimeApi {
     }
 
     public String beforeOrAfter(LocalDate someDate) {
+        LocalDate today = LocalDate.now();
         if (today.equals(someDate)) {
             return someDate + " is today";
         }
