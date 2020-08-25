@@ -1,22 +1,23 @@
 package core.basesyntax;
 
 import java.time.DateTimeException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter ENGLISH_DD_MM_YY_FORMAT
+    private static final DateTimeFormatter DATE_TIME_MINUTE_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter ENGLISH_DD_MM_YY_MM_FORMAT
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
-    private static final String PLUS_TWO_HOURS = "+02:00";
+    private static final String UKRAINE_OFFSET = "+02:00";
 
     public String todayDate(DateTimePart datePart) {
         LocalDate currentDate = LocalDate.now();
@@ -61,11 +62,11 @@ public class JavaDateTimeApi {
     }
 
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return ZonedDateTime.parse(dateInString + "[" + zone + "]").toLocalDateTime();
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of(PLUS_TWO_HOURS));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(UKRAINE_OFFSET));
     }
 
     public Optional<LocalDate> parseDate(String date) {
@@ -78,13 +79,13 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, ENGLISH_DD_MM_YY_FORMAT));
+            return Optional.of(LocalDate.parse(date, DATE_TIME_MINUTE_FORMATTER));
         } catch (Exception e) {
             return Optional.empty();
         }
     }
 
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(ENGLISH_DD_MM_YY_MM_FORMAT);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
