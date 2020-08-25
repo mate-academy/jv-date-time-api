@@ -19,6 +19,7 @@ public class JavaDateTimeApi {
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
     private static final ZoneOffset UA_TIME_ZONE = ZoneOffset.of("+02:00");
+    private static final String FORMATTERS  = "dd MMMM y HH:mm";
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -181,7 +182,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         DateTimeFormatter dateTimeFormatter
-                = DateTimeFormatter.ofPattern("dd MMMM y HH:mm", Locale.ENGLISH);
+                = DateTimeFormatter.ofPattern(FORMATTERS, Locale.ENGLISH);
         return dateTimeFormatter.format(dateTime);
     }
 }
