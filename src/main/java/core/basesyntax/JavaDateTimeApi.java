@@ -1,12 +1,13 @@
 package core.basesyntax;
 
 import java.time.DateTimeException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
@@ -14,10 +15,10 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String OFFSET_UA = "+02:00";
-    private static final String DATE_WITHOUT_SEPARATORS_PATTERN = "yyyyMMdd";
-    private static final String REVERSE_FULL_DATE_PATTERN = "dd MMMM yyyy HH:mm";
-    private static final String DAY_MONTH_YEAR_PATTERN = "d MMM yyyy";
-    private DateTimeFormatter formatter;
+    private static final DateTimeFormatter FORMATTER_DAY_MONTH_YEAR
+            = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.US);
+    private static final DateTimeFormatter FORMATTER_REVERSE_FULL_DATE
+            = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.US);
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -42,7 +43,7 @@ public class JavaDateTimeApi {
             case DAY:
                 return String.valueOf(date.getDayOfMonth());
             default:
-                throw new DateTimeException("");
+                throw new DateTimeException("Invalid argument");
         }
     }
 
@@ -57,9 +58,12 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
-            return Optional.empty();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Wrong number of arguments passed");
+        } catch (DateTimeException e) {
+            System.out.println("Invalid argument");
         }
+        return Optional.empty();
     }
 
     /**
@@ -114,8 +118,7 @@ public class JavaDateTimeApi {
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateInString + "[" + zone + "]");
-        return LocalDateTime.from(zonedDateTime);
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     /**
@@ -137,9 +140,8 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> parseDate(String date) {
-        formatter = DateTimeFormatter.ofPattern(DATE_WITHOUT_SEPARATORS_PATTERN);
         try {
-            return Optional.of(LocalDate.parse(date, formatter));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException ignore) {
             return Optional.empty();
         }
@@ -150,9 +152,8 @@ public class JavaDateTimeApi {
      * Необходимо вернуть Optional даты в LocalDate формате
      */
     public Optional<LocalDate> customParseDate(String date) {
-        formatter = DateTimeFormatter.ofPattern(DAY_MONTH_YEAR_PATTERN, Locale.US);
         try {
-            return Optional.of(LocalDate.parse(date, formatter));
+            return Optional.of(LocalDate.parse(date, FORMATTER_DAY_MONTH_YEAR));
         } catch (DateTimeParseException ignore) {
             return Optional.empty();
         }
@@ -165,7 +166,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        formatter = DateTimeFormatter.ofPattern(REVERSE_FULL_DATE_PATTERN, Locale.US);
-        return formatter.format(dateTime);
+        return FORMATTER_REVERSE_FULL_DATE.format(dateTime);
     }
 }
