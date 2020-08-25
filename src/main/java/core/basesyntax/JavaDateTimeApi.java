@@ -20,7 +20,6 @@ public class JavaDateTimeApi {
     private static final DateTimeFormatter CUSTOM_DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final ZoneOffset UKRAINE_OFFSET = ZoneOffset.of("+02:00");
-    private static final LocalDate LOCAL_DATE = LocalDate.now();
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -34,15 +33,16 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case DAY:
-                return Integer.toString(LOCAL_DATE.getDayOfMonth());
+                return Integer.toString(localDate.getDayOfMonth());
             case FULL:
-                return LOCAL_DATE.toString();
+                return localDate.toString();
             case YEAR:
-                return Integer.toString(LOCAL_DATE.getYear());
+                return Integer.toString(localDate.getYear());
             case MONTH:
-                return LOCAL_DATE.getMonth().toString();
+                return localDate.getMonth().toString();
             default:
                 throw new DateTimeException("Incorrect datePart!");
         }
@@ -104,8 +104,9 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isAfter(LOCAL_DATE) ? someDate + " is after " + LOCAL_DATE
-                : someDate.isBefore(LOCAL_DATE) ? someDate + " is before " + LOCAL_DATE
+        LocalDate localDate = LocalDate.now();
+        return someDate.isAfter(localDate) ? someDate + " is after " + localDate
+                : someDate.isBefore(localDate) ? someDate + " is before " + localDate
                 : someDate + " is today";
     }
 
