@@ -28,8 +28,7 @@ public class JavaDateTimeApi {
         String currentDate;
         switch (datePart) {
             case FULL:
-                currentDate = now.toString();
-                break;
+                return now.toString();
             case DAY:
                 currentDate = String.valueOf(now.getDayOfMonth());
                 break;
@@ -37,7 +36,7 @@ public class JavaDateTimeApi {
                 currentDate = String.valueOf(now.getYear());
                 break;
             case MONTH:
-                currentDate = String.valueOf(now.getMonthValue());
+                currentDate = String.valueOf(now.getMonth());
                 break;
             default:
                 throw new DateTimeException("It's not correct data/time format");
@@ -50,8 +49,9 @@ public class JavaDateTimeApi {
             return Optional.of(LocalDate.of(dateParams[FIRST_INDEX],
                     dateParams[SECOND_INDEX], dateParams[THIRD_INDEX]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
-            return Optional.empty();
+            System.out.println("Wrong format!!");
         }
+        return Optional.empty();
     }
 
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
