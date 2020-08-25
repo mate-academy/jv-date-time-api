@@ -25,23 +25,18 @@ public class JavaDateTimeApi {
 
     public String todayDate(DateTimePart datePart) {
         LocalDate now = LocalDate.now();
-        String currentDate;
         switch (datePart) {
             case FULL:
                 return now.toString();
             case DAY:
-                currentDate = String.valueOf(now.getDayOfMonth());
-                break;
+                return String.valueOf(now.getDayOfMonth());
             case YEAR:
-                currentDate = String.valueOf(now.getYear());
-                break;
+                return String.valueOf(now.getYear());
             case MONTH:
-                currentDate = String.valueOf(now.getMonth());
-                break;
+                return String.valueOf(now.getMonth());
             default:
                 throw new DateTimeException("It's not correct data/time format");
         }
-        return currentDate;
     }
 
     public Optional<LocalDate> getDate(Integer[] dateParams) {
