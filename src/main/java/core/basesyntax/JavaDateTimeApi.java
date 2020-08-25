@@ -13,8 +13,10 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    public static final DateTimeFormatter FORMATTER
+    public static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
+    public static final DateTimeFormatter DATE_TIME_FORMATTER
+            = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     public static final ZoneOffset UA_OFFSET = ZoneOffset.of("+02:00");
 
     /**
@@ -154,7 +156,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            LocalDate dateTime = LocalDate.parse(date, FORMATTER);
+            LocalDate dateTime = LocalDate.parse(date, DATE_FORMATTER);
             return Optional.of(dateTime);
         } catch (DateTimeException e) {
             e.printStackTrace();
@@ -169,8 +171,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
-        return dateTime.format(formatter);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
