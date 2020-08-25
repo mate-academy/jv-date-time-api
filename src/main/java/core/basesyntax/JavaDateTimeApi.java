@@ -58,9 +58,10 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (Exception e) {
-            return Optional.empty();
+        } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
+            System.out.println("We've got an error: " + e.getMessage());
         }
+        return Optional.empty();
     }
 
     /**
