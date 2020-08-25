@@ -17,7 +17,7 @@ public class JavaDateTimeApi {
     private static final String TIME_ZONE_OF_UKRAINE = "+02:00";
     private static final DateTimeFormatter CUSTOM_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.UK);
-    private static final DateTimeFormatter FORMAT_DATE_FORMATTER =
+    private static final DateTimeFormatter CUSTOM_DATE_TIME_FORMATTED =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.UK);
 
     /**
@@ -164,6 +164,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(FORMAT_DATE_FORMATTER);
+        return dateTime.format(CUSTOM_DATE_TIME_FORMATTED);
     }
 }
