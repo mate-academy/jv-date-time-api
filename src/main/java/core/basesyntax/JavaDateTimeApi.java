@@ -91,16 +91,18 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
-            return Optional.empty();
+            System.out.println("Wrong format!!");
         }
+        return Optional.empty();
     }
 
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeParseException e) {
-            return Optional.empty();
+            System.out.println("Wrong format!!");
         }
+        return Optional.empty();
     }
 
     public String formatDate(LocalDateTime dateTime) {
