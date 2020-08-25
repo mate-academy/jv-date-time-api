@@ -15,9 +15,9 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String TIME_ZONE_OF_UKRAINE = "+02:00";
-    private static final DateTimeFormatter CUSTOM_DATE =
+    private static final DateTimeFormatter CUSTOM_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.UK);
-    private static final DateTimeFormatter FORMAT_DATE =
+    private static final DateTimeFormatter FORMAT_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.UK);
 
     /**
@@ -57,12 +57,11 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            return dateParams.length == 3
-                    ? Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]))
-                    : Optional.empty();
-        } catch (DateTimeException e) {
-            return Optional.empty();
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (DateTimeException | IndexOutOfBoundsException e) {
+            System.out.println("Illegal date or index is out of bounds!");
         }
+        return Optional.empty();
     }
 
     /**
@@ -152,7 +151,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, CUSTOM_DATE));
+            return Optional.of(LocalDate.parse(date, CUSTOM_DATE_FORMATTER));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -165,6 +164,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(FORMAT_DATE);
+        return dateTime.format(FORMAT_DATE_FORMATTER);
     }
 }
