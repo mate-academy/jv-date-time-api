@@ -77,9 +77,7 @@ public class JavaDateTimeApi {
                 ? someDate + " is before " + NOW
                 : NOW.equals(someDate)
                 ? someDate + " is today"
-                : !NOW.isAfter(someDate)
-                ? someDate + " is after " + NOW
-                : null;
+                : someDate + " is after " + NOW;
     }
 
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
