@@ -17,17 +17,23 @@ public class JavaDateTimeApi {
 
     private static LocalDate localDate = LocalDate.now();
     private static final ZoneOffset UKRAINIAN_OFFSET = ZoneOffset.of("+02:00");
+    private static final DateTimeFormatter DD_MMMM_Y_HH_MM
+            = DateTimeFormatter.ofPattern("dd MMMM y HH:mm", Locale.ENGLISH);
+    private static final DateTimeFormatter DD_MMM_YYYY
+            = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
+    private static final DateTimeFormatter YYYYMMDD
+            = DateTimeFormatter.ofPattern("yyyyMMdd", Locale.ENGLISH);
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
      * @param datePart Запрос на часть даты или всю дата целиком:
-     * - FULL - текущая дата целиком год, месяц, день (число месяца)
-     * в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
-     * - YEAR - текущий год;
-     * - MONTH - название текущего месяца;
-     * - DAY - текущий день (число месяца);
-     * В любом другом случае бросить DateTimeException
+     *                 - FULL - текущая дата целиком год, месяц, день (число месяца)
+     *                 в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
+     *                 - YEAR - текущий год;
+     *                 - MONTH - название текущего месяца;
+     *                 - DAY - текущий день (число месяца);
+     *                 В любом другом случае бросить DateTimeException
      **/
 
     public String todayDate(DateTimePart datePart) {
@@ -57,10 +63,10 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             localDate = LocalDate.of(dateParams[0], dateParams[1], dateParams[2]);
+            return Optional.ofNullable(localDate);
         } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
-            localDate = null;
+            return Optional.empty();
         }
-        return Optional.ofNullable(localDate);
     }
 
     /**
@@ -142,7 +148,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            localDate = LocalDate.parse(date, YYYYMMDD);
         } catch (DateTimeParseException e) {
             localDate = null;
         }
@@ -155,8 +161,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            localDate = LocalDate.parse(date, DateTimeFormatter
-                    .ofPattern("d MMM yyyy", Locale.ENGLISH));
+            localDate = LocalDate.parse(date, DD_MMM_YYYY);
             return Optional.ofNullable(localDate);
         } catch (DateTimeParseException e) {
             return Optional.empty();
@@ -170,8 +175,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter formatter
-                = DateTimeFormatter.ofPattern("dd MMMM y HH:mm", Locale.ENGLISH);
-        return formatter.format(dateTime);
+        return DD_MMMM_Y_HH_MM.format(dateTime);
     }
 }
