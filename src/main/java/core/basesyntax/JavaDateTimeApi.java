@@ -10,16 +10,15 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class JavaDateTimeApi {
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
     private static final ZoneOffset UA_TIME_ZONE = ZoneOffset.of("+02:00");
-    private static final String FORMATTERS  = "dd MMMM y HH:mm";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
+            = DateTimeFormatter.ofPattern("dd MMMM y HH:mm", Locale.ENGLISH);
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -34,24 +33,18 @@ public class JavaDateTimeApi {
      **/
     public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
-        String result = "";
         switch (datePart) {
             case FULL:
-                result = localDate.toString();
-                break;
+                return localDate.toString();
             case YEAR:
-                result = String.valueOf(localDate.getYear());
-                break;
+                return String.valueOf(localDate.getYear());
             case MONTH:
-                result = localDate.getMonth().toString();
-                break;
+                return localDate.getMonth().toString();
             case DAY:
-                result = String.valueOf(localDate.getDayOfMonth());
-                break;
+                return String.valueOf(localDate.getDayOfMonth());
             default:
                 throw new DateTimeException("Something went wrong");
         }
-        return result;
     }
 
     /**
@@ -64,10 +57,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            String localDate = Arrays.stream(dateParams)
-                    .map(String::valueOf)
-                    .collect(Collectors.joining("-"));
-            return Optional.of(LocalDate.parse(localDate));
+            LocalDate date = LocalDate.of(dateParams[0], dateParams[1], dateParams[2]);
+            return Optional.of(date);
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
         }
@@ -181,8 +172,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter dateTimeFormatter
-                = DateTimeFormatter.ofPattern(FORMATTERS, Locale.ENGLISH);
-        return dateTimeFormatter.format(dateTime);
+        return DATE_TIME_FORMATTER.format(dateTime);
     }
 }
