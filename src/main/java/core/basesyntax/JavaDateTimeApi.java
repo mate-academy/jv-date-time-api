@@ -14,6 +14,10 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
 
+    private static final DateTimeFormatter DATE_FORMATTER
+            = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
+            = DateTimeFormatter.ofPattern("dd MMMM y HH:mm", Locale.ENGLISH);
     private static final ZoneOffset UKRAINE_TIMEZONE_OFFSET = ZoneOffset.of("+02:00");
     private static final LocalDate today = LocalDate.now();
 
@@ -24,7 +28,7 @@ public class JavaDateTimeApi {
             case YEAR:
                 return Integer.toString(today.getYear());
             case MONTH:
-                return Integer.toString(today.getMonthValue());
+                return today.getMonth().toString();
             case DAY:
                 return Integer.toString(today.getDayOfMonth());
             default:
@@ -35,9 +39,10 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (Exception e) {
-            return Optional.empty();
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            System.out.println(e);
         }
+        return Optional.empty();
     }
 
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
@@ -59,7 +64,8 @@ public class JavaDateTimeApi {
     public String beforeOrAfter(LocalDate someDate) {
         if (today.equals(someDate)) {
             return someDate + " is today";
-        } else if (today.isAfter(someDate)) {
+        }
+        if (today.isAfter(someDate)) {
             return someDate + " is before " + today;
         }
         return someDate + " is after " + today;
@@ -75,22 +81,23 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.ofNullable(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (Exception e) {
-            return Optional.empty();
+            System.out.println(e);
         }
+        return Optional.empty();
     }
 
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH)));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (Exception e) {
-            return Optional.empty();
+            System.out.println(e);
         }
+        return Optional.empty();
     }
 
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH));
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
