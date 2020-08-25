@@ -104,12 +104,10 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isAfter(LocalDate.now())) {
-            return someDate + " is after " + LocalDate.now();
-        } else if (someDate.isBefore(LocalDate.now())) {
-            return someDate + " is before " + LocalDate.now();
-        }
-        return someDate + " is today";
+        LocalDate now = LocalDate.now();
+        return someDate.isBefore(now) ? someDate + " is before " + now
+                : someDate.isAfter(now) ? someDate + " is after " + now
+                : someDate + " is today";
     }
 
     /**
@@ -167,10 +165,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        try {
-            return dateTime.format(DATE_TIME_FORMATTER);
-        } catch (DateTimeParseException e) {
-            return "Date can not be formatted!";
-        }
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
