@@ -83,18 +83,16 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
-            System.out.println(e);
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeException e) {
-            System.out.println(e);
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
     public String formatDate(LocalDateTime dateTime) {
