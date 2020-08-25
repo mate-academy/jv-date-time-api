@@ -32,15 +32,16 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate now = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return LocalDate.now().toString();
+                return now.toString();
             case YEAR:
-                return String.valueOf(LocalDate.now().getYear());
+                return String.valueOf(now.getYear());
             case MONTH:
-                return LocalDate.now().getMonth().toString();
+                return now.getMonth().toString();
             case DAY:
-                return String.valueOf(LocalDate.now().getDayOfMonth());
+                return String.valueOf(now.getDayOfMonth());
             default:
                 throw new DateTimeException("Illegal argument");
         }
