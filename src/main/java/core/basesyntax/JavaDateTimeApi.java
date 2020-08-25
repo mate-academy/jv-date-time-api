@@ -52,7 +52,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (Exception e) {
+        } catch (DateTimeException | IndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
@@ -133,7 +133,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
-        } catch (Exception e) {
+        } catch (DateTimeException e) {
             return Optional.empty();
         }
     }
@@ -146,7 +146,7 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter
                     .ofPattern("d MMM yyyy", Locale.ENGLISH)));
-        } catch (Exception e) {
+        } catch (DateTimeException e) {
             return Optional.empty();
         }
     }
