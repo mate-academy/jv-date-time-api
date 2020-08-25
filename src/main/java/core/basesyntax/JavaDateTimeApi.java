@@ -14,9 +14,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final int YEAR = 0;
-    private static final int MONTH = 1;
-    private static final int DAY = 2;
+    private static final int YEAR_INDEX = 0;
+    private static final int MONTH_INDEX = 1;
+    private static final int DAY_INDEX = 2;
     private static final ZoneOffset UA_TIME_ZONE = ZoneOffset.of("+02:00");
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
@@ -40,7 +40,7 @@ public class JavaDateTimeApi {
             case FULL:
                 return dateNow.toString();
             case YEAR:
-                return Integer.toString(dateNow.getYear());
+                return String.valueOf(dateNow.getYear());
             case MONTH:
                 return dateNow.getMonth().toString();
             case DAY:
@@ -61,7 +61,9 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             LocalDate date =
-                    LocalDate.of(dateParams[YEAR], dateParams[MONTH], dateParams[DAY]);
+                    LocalDate.of(dateParams[YEAR_INDEX],
+                            dateParams[MONTH_INDEX],
+                            dateParams[DAY_INDEX]);
             return Optional.of(date);
         } catch (DateTimeException | IndexOutOfBoundsException e) {
             System.out.println("Check input Array");
