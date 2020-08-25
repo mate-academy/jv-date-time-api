@@ -1,12 +1,13 @@
 package core.basesyntax;
 
 import java.time.DateTimeException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
@@ -16,6 +17,7 @@ public class JavaDateTimeApi {
             .ofPattern("d MMM yyyy", Locale.ENGLISH);
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+    private static final String OFFSET_ID = "+02:00";
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -118,9 +120,7 @@ public class JavaDateTimeApi {
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        String dateAndZone = dateInString + "[" + zone + "]";
-
-        return LocalDateTime.from(ZonedDateTime.parse(dateAndZone));
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     /**
@@ -133,7 +133,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(OFFSET_ID));
     }
 
     /**
