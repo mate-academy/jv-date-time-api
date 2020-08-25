@@ -37,7 +37,7 @@ public class JavaDateTimeApi {
             case YEAR:
                 return String.valueOf(localDate.getYear());
             default:
-                throw new DateTimeException("Data time exception");
+                throw new DateTimeException("Incorrect date" + datePart);
         }
     }
 
@@ -98,10 +98,9 @@ public class JavaDateTimeApi {
      */
     public String beforeOrAfter(LocalDate someDate) {
         LocalDate localDate = LocalDate.now();
-        int date = localDate.compareTo(someDate);
-        return date < 0 ? someDate + " is after " + localDate
-                : date > 0 ? someDate + " is before " + localDate
-                : someDate + " is today";
+        return localDate.isBefore(someDate) ? (someDate + " is after " + localDate)
+                : (localDate.isAfter(someDate) ? (someDate + " is before " + localDate)
+                : (someDate + " is today"));
     }
 
     /**
@@ -133,7 +132,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.ofNullable(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (Exception e) {
             return Optional.empty();
         }
