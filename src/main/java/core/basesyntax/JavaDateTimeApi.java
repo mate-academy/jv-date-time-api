@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
 
-    private static final ZoneOffset OFFSET = ZoneOffset.of("+02:00");
+    private static final ZoneOffset OFFSET_UA = ZoneOffset.of("+02:00");
     private static final DateTimeFormatter FORMATTER_DATE = DateTimeFormatter
             .ofPattern("d MMM yyyy");
     private static final DateTimeFormatter FORMATTER_DATE_AND_TIME = DateTimeFormatter
@@ -58,8 +58,9 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
-            return Optional.empty();
+            System.out.println(e.getMessage());
         }
+        return Optional.empty();
     }
 
     /**
@@ -128,7 +129,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, OFFSET);
+        return OffsetDateTime.of(localTime, OFFSET_UA);
     }
 
     /**
