@@ -13,10 +13,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static LocalDate CURRENT_DATE = LocalDate.now();
-    private static String UKRAINE_ZONE = "+02:00";
+    private static ZoneOffset UKRAINE_ZONE = ZoneOffset.of("+02:00");
     private static final DateTimeFormatter DATE_FULL
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+    private static final DateTimeFormatter DATE_FORMATTER
+            = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -30,15 +31,16 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate currentDate = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return String.valueOf(CURRENT_DATE);
+                return String.valueOf(currentDate);
             case YEAR:
-                return String.valueOf(CURRENT_DATE.getYear());
+                return String.valueOf(currentDate.getYear());
             case MONTH:
-                return String.valueOf(CURRENT_DATE.getMonth());
+                return String.valueOf(currentDate.getMonth());
             case DAY:
-                return String.valueOf(CURRENT_DATE.getDayOfMonth());
+                return String.valueOf(currentDate.getDayOfMonth());
             default:
                 throw new DateTimeException("Wrong Date Part");
         }
@@ -56,8 +58,9 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
-            return Optional.empty();
+            System.out.println(e.getMessage());
         }
+        return Optional.empty();
     }
 
     /**
@@ -100,13 +103,10 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isAfter(CURRENT_DATE)) {
-            return someDate + " is after " + CURRENT_DATE;
-        }
-        if (someDate.isBefore(CURRENT_DATE)) {
-            return someDate + " is before " + CURRENT_DATE;
-        }
-        return someDate + " is today";
+        LocalDate currentDate = LocalDate.now();
+        return someDate.isAfter(currentDate) ? someDate + " is after " + currentDate
+                : someDate.isBefore(currentDate) ? someDate + " is before " + currentDate
+                : someDate + " is today";
     }
 
     /**
@@ -130,7 +130,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of(UKRAINE_ZONE));
+        return OffsetDateTime.of(localTime, UKRAINE_ZONE);
     }
 
     /**
@@ -151,8 +151,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter
-                    .ofPattern("d MMM yyyy", Locale.ENGLISH)));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
