@@ -15,9 +15,9 @@ import java.util.Optional;
 public class JavaDateTimeApi {
 
     private static final ZoneOffset UKRAINE_OFFSET = ZoneOffset.of("+02:00");
-    private static final DateTimeFormatter CUSTOM_FORMATTER =
+    private static final DateTimeFormatter CUSTOM_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy");
-    private static final DateTimeFormatter FULL_FORMATTER =
+    private static final DateTimeFormatter CUSTOM_DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
 
     /**
@@ -32,7 +32,18 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
-        return LocalDate.now().toString();
+        switch (datePart) {
+            case FULL:
+                return LocalDate.now().toString();
+            case YEAR:
+                return String.valueOf(LocalDate.now().getYear());
+            case MONTH:
+                return LocalDate.now().getMonth().toString();
+            case DAY:
+                return String.valueOf(LocalDate.now().getDayOfMonth());
+            default:
+                throw new DateTimeException("Illegal argument");
+        }
     }
 
     /**
@@ -46,9 +57,12 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException | ArrayIndexOutOfBoundsException exception) {
-            return Optional.empty();
+        } catch (DateTimeException exception) {
+            System.out.println("DateTime exception");
+        } catch (ArrayIndexOutOfBoundsException exception) {
+            System.out.println("Illegal date params, array is out of bounds");
         }
+        return Optional.empty();
     }
 
     /**
@@ -91,11 +105,10 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.compareTo(LocalDate.now()) == 0
-                ? someDate + " is today"
-                : someDate.compareTo(LocalDate.now()) > 0
-                ? someDate + " is after " + LocalDate.now()
-                : someDate + " is before " + LocalDate.now();
+        LocalDate now = LocalDate.now();
+        return someDate.isBefore(now) ? someDate + " is before " + now
+                : someDate.isAfter(now) ? someDate + " is after " + now
+                : someDate + " is today";
     }
 
     /**
@@ -139,7 +152,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, CUSTOM_FORMATTER));
+            return Optional.of(LocalDate.parse(date, CUSTOM_DATE_FORMATTER));
         } catch (DateTimeParseException exception) {
             return Optional.empty();
         }
@@ -152,6 +165,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(FULL_FORMATTER);
+        return dateTime.format(CUSTOM_DATE_TIME_FORMATTER);
     }
 }
