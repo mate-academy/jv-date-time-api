@@ -13,8 +13,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static ZoneOffset UKRAINE_ZONE = ZoneOffset.of("+02:00");
-    private static final DateTimeFormatter DATE_FULL
+    private static final ZoneOffset UKRAINE_ZONE = ZoneOffset.of("+02:00");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
@@ -68,7 +68,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return localTime.plusHours((long) hoursToAdd);
+        return localTime.plusHours(hoursToAdd);
     }
 
     /**
@@ -76,7 +76,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        return localTime.plusMinutes((long) minutesToAdd);
+        return localTime.plusMinutes(minutesToAdd);
     }
 
     /**
@@ -84,7 +84,7 @@ public class JavaDateTimeApi {
      * Верните измененное время на указаную величину.
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        return localTime.plusSeconds((long) secondsToAdd);
+        return localTime.plusSeconds(secondsToAdd);
     }
 
     /**
@@ -92,7 +92,7 @@ public class JavaDateTimeApi {
      * Верните получившуюся дату
      */
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
-        return localDate.plusWeeks((long) numberOfWeeks);
+        return localDate.plusWeeks(numberOfWeeks);
     }
 
     /**
@@ -164,6 +164,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DATE_FULL);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
