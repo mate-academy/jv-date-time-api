@@ -18,7 +18,6 @@ public class JavaDateTimeApi {
     public static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     public static final ZoneOffset UA_OFFSET = ZoneOffset.of("+02:00");
-    public static final LocalDate NOW_LOCAL_DATE = LocalDate.now();
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -32,6 +31,7 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        final LocalDate NOW_LOCAL_DATE = LocalDate.now();
         switch (datePart) {
             case FULL:
                 return String.valueOf(NOW_LOCAL_DATE);
