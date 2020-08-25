@@ -20,11 +20,6 @@ public class JavaDateTimeApi {
     private static final DateTimeFormatter CUSTOM_DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final ZoneOffset UKRAINE_OFFSET = ZoneOffset.of("+02:00");
-    private static final DateTimeFormatter FULL_FORMATTER = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter YEAR_FORMATTER = DateTimeFormatter.ofPattern("yyyy");
-    private static final DateTimeFormatter MONTH_FORMATTER = DateTimeFormatter.ofPattern("MM");
-    private static final DateTimeFormatter DAY_FORMATTER = DateTimeFormatter.ofPattern("dd");
     private static final LocalDate LOCAL_DATE = LocalDate.now();
 
     /**
@@ -41,13 +36,13 @@ public class JavaDateTimeApi {
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case DAY:
-                return LOCAL_DATE.format(DAY_FORMATTER);
+                return Integer.toString(LOCAL_DATE.getDayOfMonth());
             case FULL:
-                return LOCAL_DATE.format(FULL_FORMATTER);
+                return LOCAL_DATE.toString();
             case YEAR:
-                return LOCAL_DATE.format(YEAR_FORMATTER);
+                return Integer.toString(LOCAL_DATE.getYear());
             case MONTH:
-                return LOCAL_DATE.format(MONTH_FORMATTER);
+                return LOCAL_DATE.getMonth().toString();
             default:
                 throw new DateTimeException("Incorrect datePart!");
         }
