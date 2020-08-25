@@ -18,6 +18,7 @@ public class JavaDateTimeApi {
     public static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     public static final ZoneOffset UA_OFFSET = ZoneOffset.of("+02:00");
+    public static final LocalDate NOW_LOCAL_DATE = LocalDate.now();
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -33,13 +34,13 @@ public class JavaDateTimeApi {
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
-                return String.valueOf(LocalDate.now());
+                return String.valueOf(NOW_LOCAL_DATE);
             case YEAR:
-                return String.valueOf(LocalDate.now().getYear());
+                return String.valueOf(NOW_LOCAL_DATE.getYear());
             case MONTH:
-                return String.valueOf(LocalDate.now().getMonth());
+                return String.valueOf(NOW_LOCAL_DATE.getMonth());
             case DAY:
-                return String.valueOf(LocalDate.now().getDayOfMonth());
+                return String.valueOf(NOW_LOCAL_DATE.getDayOfMonth());
             default:
                 throw new DateTimeException("Wrong arguments");
         }
@@ -55,11 +56,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            if (dateParams.length == 0) {
-                return Optional.empty();
-            }
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException e) {
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
         return Optional.empty();
@@ -106,9 +104,9 @@ public class JavaDateTimeApi {
      */
     public String beforeOrAfter(LocalDate someDate) {
         LocalDate date = LocalDate.now();
-        return someDate.isAfter(date) ? "" + someDate + " is after " + date
-                : someDate.isBefore(date) ? "" + someDate + " is before " + date
-                : "" + someDate + " is today";
+        return someDate.isAfter(date) ? someDate + " is after " + date
+                : someDate.isBefore(date) ? someDate + " is before " + date
+                : someDate + " is today";
     }
 
     /**
