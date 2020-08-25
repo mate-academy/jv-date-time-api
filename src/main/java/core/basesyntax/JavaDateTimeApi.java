@@ -12,7 +12,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    public static final String TIME_ZONE_FRM_FOR_UA = "+02:00";
+    public static final DateTimeFormatter FRM_DATE_DD_MMMM_YYYY_HH_MM_ENGLISH
+            = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+    public static final DateTimeFormatter FRM_DATE_D_MMM_YYYY_ENGLISH
+            = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
+    public static final ZoneOffset TIME_ZONE_FRM_FOR_UA = ZoneOffset.of("+02:00");
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -123,7 +127,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of(TIME_ZONE_FRM_FOR_UA));
+        return OffsetDateTime.of(localTime, TIME_ZONE_FRM_FOR_UA);
     }
 
     /**
@@ -144,8 +148,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter
-                    .ofPattern("d MMM yyyy", Locale.ENGLISH)));
+            return Optional.of(LocalDate.parse(date,FRM_DATE_D_MMM_YYYY_ENGLISH));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -158,6 +161,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH));
+        return dateTime.format(FRM_DATE_DD_MMMM_YYYY_HH_MM_ENGLISH);
     }
 }
