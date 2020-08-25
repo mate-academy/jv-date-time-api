@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final ZoneOffset TIMEZONE_UA = ZoneOffset.of("+02:00");
-    private static final DateTimeFormatter DATE_WITH_TIME_FORMATTER
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", new Locale("en", "US"));
     private static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", new Locale("en", "US"));
@@ -34,21 +34,16 @@ public class JavaDateTimeApi {
     public String todayDate(DateTimePart datePart) {
         LocalDate nowDate = LocalDate.now();
         switch (datePart) {
-            case FULL: {
+            case FULL:
                 return nowDate.toString();
-            }
-            case DAY: {
+            case DAY:
                 return String.valueOf(nowDate.getDayOfMonth());
-            }
-            case MONTH: {
+            case MONTH:
                 return String.valueOf(nowDate.getMonth());
-            }
-            case YEAR: {
+            case YEAR:
                 return String.valueOf(nowDate.getYear());
-            }
-            default: {
+            default:
                 throw new DateTimeException("Wrong DateTimePart parameter!");
-            }
         }
     }
 
@@ -113,7 +108,8 @@ public class JavaDateTimeApi {
     public String beforeOrAfter(LocalDate someDate) {
         LocalDate now = LocalDate.now();
         return someDate.isBefore(now) ? someDate + " is before " + now
-                : someDate.isAfter(now) ? someDate + " is after " + now : someDate + " is today";
+                : someDate.isAfter(now) ? someDate + " is after " + now
+                : someDate + " is today";
     }
 
     /**
@@ -172,6 +168,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DATE_WITH_TIME_FORMATTER);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
