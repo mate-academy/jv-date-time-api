@@ -31,16 +31,16 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
-        final LocalDate NOW_LOCAL_DATE = LocalDate.now();
+        LocalDate nowLocalDate = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return String.valueOf(NOW_LOCAL_DATE);
+                return String.valueOf(nowLocalDate);
             case YEAR:
-                return String.valueOf(NOW_LOCAL_DATE.getYear());
+                return String.valueOf(nowLocalDate.getYear());
             case MONTH:
-                return String.valueOf(NOW_LOCAL_DATE.getMonth());
+                return String.valueOf(nowLocalDate.getMonth());
             case DAY:
-                return String.valueOf(NOW_LOCAL_DATE.getDayOfMonth());
+                return String.valueOf(nowLocalDate.getDayOfMonth());
             default:
                 throw new DateTimeException("Wrong arguments");
         }
