@@ -15,18 +15,16 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final ZoneOffset ZONE_OFFSET_UKRAINE = ZoneOffset.of("+02:00");
-    private static final DateTimeFormatter FORMATTER1 = DateTimeFormatter.ofPattern("yyyyMMdd");
-    private static final DateTimeFormatter FORMATTER2 = DateTimeFormatter
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
             .ofPattern("d MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter FORMATTER3 = DateTimeFormatter
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd LLLL yyyy HH:mm", Locale.ENGLISH);
-    private static final DateTimeFormatter FORMATTER4 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private LocalDate today = LocalDate.now();
 
     public String todayDate(DateTimePart datePart) {
+        LocalDate today = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return today.format(FORMATTER4);
+                return today.toString();
             case YEAR:
                 return String.valueOf(today.getYear());
             case MONTH:
@@ -39,12 +37,9 @@ public class JavaDateTimeApi {
     }
 
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length < 3) {
-            return Optional.empty();
-        }
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException e) {
+        } catch (DateTimeException | IndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
@@ -66,6 +61,7 @@ public class JavaDateTimeApi {
     }
 
     public String beforeOrAfter(LocalDate someDate) {
+        LocalDate today = LocalDate.now();
         return (today.isEqual(someDate))
                 ? someDate + " is today"
                 : (today.isBefore(someDate))
@@ -83,7 +79,7 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, FORMATTER1));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -91,13 +87,13 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, FORMATTER2));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
     }
 
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(FORMATTER3);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
