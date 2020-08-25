@@ -26,13 +26,12 @@ public class JavaDateTimeApi {
      * В любом другом случае бросить DateTimeException
      **/
 
-    private static final LocalDate NOW = LocalDate.now();
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final ZoneOffset ZONE_OFFSET_UKRAINE = ZoneOffset.of("+02:00");
 
     public String todayDate(DateTimePart datePart) {
-        LocalDate date = NOW;
+        LocalDate date = LocalDate.now();
         switch (datePart) {
             case FULL:
                 return date.toString();
@@ -43,7 +42,7 @@ public class JavaDateTimeApi {
             case DAY:
                 return String.valueOf(date.getDayOfMonth());
             default:
-                throw new IllegalArgumentException("DateTimeException");
+                throw new DateTimeException("DateTimeException");
         }
     }
 
@@ -59,8 +58,9 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
-            return Optional.empty();
+            e.printStackTrace();
         }
+        return Optional.empty();
     }
 
     /**
@@ -103,8 +103,8 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isAfter(NOW) ? someDate + " is after " + NOW
-                : someDate.isBefore(NOW) ? someDate + " is before " + NOW
+        return someDate.isAfter(LocalDate.now()) ? someDate + " is after " + LocalDate.now()
+                : someDate.isBefore(LocalDate.now()) ? someDate + " is before " + LocalDate.now()
                 : someDate + " is today";
     }
 
