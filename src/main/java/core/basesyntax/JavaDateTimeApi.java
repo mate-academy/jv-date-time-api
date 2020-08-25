@@ -14,9 +14,9 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final ZoneOffset UKRAINE_ZONE_OFFSET = ZoneOffset.of("+02:00");
-    private static final DateTimeFormatter SHORT_DATE_TIME_FORMATTER
+    private static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
-    private static final DateTimeFormatter LONG_DATE_TIME_FORMATTER
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
 
     /**
@@ -57,9 +57,12 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (RuntimeException e) {
-            return Optional.empty();
+        } catch (DateTimeException e) {
+            System.out.println("Wrong argument");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Wrong arguments number");
         }
+        return Optional.empty();
     }
 
     /**
@@ -152,7 +155,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, SHORT_DATE_TIME_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -165,6 +168,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(LONG_DATE_TIME_FORMATTER);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
