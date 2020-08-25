@@ -30,18 +30,18 @@ public class JavaDateTimeApi {
             .ofPattern("dd MMM uuuu", Locale.ENGLISH);
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
-    public static final LocalDate DATE_NOW = LocalDate.now();
 
     public String todayDate(DateTimePart datePart) {
+        LocalDate dateNow = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return DATE_NOW.toString();
+                return dateNow.toString();
             case YEAR:
-                return Integer.toString(DATE_NOW.getYear());
+                return Integer.toString(dateNow.getYear());
             case MONTH:
-                return DATE_NOW.getMonth().toString();
+                return dateNow.getMonth().toString();
             case DAY:
-                return Integer.toString(DATE_NOW.getDayOfMonth());
+                return Integer.toString(dateNow.getDayOfMonth());
             default:
                 throw new DateTimeException("Illegal datePart!");
         }
@@ -104,8 +104,9 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isBefore(DATE_NOW) ? someDate + " is before " + DATE_NOW
-                : (someDate.isAfter(DATE_NOW) ? someDate + " is after " + DATE_NOW
+        LocalDate dateNow = LocalDate.now();
+        return someDate.isBefore(dateNow) ? someDate + " is before " + dateNow
+                : (someDate.isAfter(dateNow) ? someDate + " is after " + dateNow
                 : someDate + " is today");
     }
 
