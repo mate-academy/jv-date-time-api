@@ -47,7 +47,6 @@ public class JavaDateTimeApi {
         }
     }
 
-
     /**
      * Верните Optional даты соответствующей дате в массиве.
      *
@@ -65,6 +64,7 @@ public class JavaDateTimeApi {
         }
         return Optional.empty();
     }
+
     /**
      * Дано время и на сколько часов нужно его изменить.
      * Верните измененное время на указаную величину.
@@ -72,6 +72,7 @@ public class JavaDateTimeApi {
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
         return localTime.plusHours(hoursToAdd);
     }
+
     /**
      * Дано время и на сколько минут нужно его изменить.
      * Верните измененное время на указаную величину.
@@ -87,7 +88,6 @@ public class JavaDateTimeApi {
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
         return localTime.plusSeconds(secondsToAdd);
     }
-
 
     /**
      * Дана дата и на сколько недель нужно ее изменить.
@@ -113,7 +113,6 @@ public class JavaDateTimeApi {
                 : someDate + " is today";
     }
 
-
     /**
      * Дана дата в строковом формате и временная зона.
      * Верните LocalDateTime в этой временной зоне.
@@ -122,7 +121,6 @@ public class JavaDateTimeApi {
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
         return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
-
 
     /**
      * Данны дата и время. Надо вернуть дату и время с местным временным смещением,
@@ -160,7 +158,6 @@ public class JavaDateTimeApi {
             return Optional.empty();
         }
     }
-
 
     /**
      * Даны произвольные время и дата.
