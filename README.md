@@ -15,7 +15,7 @@
         - 2-nd element is s `month`;
         - 3-rd element is a `day of month`;
    
-   Return Optional of a date build from these elements.
+   Return Optional of a date built from these elements.
 
 3. Given the time and the number of hours to add, return the changed time.
    
