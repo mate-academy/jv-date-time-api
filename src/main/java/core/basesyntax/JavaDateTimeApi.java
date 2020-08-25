@@ -23,7 +23,6 @@ public class JavaDateTimeApi {
     public static final DateTimeFormatter FULL_DATE_TIME_FORMATTER_ENGLISH
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     public static final ZoneOffset UKRAINE_ZONE_OFFSET = ZoneOffset.of("+02:00");
-    public LocalDate localDateNow = LocalDate.now();
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -37,6 +36,7 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate localDateNow = LocalDate.now();
         Map<DateTimePart, String> dateRequest = new HashMap<>();
         dateRequest.put(DateTimePart.FULL, localDateNow.toString());
         dateRequest.put(DateTimePart.YEAR, String.valueOf(localDateNow.getYear()));
@@ -105,6 +105,7 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
+        LocalDate localDateNow = LocalDate.now();
         return someDate.isEqual(localDateNow) ? someDate + " is today"
                 : someDate.isBefore(localDateNow) ? someDate + " is before " + localDateNow
                 : someDate + " is after " + localDateNow;
