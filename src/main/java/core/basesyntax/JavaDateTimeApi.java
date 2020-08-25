@@ -14,9 +14,9 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     public static final String UKR_ZONE = "+02:00";
-    public static final DateTimeFormatter CUSTOM_DF
+    public static final DateTimeFormatter CUSTOM_DATE_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMM yyyy");
-    private static final DateTimeFormatter CUSTOM_DTF
+    private static final DateTimeFormatter CUSTOM_DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM y HH:mm");
 
     /**
@@ -31,11 +31,12 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate today = LocalDate.now();
         switch (datePart) {
-            case FULL: return String.valueOf(LocalDate.now());
-            case YEAR: return String.valueOf(LocalDate.now()).substring(0,3);
-            case MONTH: return String.valueOf(LocalDate.now()).substring(6,7);
-            case DAY: return String.valueOf(LocalDate.now()).substring(9,10);
+            case FULL: return String.valueOf(today);
+            case YEAR: return String.valueOf(today.getYear());
+            case MONTH: return String.valueOf(today.getMonth());
+            case DAY: return String.valueOf(today.getDayOfYear());
             default: throw new DateTimeException("Invalid input data :(");
         }
     }
@@ -144,7 +145,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, CUSTOM_DF));
+            return Optional.of(LocalDate.parse(date, CUSTOM_DATE_FORMATTER));
         } catch (DateTimeParseException exception) {
             return Optional.empty();
         }
@@ -157,6 +158,6 @@ public class JavaDateTimeApi {
      * например: "01 January 2000 18:00",
      */
     public String formatDate(LocalDateTime dateTime) {
-        return CUSTOM_DTF.format(dateTime);
+        return CUSTOM_DATE_TIME_FORMATTER.format(dateTime);
     }
 }
