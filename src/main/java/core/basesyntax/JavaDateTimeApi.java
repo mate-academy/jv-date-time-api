@@ -56,8 +56,11 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        return dateParams.length == 0 ? Optional.empty() : dateParams[1] > 12 ? Optional.empty() :
-            Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        try {
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     /**
