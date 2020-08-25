@@ -33,7 +33,6 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException exception) {
-            System.out.println(exception.getMessage());
             return Optional.empty();
         }
     }
@@ -56,9 +55,8 @@ public class JavaDateTimeApi {
 
     public String beforeOrAfter(LocalDate someDate) {
         LocalDate currentMoment = LocalDate.now();
-        int differenceInDates = currentMoment.compareTo(someDate);
-        return differenceInDates < 0 ? someDate + " is after " + currentMoment
-                : differenceInDates > 0 ? someDate + " is before " + currentMoment
+        return someDate.isAfter(currentMoment) ? someDate + " is after " + currentMoment
+                : someDate.isBefore(currentMoment) ? someDate + " is before " + currentMoment
                 : someDate + " is today";
     }
 
