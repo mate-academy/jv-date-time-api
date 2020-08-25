@@ -13,6 +13,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    public static final DateTimeFormatter FORMATTER
+            = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
+    public static final ZoneOffset UA_OFFSET = ZoneOffset.of("+02:00");
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -127,8 +130,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        final String uaOffset = "+02:00";
-        return OffsetDateTime.of(localTime, ZoneOffset.of(uaOffset));
+        return OffsetDateTime.of(localTime, UA_OFFSET);
     }
 
     /**
@@ -152,8 +154,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
-            LocalDate dateTime = LocalDate.parse(date, formatter);
+            LocalDate dateTime = LocalDate.parse(date, FORMATTER);
             return Optional.of(dateTime);
         } catch (DateTimeException e) {
             e.printStackTrace();
