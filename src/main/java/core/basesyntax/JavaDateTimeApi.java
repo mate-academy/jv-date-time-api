@@ -57,16 +57,12 @@ public class JavaDateTimeApi {
      *                   - 3-й элемент массива - день (число);
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length != 3) {
-            return Optional.empty();
-        }
-        LocalDate date;
         try {
-            date = LocalDate.of(dateParams[0], dateParams[1], dateParams[2]);
-        } catch (DateTimeException e) {
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
             return Optional.empty();
         }
-        return Optional.of(date);
     }
 
     /**
@@ -111,7 +107,8 @@ public class JavaDateTimeApi {
     public String beforeOrAfter(LocalDate someDate) {
         if (someDate.isAfter(LocalDate.now())) {
             return someDate + " is after " + LocalDate.now();
-        } else if (someDate.isBefore(LocalDate.now())) {
+        }
+        if (someDate.isBefore(LocalDate.now())) {
             return someDate + " is before " + LocalDate.now();
         }
         return someDate + " is today";
