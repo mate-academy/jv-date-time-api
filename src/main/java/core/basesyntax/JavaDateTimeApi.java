@@ -19,7 +19,6 @@ public class JavaDateTimeApi {
     private static final DateTimeFormatter FORMATTER_DATE_AND_TIME = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm");
 
-
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
