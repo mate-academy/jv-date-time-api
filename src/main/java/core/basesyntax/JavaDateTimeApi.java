@@ -117,9 +117,7 @@ public class JavaDateTimeApi {
      * @return LocalDateTime
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        Instant instant = Instant.parse(dateInString);
-        ZoneId idOfZone = ZoneId.of(zone);
-        return LocalDateTime.ofInstant(instant, idOfZone);
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     /**
