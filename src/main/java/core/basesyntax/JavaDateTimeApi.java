@@ -59,7 +59,7 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (DateTimeException | IndexOutOfBoundsException e) {
-            System.out.println("Illegal date or index is out of bounds!");
+            System.out.println("Something went wrong: " + e.getMessage());
         }
         return Optional.empty();
     }
