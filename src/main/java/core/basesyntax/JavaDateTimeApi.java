@@ -28,7 +28,7 @@ public class JavaDateTimeApi {
      *         - 2-nd element is s `month`;
      *         - 3-rd element is a `day of month`;
      *
-     * Return Optional of a date build from these elements.
+     * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         return Optional.empty();
