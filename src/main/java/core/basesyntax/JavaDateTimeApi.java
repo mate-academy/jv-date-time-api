@@ -15,11 +15,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter FULL_DATE_FORMATTER = DateTimeFormatter
             .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
     private static final ZoneOffset TIMEZONE_UKRAINE = ZoneOffset.of("+02:00");
-    private static final LocalDate TODAY = LocalDate.now();
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -33,15 +31,16 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate today = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return String.valueOf(TODAY);
+                return String.valueOf(today);
             case YEAR:
-                return String.valueOf(TODAY.getYear());
+                return String.valueOf(today.getYear());
             case MONTH:
-                return String.valueOf(TODAY.getMonth());
+                return String.valueOf(today.getMonth());
             case DAY:
-                return String.valueOf(TODAY.getDayOfMonth());
+                return String.valueOf(today.getDayOfMonth());
             default:
                 throw new DateTimeException("Wrong datePart");
         }
@@ -106,11 +105,12 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isBefore(TODAY)) {
-            return String.format("%s is before %s", someDate, TODAY);
+        LocalDate today = LocalDate.now();
+        if (someDate.isBefore(today)) {
+            return String.format("%s is before %s", someDate, today);
         }
-        if (someDate.isAfter(TODAY)) {
-            return String.format("%s is after %s", someDate, TODAY);
+        if (someDate.isAfter(today)) {
+            return String.format("%s is after %s", someDate, today);
         }
         return String.format("%s is today", someDate);
     }
