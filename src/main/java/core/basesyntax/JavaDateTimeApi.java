@@ -18,7 +18,6 @@ public class JavaDateTimeApi {
             = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
     private static final DateTimeFormatter FORMATTER_DATE_TIME_ENG
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
-    private LocalDate now = LocalDate.now();
 
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
@@ -32,11 +31,14 @@ public class JavaDateTimeApi {
      *                 В любом другом случае бросить DateTimeException
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate now = LocalDate.now();
         switch (datePart) {
             case FULL:
                 return String.valueOf(now);
             case YEAR:
                 return String.valueOf(now.getYear());
+            case MONTH:
+                return String.valueOf(now.getMonth());
             case DAY:
                 return String.valueOf(now.getDayOfMonth());
             default:
@@ -103,6 +105,7 @@ public class JavaDateTimeApi {
      * - "someDate is today" - если someDate - сегодня
      */
     public String beforeOrAfter(LocalDate someDate) {
+        LocalDate now = LocalDate.now();
         return someDate.isAfter(now) ? someDate + " is after " + now
                 : someDate.isBefore(now) ? someDate + " is before " + now
                 : someDate + " is today";
