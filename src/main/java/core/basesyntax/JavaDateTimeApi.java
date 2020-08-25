@@ -17,6 +17,7 @@ public class JavaDateTimeApi {
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
     private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM y HH:mm", Locale.ENGLISH);
+    private static final String UKRAINE_LOCAL_TIME = "+02:00";
     /**
      * Верните текущую дату в виде строки в зависимости от запроса.
      *
@@ -104,13 +105,9 @@ public class JavaDateTimeApi {
      */
     public String beforeOrAfter(LocalDate someDate) {
         LocalDate today = LocalDate.now();
-        if (someDate.isBefore(today)) {
-            return someDate + " is before " + today;
-        } else if (someDate.isAfter(today)) {
-            return someDate + " is after " + today;
-        } else {
-            return someDate + " is today";
-        }
+        return someDate.equals(today) ? String.format("%s is today", someDate)
+                : someDate.isBefore(today) ? String.format("%s is before %s", someDate, today)
+                : String.format("%s is after %s", someDate, today);
     }
 
     /**
@@ -132,7 +129,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime советуют использовать при записи даты в базу данных.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        ZoneOffset offset = ZoneOffset.of("+02:00");
+        ZoneOffset offset = ZoneOffset.of(UKRAINE_LOCAL_TIME);
         return OffsetDateTime.of(localTime, offset);
     }
 
