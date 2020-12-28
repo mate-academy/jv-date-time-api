@@ -97,7 +97,7 @@ public class JavaDateTimeApi {
      * return LocalDateTime in this timezone.
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return LocalDateTime.now();
+        return LocalDateTime.parse(dateInString).atZone(ZoneId.of(zone)).toLocalDateTime();
     }
 
     /**
@@ -119,7 +119,7 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        return Optional.empty();
+        return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
     }
 
     /**
