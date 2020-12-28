@@ -39,7 +39,10 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        return Optional.empty();
+        int year = 0;
+        int month = 1;
+        int day = 2;
+        return Optional.of(LocalDate.of(dateParams[year], dateParams[month], dateParams[day]));
     }
 
     /**
