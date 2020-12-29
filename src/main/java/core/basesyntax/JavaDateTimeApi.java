@@ -91,6 +91,7 @@ public class JavaDateTimeApi {
     }
     
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.US));
+        return dateTime.format(DateTimeFormatter
+                .ofPattern("dd MMMM yyyy HH:mm", Locale.US));
     }
 }
