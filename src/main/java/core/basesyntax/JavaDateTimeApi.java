@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+
     /**
      * Return the current date as a String depending on a query.
      *
@@ -101,7 +102,7 @@ public class JavaDateTimeApi {
             return someDate + " is after " + localDate;
         }
         if (someDate.isBefore(localDate)) {
-            return someDate.toString() + " is before " + localDate;
+            return someDate + " is before " + localDate;
         }
         return someDate + " is today";
     }
@@ -136,10 +137,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-            LocalDate localDate = LocalDate.from(formatter.parse(date));
-            Optional<LocalDate> optional = Optional.of(localDate);
-            return optional;
+            return Optional.of(LocalDate.from(DateTimeFormatter.BASIC_ISO_DATE.parse(date)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
