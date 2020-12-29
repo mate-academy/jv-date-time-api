@@ -150,11 +150,10 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            DateTimeFormatter df = new DateTimeFormatterBuilder()
+            return Optional.of(LocalDate.from(new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
                     .appendPattern("d MMM yyyy")
-                    .toFormatter(Locale.ENGLISH);
-            return Optional.of(LocalDate.from(df.parse(date)));
+                    .toFormatter(Locale.ENGLISH).parse(date)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
