@@ -28,13 +28,15 @@ public class JavaDateTimeApi {
     }
     
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        int year = 0;
-        int month = 1;
-        int day = 2;
-        if (dateParams.length == 0 || dateParams[month] > 12 || dateParams[day] > 31) {
+        int yearPosition = 0;
+        int monthPosition = 1;
+        int dayPosition = 2;
+        if (dateParams.length == 0
+                || dateParams[monthPosition] > 12
+                || dateParams[dayPosition] > 31) {
             return Optional.empty();
         }
-        return Optional.of(LocalDate.of(dateParams[year], dateParams[month], dateParams[day]));
+        return Optional.of(LocalDate.of(dateParams[yearPosition], dateParams[monthPosition], dateParams[dayPosition]));
     }
     
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
@@ -55,12 +57,12 @@ public class JavaDateTimeApi {
     
     public String beforeOrAfter(LocalDate someDate) {
         if (someDate.isAfter(LocalDate.now())) {
-            return someDate.toString() + " is after " + LocalDate.now().toString();
+            return someDate + " is after " + LocalDate.now();
         }
         if (someDate.isBefore(LocalDate.now())) {
-            return someDate.toString() + " is before " + LocalDate.now().toString();
+            return someDate + " is before " + LocalDate.now();
         }
-        return someDate.toString() + " is today";
+        return someDate + " is today";
     }
     
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
