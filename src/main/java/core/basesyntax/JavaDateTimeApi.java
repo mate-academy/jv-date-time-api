@@ -12,7 +12,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
