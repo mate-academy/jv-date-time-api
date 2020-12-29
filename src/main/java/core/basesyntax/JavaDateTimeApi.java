@@ -1,7 +1,14 @@
 package core.basesyntax;
 
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -42,6 +49,9 @@ public class JavaDateTimeApi {
         int year = 0;
         int month = 1;
         int day = 2;
+        if (dateParams.length == 0 || dateParams[month] > 12 || dateParams[day] > 31) {
+            return Optional.empty();
+        }
         return Optional.of(LocalDate.of(dateParams[year], dateParams[month], dateParams[day]));
     }
 
@@ -97,7 +107,8 @@ public class JavaDateTimeApi {
      * return LocalDateTime in this timezone.
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return LocalDateTime.parse(dateInString).atZone(ZoneId.of(zone)).toLocalDateTime();
+        return ZonedDateTime.parse(dateInString)
+                .withZoneSameInstant(ZoneId.of(zone)).toLocalDateTime();
     }
 
     /**
@@ -111,7 +122,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.now();
+        return localTime.atOffset(ZonedDateTime.now().getOffset());
     }
 
     /**
@@ -119,6 +130,10 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
+        if (Integer.parseInt(date.substring(6)) > 31
+                || Integer.parseInt(date.substring(4, 6)) > 12) {
+            return Optional.empty();
+        }
         return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
     }
 
@@ -127,7 +142,13 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        return Optional.empty();
+        if (date.isEmpty()
+                || date.isBlank()
+                || Integer.parseInt(date.substring(0, 2)) > 31) {
+            return Optional.empty();
+        }
+        return Optional.of(LocalDate.parse(date,
+                DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.US)));
     }
 
     /**
@@ -137,6 +158,6 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return "";
+        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.US));
     }
 }
