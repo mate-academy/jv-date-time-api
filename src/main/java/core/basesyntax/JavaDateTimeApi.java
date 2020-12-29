@@ -22,7 +22,8 @@ public class JavaDateTimeApi {
                 return LocalDate.now().getMonth().toString();
             case DAY:
                 return String.valueOf(LocalDate.now().getDayOfMonth());
-            default: throw new DateTimeException("No such option");
+            default:
+                throw new DateTimeException("No such option");
         }
     }
     
