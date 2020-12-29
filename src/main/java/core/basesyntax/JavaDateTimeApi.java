@@ -110,17 +110,7 @@ public class JavaDateTimeApi {
         return ZonedDateTime.parse(dateInString)
                 .withZoneSameInstant(ZoneId.of(zone)).toLocalDateTime();
     }
-
-    /**
-     * Given some LocalDateTime, return an OffsetDateTime with the local time offset applied
-     * (`+02:00` for Ukraine).
-     *
-     * Example: we receive a LocalDateTime with a value `2019-09-06T13:17`.
-     *          We should return the OffsetDateTime with a value `2019-09-06T13:17+02:00`,
-     *          where `+02:00` is the offset for our local timezone.
-     *
-     * OffsetDateTime is recommended to use for storing date values in a database.
-     */
+    
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
         return localTime.atOffset(ZonedDateTime.now().getOffset());
     }
