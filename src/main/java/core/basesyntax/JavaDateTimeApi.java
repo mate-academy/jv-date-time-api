@@ -1,14 +1,17 @@
 package core.basesyntax;
 
-import java.text.DateFormat;
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
-import javax.print.attribute.standard.MediaSize;
-import org.apache.log4j.helpers.ISO8601DateFormat;
 
 public class JavaDateTimeApi {
     private static final String OFFSET_UA = "+02:00";
@@ -39,7 +42,9 @@ public class JavaDateTimeApi {
                 || dateParams[dayPosition] > 31) {
             return Optional.empty();
         }
-        return Optional.of(LocalDate.of(dateParams[yearPosition], dateParams[monthPosition], dateParams[dayPosition]));
+        return Optional.of(LocalDate.of(dateParams[yearPosition],
+                dateParams[monthPosition],
+                dateParams[dayPosition]));
     }
     
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
