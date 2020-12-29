@@ -39,7 +39,7 @@ public class JavaDateTimeApi {
             case MONTH:
                 return String.valueOf(localDate.getMonth());
             default:
-                throw new DateTimeException("");
+                throw new DateTimeException("The query is wrong");
         }
     }
 
@@ -52,7 +52,7 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length > 2 && dateParams[1] >= 1 && dateParams[1] <= 12) {
+        if (dateParams.length == 3 && dateParams[1] >= 1 && dateParams[1] <= 12) {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         }
         return Optional.empty();
