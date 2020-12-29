@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -73,7 +74,7 @@ public class JavaDateTimeApi {
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return localTime.atOffset(ZonedDateTime.now().getOffset());
+        return localTime.atOffset(ZoneOffset.of("+02:00"));
     }
 
     public Optional<LocalDate> parseDate(String date) {
