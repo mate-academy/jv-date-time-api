@@ -1,17 +1,20 @@
 package core.basesyntax;
 
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.text.DateFormat;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
+import javax.print.attribute.standard.MediaSize;
+import org.apache.log4j.helpers.ISO8601DateFormat;
 
 public class JavaDateTimeApi {
+    private static final String OFFSET_UA = "+02:00";
+    private static final String TRIMMED_MONTH_PATTERN = "dd MMM yyyy";
+    private static final String FULL_MONTH_PATTERN = "dd MMMM yyyy HH:mm";
+    
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
@@ -71,30 +74,28 @@ public class JavaDateTimeApi {
     }
     
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        ZoneOffset zoneOffset = ZoneOffset.of(OFFSET_UA);
-        return OffsetDateTime.of(localTime, zoneOffset);
+        return OffsetDateTime.of(localTime, ZoneOffset.of(OFFSET_UA));
     }
     
     public Optional<LocalDate> parseDate(String date) {
-        if (Integer.parseInt(date.substring(6)) > 31
-                || Integer.parseInt(date.substring(4, 6)) > 12) {
+        try {
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+        } catch (DateTimeParseException e) {
             return Optional.empty();
         }
-        return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
     }
     
     public Optional<LocalDate> customParseDate(String date) {
-        if (date.isEmpty()
-                || date.isBlank()
-                || Integer.parseInt(date.substring(0, 2)) > 31) {
+        try {
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern(TRIMMED_MONTH_PATTERN, Locale.US)));
+        } catch (DateTimeParseException e) {
             return Optional.empty();
         }
-        return Optional.of(LocalDate.parse(date,
-                DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.US)));
     }
     
     public String formatDate(LocalDateTime dateTime) {
         return dateTime.format(DateTimeFormatter
-                .ofPattern("dd MMMM yyyy HH:mm", Locale.US));
+                .ofPattern(FULL_MONTH_PATTERN, Locale.US));
     }
 }
