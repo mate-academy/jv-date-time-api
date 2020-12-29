@@ -71,7 +71,8 @@ public class JavaDateTimeApi {
     }
     
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return localTime.atOffset(ZonedDateTime.now().getOffset());
+        ZoneOffset zoneOffset = ZoneOffset.of(OFFSET_UA);
+        return OffsetDateTime.of(localTime, zoneOffset);
     }
     
     public Optional<LocalDate> parseDate(String date) {
