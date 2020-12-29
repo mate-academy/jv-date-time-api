@@ -95,12 +95,6 @@ public class JavaDateTimeApi {
                 DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.US)));
     }
 
-    /**
-     * Given some LocalDateTime, return a String formatted as
-     * `day(2-digit) month(full name in English) year(4-digit) hours(24-hour format):minutes`.
-     *
-     * Example: "01 January 2000 18:00".
-     */
     public String formatDate(LocalDateTime dateTime) {
         return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.US));
     }
