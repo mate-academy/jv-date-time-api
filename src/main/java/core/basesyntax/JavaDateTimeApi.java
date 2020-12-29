@@ -6,14 +6,17 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final int NUMBER_OF_DAYS = 31;
-    private static final int NUMBER_OF_MONTHS = 12;
+
+    public static final String KYIV_TIME = "+02:00";
+    public static final String PATTERN = "d MMM yyyy";
 
     /**
      * Return the current date as a String depending on a query.
@@ -51,11 +54,11 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        return (dateParams.length != 3
-                || dateParams[1] > NUMBER_OF_MONTHS
-                || dateParams[2] > NUMBER_OF_DAYS)
-                ? Optional.empty()
-                : Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        try {
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -124,7 +127,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return localTime.atOffset(ZonedDateTime.now().getOffset());
+        return localTime.atOffset(ZoneOffset.of(KYIV_TIME));
     }
 
     /**
@@ -132,10 +135,11 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        return (Integer.parseInt(date.substring(6)) > NUMBER_OF_DAYS
-                || Integer.parseInt(date.substring(4, 6)) > NUMBER_OF_MONTHS)
-                ? Optional.empty()
-                : Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+        try {
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -143,9 +147,12 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        return date.length() != 11 || Integer.parseInt(date.substring(0, 2)) > NUMBER_OF_DAYS
-                ? Optional.empty() : Optional.of(LocalDate.parse(date,
-                DateTimeFormatter.ofPattern("d MMM yyyy", Locale.US)));
+        try {
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern(PATTERN, Locale.US)));
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
