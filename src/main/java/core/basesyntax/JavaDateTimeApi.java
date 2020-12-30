@@ -4,10 +4,10 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -129,15 +129,12 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        LocalDate localDate;
         try {
-            localDate = LocalDate.of(Integer.parseInt(date.substring(0,4)),
-                    Integer.parseInt(date.substring(4,6)),
-                    Integer.parseInt(date.substring(6)));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
-        return Optional.of(localDate);
+
     }
 
     /**
@@ -145,22 +142,13 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        String[] dateString = date.split(" ");
-        int day = Integer.parseInt(dateString[0]);
-        int year = Integer.parseInt(dateString[2]);
-        Month mon = Month.APRIL;
-        for (Month month : Month.values()) {
-            if (month.name().matches("(?i)" + dateString[1] + ".*")) {
-                mon = month;
-            }
-        }
         LocalDate localDate;
         try {
-            localDate = LocalDate.of(year,mon, day);
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern("dd MMM yyyy")));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
-        return Optional.of(localDate);
     }
 
     /**
