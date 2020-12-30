@@ -1,18 +1,13 @@
 package core.basesyntax;
 
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String OFFSET_UKR = "+02:00";
+
     /**
      * Return the current date as a String depending on a query.
      * <p>
@@ -133,7 +128,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return localTime.atOffset(ZonedDateTime.now().getOffset());
+        return localTime.atOffset(ZoneOffset.of(OFFSET_UKR));
     }
 
     /**
