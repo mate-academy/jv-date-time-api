@@ -14,17 +14,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final int ZERO = 0;
-    private static final int ONE = 1;
-    private static final int TWO = 2;
+    private static final int YEAR_INDEX = 0;
+    private static final int MONTH_INDEX = 1;
+    private static final int DAY_INDEX = 2;
+    private static final String OFFSET_UKRAINE = "+02:00";
+    private static final String PATTERN_D_MMM_YYYY = "d MMM yyyy";
+    private static final String PATTERN_DD_MMMM_YYYY_HH_MM = "dd MMMM yyyy HH:mm";
 
     public String todayDate(DateTimePart datePart) {
-        LocalDateTime current = LocalDateTime.now();
+        LocalDate current = LocalDate.now();
         switch (datePart) {
             case DAY:
                 return String.valueOf(current.getDayOfMonth());
             case FULL:
-                return String.valueOf(current.toLocalDate());
+                return String.valueOf(current);
             case YEAR:
                 return String.valueOf(current.getYear());
             case MONTH:
@@ -37,7 +40,8 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return dateParams.length == 0 ? Optional.empty() :
-                    Optional.of(LocalDate.of(dateParams[ZERO], dateParams[ONE], dateParams[TWO]));
+                    Optional.of(LocalDate.of(dateParams[YEAR_INDEX], dateParams[MONTH_INDEX],
+                            dateParams[DAY_INDEX]));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -76,12 +80,12 @@ public class JavaDateTimeApi {
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        ZoneOffset offset = ZoneOffset.of("+02:00");
+        ZoneOffset offset = ZoneOffset.of(OFFSET_UKRAINE);
         return OffsetDateTime.of(localTime, offset);
     }
 
     public Optional<LocalDate> parseDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter formatter = DateTimeFormatter.BASIC_ISO_DATE;
         try {
             return Optional.of(LocalDate.parse(date, formatter));
         } catch (DateTimeException e) {
@@ -91,14 +95,15 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy")));
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern(PATTERN_D_MMM_YYYY)));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
     }
 
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern(PATTERN_DD_MMMM_YYYY_HH_MM);
         return dateTime.format(format);
     }
 }
