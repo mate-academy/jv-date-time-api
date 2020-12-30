@@ -15,6 +15,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String OFFSET_UA = "+02:00";
+    private static final String DATA_FORMAT_D_MMM_YYYY = "d MMM yyyy";
+    private static final String DATA_FORMAT_DD_MMMM_YYYY_HH_MM = "dd MMMM yyyy HH:mm";
     /**
      * Return the current date as a String depending on a query.
      *
@@ -129,7 +132,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return localTime.atOffset(ZoneOffset.of("+02:00"));
+        return localTime.atOffset(ZoneOffset.of(OFFSET_UA));
     }
 
     /**
@@ -152,7 +155,7 @@ public class JavaDateTimeApi {
         try {
             return Optional.of(LocalDate.from(new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
-                    .appendPattern("d MMM yyyy")
+                    .appendPattern(DATA_FORMAT_D_MMM_YYYY)
                     .toFormatter(Locale.ENGLISH).parse(date)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
@@ -167,7 +170,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern("dd MMMM yyyy HH:mm")
+                .ofPattern(DATA_FORMAT_DD_MMMM_YYYY_HH_MM)
                 .withLocale(new Locale("EN"));
         return dateTime.format(formatter);
     }
