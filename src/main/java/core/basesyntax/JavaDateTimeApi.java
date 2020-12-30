@@ -1,16 +1,15 @@
 package core.basesyntax;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Optional;
-import java.util.TimeZone;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class JavaDateTimeApi {
     private static final int MAX_DAY = 31;
