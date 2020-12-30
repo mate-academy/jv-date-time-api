@@ -1,12 +1,29 @@
 package core.basesyntax;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Locale;
+import java.util.MissingFormatArgumentException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+
+    private static final String FULL_DATE_TIME_FORMATTER = "dd MMMM yyyy HH:mm";
+    private static final String FULL_DATE_FORMATTER = "dd MMM yyyy";
+    private static final String UKRAINIAN_OFFSET_FORMATTER = "+02:00";
+    private static final String DATE_AFTER_DATE_FORMATTER = "%s is after %s";
+    private static final String DATE_BEFORE_DATE_FORMATTER = "%s is before %s";
+    private static final String DATE_TODAY_FORMATTER = "%s is today";
+    private static final String DEFAULT_DATE_FORMATTER = "%s-%s-%s";
+
     /**
      * Return the current date as a String depending on a query.
      *
@@ -19,7 +36,19 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
-        return "Today";
+        if (datePart == DateTimePart.YEAR) {
+            return String.valueOf(LocalDate.now().getYear());
+        }
+        if (datePart == DateTimePart.MONTH) {
+            return LocalDate.now().getMonth().toString();
+        }
+        if (datePart == DateTimePart.DAY) {
+            return String.valueOf(LocalDate.now().getDayOfMonth());
+        }
+        if (datePart == DateTimePart.FULL) {
+            return LocalDate.now().toString();
+        }
+        throw new DateTimeException("");
     }
 
     /**
@@ -31,35 +60,44 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        return Optional.empty();
+        try {
+            LocalDate localDate = LocalDate.parse(String.format(DEFAULT_DATE_FORMATTER,
+                    dateParams));
+            return Optional.of(localDate);
+        } catch (MissingFormatArgumentException e) {
+            return Optional.empty();
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
+
     }
 
     /**
      * Given the time and the number of hours to add, return the changed time.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return LocalTime.now();
+        return localTime.plusHours(hoursToAdd);
     }
 
     /**
      * Given the time and the number of minutes to add, return the changed time.
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        return LocalTime.now();
+        return localTime.plusMinutes(minutesToAdd);
     }
 
     /**
      * Given the time and the number of seconds to add, return the changed time.
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        return LocalTime.now();
+        return localTime.plusSeconds(secondsToAdd);
     }
 
     /**
      * Given the date and the number of weeks to add, return the changed date.
      */
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
-        return LocalDate.now();
+        return localDate.plusWeeks(numberOfWeeks);
     }
 
     /**
@@ -72,7 +110,10 @@ public class JavaDateTimeApi {
      *                  if `someDate` is today;
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate + "is today";
+        return someDate.isAfter(LocalDate.now()) ? String.format(DATE_AFTER_DATE_FORMATTER,
+                someDate, LocalDate.now()) : someDate.isBefore(LocalDate.now())
+                ? String.format(DATE_BEFORE_DATE_FORMATTER, someDate, LocalDate.now())
+                : String.format(DATE_TODAY_FORMATTER, someDate);
     }
 
     /**
@@ -80,7 +121,8 @@ public class JavaDateTimeApi {
      * return LocalDateTime in this timezone.
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return LocalDateTime.now();
+        return ZonedDateTime.parse(dateInString)
+                .withZoneSameInstant(ZoneId.of(zone)).toLocalDateTime();
     }
 
     /**
@@ -94,7 +136,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.now();
+        return OffsetDateTime.of(localTime, ZoneOffset.of(UKRAINIAN_OFFSET_FORMATTER));
     }
 
     /**
@@ -102,7 +144,11 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        return Optional.empty();
+        try {
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -110,7 +156,12 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        return Optional.empty();
+        try {
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern(FULL_DATE_FORMATTER, Locale.US)));
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -120,6 +171,7 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return "";
+        return dateTime.format(DateTimeFormatter
+                .ofPattern(FULL_DATE_TIME_FORMATTER, Locale.US));
     }
 }
