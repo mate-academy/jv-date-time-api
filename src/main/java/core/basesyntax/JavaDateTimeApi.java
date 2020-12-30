@@ -15,6 +15,10 @@ import java.util.Optional;
 public class JavaDateTimeApi {
     private static final int NUMBER_OF_DAYS = 31;
     private static final int NUMBER_OF_MONTH = 12;
+    private static final String OFFSET_UA = "+02:00";
+    private static final String TRIMMED_DATE_PATTERN = "dd MMM yyyy";
+    private static final String FULL_DATE_PATTERN = "dd MMMM yyyy HH:mm";
+    private static final String WITHOUT_SPACES_PATTERN = "yyyyMMdd";
 
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
@@ -83,7 +87,7 @@ public class JavaDateTimeApi {
             return Optional.empty();
         }
         return Optional.of(LocalDate.parse(date,
-                DateTimeFormatter.ofPattern("yyyyMMdd")));
+                DateTimeFormatter.ofPattern(WITHOUT_SPACES_PATTERN)));
     }
 
     public Optional<LocalDate> customParseDate(String date) {
@@ -93,10 +97,10 @@ public class JavaDateTimeApi {
             return Optional.empty();
         }
         return Optional.of(LocalDate.parse(date,
-                DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.US)));
+                DateTimeFormatter.ofPattern(TRIMMED_DATE_PATTERN, Locale.US)));
     }
 
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.US));
+        return dateTime.format(DateTimeFormatter.ofPattern(FULL_DATE_PATTERN, Locale.US));
     }
 }
