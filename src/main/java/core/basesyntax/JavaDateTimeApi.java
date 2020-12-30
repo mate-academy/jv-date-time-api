@@ -4,7 +4,6 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -53,19 +52,11 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length < 3) {
-            return Optional.empty();
-        }
         try {
-            if (dateParams[2] > 31
-                    && Integer.parseInt(String.valueOf(Month
-                    .valueOf(String.valueOf(dateParams[1])))) > 12) {
-                return Optional.empty();
-            }
-        } catch (IllegalArgumentException | DateTimeParseException e) {
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
             return Optional.empty();
         }
-        return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
     }
 
     /**
@@ -146,11 +137,11 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         final String pattern = "yyyyMMdd";
-        if (Integer.parseInt(date.substring(4, 6)) < 13
-                && Integer.parseInt(date.substring(6)) < 32) {
+        try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern)));
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
     /**
