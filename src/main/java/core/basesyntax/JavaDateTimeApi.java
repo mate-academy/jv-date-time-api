@@ -158,11 +158,6 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        String day = ("" + dateTime.getDayOfMonth()).length() == 1 ? "0" + dateTime.getDayOfMonth()
-                : "" + dateTime.getDayOfMonth();
-        String month = dateTime.getMonth().name().charAt(0)
-                + dateTime.getMonth().name().toLowerCase().substring(1);
-        return day + " " + month + " "
-                + dateTime.getYear() + " " + dateTime.getHour() + ":" + dateTime.getMinute();
+        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"));
     }
 }
