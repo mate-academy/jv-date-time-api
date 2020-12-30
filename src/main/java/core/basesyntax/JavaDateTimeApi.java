@@ -1,9 +1,7 @@
 package core.basesyntax;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -19,7 +17,18 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
-        return "Today";
+        switch (datePart) {
+            case FULL:
+                return LocalDate.now().toString();
+            case YEAR:
+                return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
+            case MONTH:
+                return LocalDate.now().format(DateTimeFormatter.ofPattern("MM"));
+            case DAY:
+                return LocalDate.now().format(DateTimeFormatter.ofPattern("dd"));
+            default:
+                throw new DateTimeException("Wrong format");
+        }
     }
 
     /**
