@@ -102,7 +102,7 @@ public class JavaDateTimeApi {
      * return LocalDateTime in this timezone.
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return LocalDateTime.now();
+        return LocalDateTime.ofInstant(Instant.parse(dateInString),ZoneId.of(zone));
     }
 
     /**
