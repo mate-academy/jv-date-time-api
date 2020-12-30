@@ -12,8 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final int MAX_DAY = 31;
-    private static final int MAX_MONTH = 12;
+    private static final String PATTERN_DD_MMM_YYYY = "dd MMM yyyy";
+    private static final String PATTERN_DD_MMMM_YYYY_HH_MM = "dd MMMM yyyy HH:mm";
 
     /**
      * Return the current date as a String depending on a query.
@@ -27,18 +27,19 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case FULL: {
-                return LocalDate.now().toString();
+                return localDate.now().toString();
             }
             case YEAR: {
-                return Integer.toString(LocalDate.now().getYear());
+                return Integer.toString(localDate.now().getYear());
             }
             case MONTH: {
-                return LocalDate.now().getMonth().toString();
+                return localDate.now().getMonth().toString();
             }
             case DAY: {
-                return Integer.toString(LocalDate.now().getDayOfMonth());
+                return Integer.toString(localDate.now().getDayOfMonth());
             }
             default:
                 throw new DateTimeException("No matching result!");
@@ -54,14 +55,13 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length == 0) {
-            return Optional.empty();
-        } else if (dateParams[1] > MAX_MONTH || dateParams[1] < 0) {
-            return Optional.empty();
-        } else if (dateParams[2] > MAX_DAY || dateParams[2] < 0) {
+        try {
+            return dateParams.length != 0
+                    ? Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]))
+                    : Optional.empty();
+        } catch (DateTimeException e) {
             return Optional.empty();
         }
-        return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
     }
 
     /**
@@ -139,15 +139,12 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        int dateInt = Integer.parseInt(date);
-        int year = dateInt / 10000;
-        int month = (dateInt % 10000) / 100;
-        int day = dateInt % 100;
-        LocalDate localDate = null;
-        if (month > 0 && month <= MAX_MONTH && day > 0 && day <= MAX_DAY) {
-            localDate = LocalDate.of(year, month, day);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.BASIC_ISO_DATE;
+        try {
+            return Optional.of(LocalDate.parse(date, dateTimeFormatter));
+        } catch (DateTimeException e) {
+            return Optional.empty();
         }
-        return Optional.ofNullable(localDate);
     }
 
     /**
@@ -156,12 +153,12 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         int day = Integer.parseInt(date.substring(0, 2));
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
-        LocalDate localDate = null;
-        if (day > 0 && day <= 31) {
-            localDate = LocalDate.parse(date, dateTimeFormatter);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(PATTERN_DD_MMM_YYYY);
+        try {
+            return Optional.of(LocalDate.parse(date, dateTimeFormatter));
+        } catch (DateTimeException e) {
+            return Optional.empty();
         }
-        return Optional.ofNullable(localDate);
     }
 
     /**
@@ -171,7 +168,8 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter
+                .ofPattern(PATTERN_DD_MMMM_YYYY_HH_MM);
         return dateTime.format(dateTimeFormatter);
     }
 }
