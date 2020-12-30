@@ -10,6 +10,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -61,7 +62,7 @@ public class JavaDateTimeApi {
                     .valueOf(String.valueOf(dateParams[1])))) > 12) {
                 return Optional.empty();
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | DateTimeParseException e) {
             return Optional.empty();
         }
         return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
@@ -144,9 +145,10 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
+        final String pattern = "yyyyMMdd";
         if (Integer.parseInt(date.substring(4, 6)) < 13
                 && Integer.parseInt(date.substring(6)) < 32) {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern)));
         }
         return Optional.empty();
     }
@@ -156,12 +158,13 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        if (Integer.parseInt(date.substring(0, 2)) > 31) {
+        final String pattern = "dd MMM yyyy";
+        try {
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter
+                    .ofPattern(pattern).withLocale(Locale.UK)));
+        } catch (DateTimeParseException e) {
             return Optional.empty();
         }
-
-        return Optional.of(LocalDate.parse(date, DateTimeFormatter
-                .ofPattern("dd MMM yyyy").withLocale(Locale.UK)));
     }
 
     /**
@@ -171,7 +174,8 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")
+        final String pattern = "dd MMMM yyyy HH:mm";
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern)
                 .withLocale(Locale.UK);
         return dateTime.format(dateTimeFormatter);
     }
