@@ -18,7 +18,7 @@ public class JavaDateTimeApi {
     private static final String OFFSET_UA = "+02:00";
     private static final String TRIMMED_DATE_PATTERN = "dd MMM yyyy";
     private static final String FULL_DATE_PATTERN = "dd MMMM yyyy HH:mm";
-    private static final String WITHOUT_SPACES_PATTERN = "yyyyMMdd";
+    private static final String UA_OFFSET = "+02:00";
 
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
@@ -52,12 +52,10 @@ public class JavaDateTimeApi {
     }
 
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-
         return localTime.plusSeconds(secondsToAdd);
     }
 
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
-
         return localDate.plusWeeks(numberOfWeeks);
     }
 
@@ -78,7 +76,7 @@ public class JavaDateTimeApi {
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return localTime.atOffset(ZoneOffset.of("+02:00"));
+        return localTime.atOffset(ZoneOffset.of(UA_OFFSET));
     }
 
     public Optional<LocalDate> parseDate(String date) {
@@ -87,7 +85,7 @@ public class JavaDateTimeApi {
             return Optional.empty();
         }
         return Optional.of(LocalDate.parse(date,
-                DateTimeFormatter.ofPattern(WITHOUT_SPACES_PATTERN)));
+                DateTimeFormatter.BASIC_ISO_DATE));
     }
 
     public Optional<LocalDate> customParseDate(String date) {
