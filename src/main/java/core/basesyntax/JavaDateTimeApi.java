@@ -12,18 +12,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-
-    private static final int NUMBER_OF_DAYS = 30;
+    public static final int FEBRUARY_DAYS = 28;
+    private static final int NUMBER_OF_DAYS = 31;
     private static final int NUMBER_OF_MONTHS = 12;
-    private static final int DAY_START = 4;
-    private static final int DAY_END = 6;
     private static final int ARRAY_YEAR = 0;
     private static final int ARRAY_MONTH = 1;
     private static final int ARRAY_DAY = 2;
     private static final LocalDate NOW = LocalDate.now();
-    private static final String DATE_FORMAT = "yyyyMMdd";
     private static final String DATE_TIME_FORMAT = "dd MMMM yyyy HH:mm";
     private static final String UKRAINE_TIMEZONE = "+02:00";
+    private static final int FEBRUARY = 2;
 
     /**
      * Return the current date as a String depending on a query.
@@ -37,16 +35,15 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
-        String result = "";
         switch (datePart) {
             case FULL:
-                return result + NOW;
+                return String.valueOf(NOW);
             case YEAR:
-                return result + NOW.getYear();
+                return String.valueOf(NOW.getYear());
             case MONTH:
-                return result + NOW.getMonth();
+                return String.valueOf(NOW.getMonth());
             case DAY:
-                return result + NOW.getDayOfMonth();
+                return String.valueOf(NOW.getDayOfMonth());
             default:
                 throw new DateTimeException("No such date part");
         }
@@ -63,11 +60,16 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         if (dateParams.length == 0
                 || dateParams[ARRAY_DAY] > NUMBER_OF_DAYS
-                || dateParams[ARRAY_MONTH] > NUMBER_OF_MONTHS) {
+                || dateParams[ARRAY_MONTH] > NUMBER_OF_MONTHS
+                || (dateParams[ARRAY_MONTH] == FEBRUARY && dateParams[ARRAY_DAY] > FEBRUARY_DAYS)) {
             return Optional.empty();
         }
-        return Optional.of(LocalDate.of(dateParams[ARRAY_YEAR],
-                dateParams[ARRAY_MONTH], dateParams[ARRAY_DAY]));
+        try {
+            return Optional.of(LocalDate.of(dateParams[ARRAY_YEAR],
+                    dateParams[ARRAY_MONTH], dateParams[ARRAY_DAY]));
+        } catch (DateTimeException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -143,9 +145,11 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        return Integer.parseInt(date.substring(DAY_START, DAY_END)) <= NUMBER_OF_DAYS
-                ? Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT)))
-                : Optional.empty();
+        try {
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+        } catch (DateTimeException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -159,7 +163,6 @@ public class JavaDateTimeApi {
         } catch (DateTimeException e) {
             return Optional.empty();
         }
-
     }
 
     /**
@@ -171,5 +174,4 @@ public class JavaDateTimeApi {
     public String formatDate(LocalDateTime dateTime) {
         return dateTime.format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
     }
-
 }
