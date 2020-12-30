@@ -30,29 +30,24 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
-        String todayDate;
+        LocalDate todayDate = LocalDate.now();
         switch (datePart) {
             case FULL: {
-                todayDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
-                break;
+                return todayDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
             }
             case YEAR: {
-                todayDate = Integer.toString(LocalDate.now().getYear());
-                break;
+                return String.valueOf(todayDate.getYear());
             }
             case MONTH: {
-                todayDate = LocalDate.now().getMonth().toString();
-                break;
+                return String.valueOf(todayDate.getMonth());
             }
             case DAY: {
-                todayDate = Integer.toString(LocalDate.now().getDayOfMonth());
-                break;
+                return String.valueOf(todayDate.getDayOfMonth());
             }
             default: {
                 throw new DateTimeException("Wrong input data.");
             }
         }
-        return todayDate;
     }
 
     /**
