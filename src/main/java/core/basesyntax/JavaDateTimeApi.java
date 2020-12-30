@@ -2,7 +2,9 @@ package core.basesyntax;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class JavaDateTimeApi {
     /**
@@ -40,7 +42,11 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        return Optional.empty();
+        try {
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            return Optional.empty();
+        }
     }
 
     /**
