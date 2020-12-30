@@ -145,10 +145,10 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        final String FORMAT_D_MMM_YYYY = "d MMM yyyy";
+        final String localDateFormat = "d MMM yyyy";
         try {
             return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern(FORMAT_D_MMM_YYYY, Locale.ENGLISH)));
+                    DateTimeFormatter.ofPattern(localDateFormat, Locale.ENGLISH)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -161,8 +161,8 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        final String FORMAT_DD_MMMM_YYYY_HH_MM = "dd MMMM yyyy HH:mm";
-        return dateTime.format(DateTimeFormatter.ofPattern(FORMAT_DD_MMMM_YYYY_HH_MM,
+        final String localDateFormat = "dd MMMM yyyy HH:mm";
+        return dateTime.format(DateTimeFormatter.ofPattern(localDateFormat,
                 Locale.ENGLISH));
     }
 }
