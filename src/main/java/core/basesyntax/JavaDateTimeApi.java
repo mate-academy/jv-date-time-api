@@ -17,6 +17,7 @@ public class JavaDateTimeApi {
     private static final String OFFSET_UA = "+02:00";
     private static final String DATE_PATTERN = "d MMM yyyy";
     private static final String DATE_WITH_TIME_PATTERN = "dd MMMM yyyy HH:mm";
+    private static final LocalDate CURRENT_DATE = LocalDate.now();
 
     /**
      * Return the current date as a String depending on a query.
@@ -31,10 +32,10 @@ public class JavaDateTimeApi {
      **/
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
-            case FULL: return LocalDate.now().toString();
-            case YEAR: return String.valueOf(LocalDate.now().getYear());
-            case MONTH: return LocalDate.now().getMonth().toString();
-            case DAY: return String.valueOf(LocalDate.now().getDayOfMonth());
+            case FULL: return CURRENT_DATE.toString();
+            case YEAR: return String.valueOf(CURRENT_DATE.getYear());
+            case MONTH: return CURRENT_DATE.getMonth().toString();
+            case DAY: return String.valueOf(CURRENT_DATE.getDayOfMonth());
             default: throw new DateTimeException("Wrong option!");
         }
     }
@@ -49,16 +50,11 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            if (dateParams.length != 0
-                    && dateParams[1] <= 12
-                    && dateParams[2] <= 31) {
-                return Optional.of(LocalDate.of(dateParams[0],
-                        dateParams[1], dateParams[2]));
-            }
-        } catch (DateTimeException e) {
-            throw new DateTimeException(e.getMessage());
+            return Optional.of(LocalDate.of(dateParams[0],
+                    dateParams[1], dateParams[2]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
     /**
@@ -99,11 +95,11 @@ public class JavaDateTimeApi {
      *                  if `someDate` is today;
      */
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isAfter(LocalDate.now())) {
-            return someDate + " is after " + LocalDate.now();
+        if (someDate.isAfter(CURRENT_DATE)) {
+            return someDate + " is after " + CURRENT_DATE;
         }
         if (someDate.isBefore(LocalDate.now())) {
-            return someDate + " is before " + LocalDate.now();
+            return someDate + " is before " + CURRENT_DATE;
         }
         return someDate + " is today";
     }
