@@ -87,7 +87,14 @@ public class JavaDateTimeApi {
      *                  if `someDate` is today;
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate + "is today";
+        LocalDate now = LocalDate.now();
+        if (someDate.isAfter(now)) {
+            return someDate.toString() + " is after " + LocalDate.now();
+        } else if (someDate.equals(now)) {
+            return someDate.toString() + " is today";
+        } else {
+            return someDate.toString() + " is before " + LocalDate.now();
+        }
     }
 
     /**
