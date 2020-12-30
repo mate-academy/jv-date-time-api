@@ -13,10 +13,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final String timezoneUkraine = "+02:00";
-    private static final String FORMAT_D_MMM_YYYY = "d MMM yyyy";
-    private static final String FORMAT_DD_MMMM_YYYY_HH_MM = "dd MMMM yyyy HH:mm";
-
     /**
      * Return the current date as a String depending on a query.
      * <p>
@@ -128,6 +124,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
+        final String timezoneUkraine = "+02:00";
         return ZonedDateTime.of(localTime, ZoneId.of(timezoneUkraine)).toOffsetDateTime();
     }
 
@@ -148,6 +145,7 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
+        final String FORMAT_D_MMM_YYYY = "d MMM yyyy";
         try {
             return Optional.of(LocalDate.parse(date,
                     DateTimeFormatter.ofPattern(FORMAT_D_MMM_YYYY, Locale.ENGLISH)));
@@ -163,6 +161,7 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
+        final String FORMAT_DD_MMMM_YYYY_HH_MM = "dd MMMM yyyy HH:mm";
         return dateTime.format(DateTimeFormatter.ofPattern(FORMAT_DD_MMMM_YYYY_HH_MM,
                 Locale.ENGLISH));
     }
