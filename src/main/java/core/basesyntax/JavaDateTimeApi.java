@@ -1,6 +1,7 @@
 package core.basesyntax;
 
 import java.time.DateTimeException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -13,8 +14,8 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String UKRAINIAN_OFFSET = "+02:00";
-    private static final String SHORT_FORMAT = "dd MMM yyyy";
-    private static final String LONG_FORMAT = "dd MMMM yyyy HH:mm";
+    private static final String DATE_FORMAT = "dd MMM yyyy";
+    private static final String DATE_TIME_FORMAT = "dd MMMM yyyy HH:mm";
 
     /**
      * Return the current date as a String depending on a query.
@@ -28,15 +29,16 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return LocalDate.now().toString();
+                return localDate.toString();
             case YEAR:
-                return String.valueOf(LocalDate.now().getYear());
+                return String.valueOf(localDate.getYear());
             case MONTH:
-                return String.valueOf(LocalDate.now().getMonth());
+                return String.valueOf(localDate.getMonth());
             case DAY:
-                return String.valueOf(LocalDate.now().getDayOfMonth());
+                return String.valueOf(localDate.getDayOfMonth());
             default:
                 throw new DateTimeException("Incorrect input");
         }
@@ -51,13 +53,11 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        LocalDate date;
         try {
-            date = LocalDate.of(dateParams[0], dateParams[1], dateParams[2]);
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
             return Optional.empty();
         }
-        return Optional.of(date);
     }
 
     /**
@@ -101,7 +101,8 @@ public class JavaDateTimeApi {
         LocalDate currentDate = LocalDate.now();
         if (someDate.isAfter(currentDate)) {
             return someDate + " is after " + currentDate;
-        } else if (someDate.isBefore(currentDate)) {
+        }
+        if (someDate.isBefore(currentDate)) {
             return someDate + " is before " + currentDate;
         }
         return someDate + " is today";
@@ -113,9 +114,7 @@ public class JavaDateTimeApi {
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
         ZoneId zoneId = ZoneId.of(zone);
-        LocalDateTime localDateTime = LocalDateTime.parse(dateInString.substring(0,
-                dateInString.length() - 1));
-        return LocalDateTime.ofInstant(localDateTime.toInstant(ZoneOffset.UTC),zoneId);
+        return Instant.parse(dateInString).atZone(zoneId).toLocalDateTime();
     }
 
     /**
@@ -142,7 +141,6 @@ public class JavaDateTimeApi {
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
-
     }
 
     /**
@@ -152,7 +150,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern(SHORT_FORMAT)));
+                    DateTimeFormatter.ofPattern(DATE_FORMAT)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -165,6 +163,6 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern(LONG_FORMAT));
+        return dateTime.format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
     }
 }
