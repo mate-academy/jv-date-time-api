@@ -14,9 +14,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final int OFFSET_FOR_UKRAINE = 2;
-    private static final String LOCAL_DATE_PATTERN = "d MMM yyyy";
-    private static final String LOCAL_DATE_TIME_PATTERN = "dd MMMM yyyy HH:mm";
     private final LocalDate currentDate = LocalDate.now();
 
     /**
@@ -130,7 +127,8 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(OFFSET_FOR_UKRAINE));
+        final int offsetForUkraine = 2;
+        return OffsetDateTime.of(localTime, ZoneOffset.ofHours(offsetForUkraine));
     }
 
     /**
@@ -150,8 +148,9 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
+        final String localDatePattern = "d MMM yyyy";
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(LOCAL_DATE_PATTERN)
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(localDatePattern)
                     .withLocale(new Locale("en"))));
         } catch (DateTimeParseException e) {
             return Optional.empty();
@@ -165,7 +164,8 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern(LOCAL_DATE_TIME_PATTERN)
+        final String localDateTimePattern = "dd MMMM yyyy HH:mm";
+        return dateTime.format(DateTimeFormatter.ofPattern(localDateTimePattern)
                 .withLocale(new Locale("en")));
     }
 }
