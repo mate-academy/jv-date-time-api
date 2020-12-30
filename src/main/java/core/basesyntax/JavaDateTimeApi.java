@@ -14,6 +14,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+    private static final int TWO = 2;
 
     public String todayDate(DateTimePart datePart) {
         LocalDateTime current = LocalDateTime.now();
@@ -34,7 +37,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return dateParams.length == 0 ? Optional.empty() :
-                    Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+                    Optional.of(LocalDate.of(dateParams[ZERO], dateParams[ONE], dateParams[TWO]));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
