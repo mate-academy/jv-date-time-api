@@ -11,6 +11,8 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String UKRAINIAN_OFFSET = "+02:00";
+
     /**
      * Return the current date as a String depending on a query.
      *
@@ -119,7 +121,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(UKRAINIAN_OFFSET));
     }
 
     /**
