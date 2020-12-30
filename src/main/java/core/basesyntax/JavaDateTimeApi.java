@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final DateTimeFormatter FULL_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
     private static final DateTimeFormatter CUSTOM_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("d MMM yyyy");
 
@@ -33,7 +33,7 @@ public class JavaDateTimeApi {
         String todayDate;
         switch (datePart) {
             case FULL: {
-                todayDate = LocalDate.now().format(FULL_FORMATTER);
+                todayDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
                 break;
             }
             case YEAR: {
@@ -170,6 +170,6 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"));
+        return dateTime.format(FULL_FORMATTER);
     }
 }
