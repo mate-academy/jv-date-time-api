@@ -2,6 +2,7 @@ package core.basesyntax;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -124,7 +125,11 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        return Optional.empty();
+        try {
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
