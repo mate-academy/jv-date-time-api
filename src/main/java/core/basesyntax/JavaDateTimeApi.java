@@ -98,7 +98,7 @@ public class JavaDateTimeApi {
         if (someDate.isAfter(CURRENT_DATE)) {
             return someDate + " is after " + CURRENT_DATE;
         }
-        if (someDate.isBefore(LocalDate.now())) {
+        if (someDate.isBefore(CURRENT_DATE)) {
             return someDate + " is before " + CURRENT_DATE;
         }
         return someDate + " is today";
