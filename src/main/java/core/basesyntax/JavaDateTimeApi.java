@@ -19,17 +19,18 @@ public class JavaDateTimeApi {
     private static final String TRIMMED_DATE_PATTERN = "dd MMM yyyy";
     private static final String FULL_DATE_PATTERN = "dd MMMM yyyy HH:mm";
     private static final String UA_OFFSET = "+02:00";
+    private LocalDate currentDate = LocalDate.now();
 
     public String todayDate(DateTimePart datePart) {
         switch (datePart) {
             case FULL:
-                return String.valueOf(LocalDate.now());
+                return String.valueOf(currentDate);
             case YEAR:
-                return String.valueOf(LocalDate.now().getYear());
+                return String.valueOf(currentDate.getYear());
             case MONTH:
-                return String.valueOf(LocalDate.now().getMonth());
+                return String.valueOf(currentDate.getMonth());
             case DAY:
-                return String.valueOf(LocalDate.now().getDayOfMonth());
+                return String.valueOf(currentDate.getDayOfMonth());
             default: throw new DateTimeException("No such option");
         }
     }
@@ -60,7 +61,6 @@ public class JavaDateTimeApi {
     }
 
     public String beforeOrAfter(LocalDate someDate) {
-        LocalDate currentDate = LocalDate.now();
         if (someDate.isBefore(currentDate)) {
             return someDate + " is before " + currentDate;
         }
