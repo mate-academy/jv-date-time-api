@@ -1,18 +1,12 @@
 package core.basesyntax;
 
-import java.time.DateTimeException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String OFFSET_UA = "+02:00";
     private static final DateTimeFormatter FULL_FORMATTER =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
     private static final DateTimeFormatter CUSTOM_DATE_FORMATTER =
@@ -131,7 +125,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZonedDateTime.now().getOffset());
+        return OffsetDateTime.of(localTime, ZoneOffset.of(OFFSET_UA));
     }
 
     /**
