@@ -12,16 +12,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    public static final int FEBRUARY_DAYS = 28;
-    private static final int NUMBER_OF_DAYS = 31;
-    private static final int NUMBER_OF_MONTHS = 12;
     private static final int ARRAY_YEAR = 0;
     private static final int ARRAY_MONTH = 1;
     private static final int ARRAY_DAY = 2;
     private static final LocalDate NOW = LocalDate.now();
     private static final String DATE_TIME_FORMAT = "dd MMMM yyyy HH:mm";
     private static final String UKRAINE_TIMEZONE = "+02:00";
-    private static final int FEBRUARY = 2;
+    private static final String CUSTOM_DATE_PATTERN = "dd MMM yyyy";
 
     /**
      * Return the current date as a String depending on a query.
@@ -58,10 +55,7 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams.length == 0
-                || dateParams[ARRAY_DAY] > NUMBER_OF_DAYS
-                || dateParams[ARRAY_MONTH] > NUMBER_OF_MONTHS
-                || (dateParams[ARRAY_MONTH] == FEBRUARY && dateParams[ARRAY_DAY] > FEBRUARY_DAYS)) {
+        if (dateParams.length == 0) {
             return Optional.empty();
         }
         try {
@@ -159,7 +153,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("dd MMM yyyy")));
+                    DateTimeFormatter.ofPattern(CUSTOM_DATE_PATTERN)));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
