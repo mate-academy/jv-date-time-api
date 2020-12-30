@@ -3,6 +3,7 @@ package core.basesyntax;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -26,7 +27,7 @@ public class JavaDateTimeApi {
             case YEAR:
                 return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
             case MONTH:
-                return LocalDate.now().format(DateTimeFormatter.ofPattern("MM"));
+                return LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM")).toUpperCase();
             case DAY:
                 return LocalDate.now().format(DateTimeFormatter.ofPattern("dd"));
             default:
@@ -151,6 +152,6 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return "";
+        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"));
     }
 }
