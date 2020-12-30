@@ -53,7 +53,7 @@ public class JavaDateTimeApi {
      * Given the time and the number of hours to add, return the changed time.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return LocalTime.now();
+        return localTime.plusHours(hoursToAdd);
     }
 
     /**
