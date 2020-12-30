@@ -14,9 +14,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-
     public static final String KYIV_TIME = "+02:00";
-    public static final String PATTERN = "d MMM yyyy";
+    public static final String PATTERN_D_MMM_YYYY = "d MMM yyyy";
+    public static final String PATTERN_DD_LLLL_YYYY_HH_MM = "dd LLLL yyyy HH:mm";
 
     /**
      * Return the current date as a String depending on a query.
@@ -30,16 +30,16 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
-        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return String.valueOf(localDateTime.toLocalDate());
+                return String.valueOf(localDate);
             case YEAR:
-                return String.valueOf(localDateTime.getYear());
+                return String.valueOf(localDate.getYear());
             case MONTH:
-                return String.valueOf(localDateTime.getMonth());
+                return String.valueOf(localDate.getMonth());
             case DAY:
-                return String.valueOf(localDateTime.getDayOfMonth());
+                return String.valueOf(localDate.getDayOfMonth());
             default:
                 throw new DateTimeException("Incorrect query");
         }
@@ -149,7 +149,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern(PATTERN, Locale.US)));
+                    DateTimeFormatter.ofPattern(PATTERN_D_MMM_YYYY, Locale.US)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -162,6 +162,6 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd LLLL yyyy HH:mm", Locale.US));
+        return dateTime.format(DateTimeFormatter.ofPattern(PATTERN_DD_LLLL_YYYY_HH_MM, Locale.US));
     }
 }
