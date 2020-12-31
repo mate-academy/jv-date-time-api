@@ -15,7 +15,7 @@ import java.util.Optional;
 public class JavaDateTimeApi {
     public static final String DAY_FULLMONTH_YEAR_HOUR_MINUTE = "dd MMMM yyyy HH:mm";
     public static final String DAY_SHORTMONTH_YEAR = "d MMM yyyy";
-    public static final String PLUS_2 = "+2";
+    public static final String OFFSET_UA = "+2";
 
     /**
      * Return the current date as a String depending on a query.
@@ -99,12 +99,12 @@ public class JavaDateTimeApi {
     public String beforeOrAfter(LocalDate someDate) {
         LocalDate now = LocalDate.now();
         if (someDate.isAfter(now)) {
-            return someDate.toString() + " is after " + LocalDate.now();
+            return someDate + " is after " + LocalDate.now();
         }
         if (someDate.equals(now)) {
-            return someDate.toString() + " is today";
+            return someDate + " is today";
         }
-        return someDate.toString() + " is before " + LocalDate.now();
+        return someDate + " is before " + LocalDate.now();
     }
 
     /**
@@ -126,7 +126,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of(PLUS_2));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(OFFSET_UA));
     }
 
     /**
