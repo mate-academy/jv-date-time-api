@@ -33,11 +33,11 @@ public class JavaDateTimeApi {
             case FULL:
                 return LocalDate.now().toString();
             case YEAR:
-                return LocalDate.now().getYear() + "";
+                return String.valueOf(LocalDate.now().getYear());
             case MONTH:
                 return LocalDate.now().getMonth().name();
             case DAY:
-                return LocalDate.now().getDayOfMonth() + "";
+                return String.valueOf(LocalDate.now().getDayOfMonth());
             default:
                 throw new DateTimeException("Wrong format");
         }
