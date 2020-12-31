@@ -16,6 +16,7 @@ public class JavaDateTimeApi {
     public static final String DAY_FULLMONTH_YEAR_HOUR_MINUTE = "dd MMMM yyyy HH:mm";
     public static final String DAY_SHORTMONTH_YEAR = "d MMM yyyy";
     public static final String YEAR_MONTH_DAY_NOSPACES = "yyyyMMdd";
+    public static final String PLUS_2 = "+2";
 
     /**
      * Return the current date as a String depending on a query.
@@ -112,7 +113,7 @@ public class JavaDateTimeApi {
      * return LocalDateTime in this timezone.
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return LocalDateTime.ofInstant(Instant.parse(dateInString),ZoneId.of(zone));
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     /**
@@ -126,7 +127,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+2"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(PLUS_2));
     }
 
     /**
