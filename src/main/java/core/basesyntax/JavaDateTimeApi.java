@@ -13,6 +13,10 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    public static final String DAY_FULLMONTH_YEAR_HOUR_MINUTE = "dd MMMM yyyy HH:mm";
+    public static final String DAY_SHORTMONTH_YEAR = "d MMM yyyy";
+    public static final String YEAR_MONTH_DAY_NOSPACES = "yyyyMMdd";
+
     /**
      * Return the current date as a String depending on a query.
      *
@@ -29,11 +33,11 @@ public class JavaDateTimeApi {
             case FULL:
                 return LocalDate.now().toString();
             case YEAR:
-                return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
+                return LocalDate.now().getYear() + "";
             case MONTH:
-                return LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM")).toUpperCase();
+                return LocalDate.now().getMonth().name();
             case DAY:
-                return LocalDate.now().format(DateTimeFormatter.ofPattern("dd"));
+                return LocalDate.now().getDayOfMonth() + "";
             default:
                 throw new DateTimeException("Wrong format");
         }
@@ -131,7 +135,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd")));
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern(YEAR_MONTH_DAY_NOSPACES)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -143,7 +148,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("d MMM yyyy")));
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern(DAY_SHORTMONTH_YEAR)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -156,6 +162,6 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"));
+        return dateTime.format(DateTimeFormatter.ofPattern(DAY_FULLMONTH_YEAR_HOUR_MINUTE));
     }
 }
