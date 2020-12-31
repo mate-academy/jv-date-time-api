@@ -12,11 +12,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final int YEAR_INDEX = 0;
+    private static final int MONTH_INDEX = 1;
+    private static final int DAY_INDEX = 2;
     private static final String FORMAT = "%s is %s %s";
-    private static final String PATTERN_OFFSET = "dd MMMM yyyy HH:mm";
+    private static final String PATTERN_FULL = "dd MMMM yyyy HH:mm";
     private static final String PATTERN_CUSTOM = "d MMM yyyy";
     private static final String UA_OFFSET = "+02:00";
-
     /**
      * Return the current date as a String depending on a query.
      * <p>
@@ -28,6 +30,7 @@ public class JavaDateTimeApi {
      * - DAY - current day of month;
      * In any other case throw DateTimeException.
      **/
+
     public String todayDate(DateTimePart datePart) {
         LocalDate today = LocalDate.now();
         switch (datePart) {
@@ -54,7 +57,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+            return Optional.of(LocalDate.of(dateParams[YEAR_INDEX],
+                    dateParams[MONTH_INDEX], dateParams[DAY_INDEX]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
@@ -165,6 +169,6 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         return dateTime.format(DateTimeFormatter
-                .ofPattern(PATTERN_OFFSET));
+                .ofPattern(PATTERN_FULL));
     }
 }
