@@ -152,7 +152,6 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        int day = Integer.parseInt(date.substring(0, 2));
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(PATTERN_DD_MMM_YYYY);
         try {
             return Optional.of(LocalDate.parse(date, dateTimeFormatter));
