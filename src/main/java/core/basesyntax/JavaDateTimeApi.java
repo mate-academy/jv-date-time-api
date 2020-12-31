@@ -17,6 +17,9 @@ public class JavaDateTimeApi {
     private static final String UKRAINIAN_TIME = "+02:00";
     private static final String CUSTOM_FORMAT = "dd MMM yyyy";
     private static final String DATE_TIME_FORMAT = "dd MMMM yyyy HH:mm";
+    private static final int DAY_INDEX = 2;
+    private static final int MONTH_INDEX = 1;
+    private static final int YEAR_INDEX = 0;
 
     public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
@@ -36,7 +39,8 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+            return Optional.of(LocalDate.of(dateParams[YEAR_INDEX],
+                    dateParams[MONTH_INDEX], dateParams[DAY_INDEX]));
         } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
             return Optional.empty();
         }
@@ -70,8 +74,7 @@ public class JavaDateTimeApi {
     }
 
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        ZoneId zoneId = ZoneId.of(zone);
-        return Instant.parse(dateInString).atZone(zoneId).toLocalDateTime();
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
