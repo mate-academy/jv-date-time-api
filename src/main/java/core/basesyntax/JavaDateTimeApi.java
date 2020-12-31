@@ -1,8 +1,14 @@
 package core.basesyntax;
 
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -132,8 +138,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
-        }
-        catch(DateTimeException e){
+        } catch (DateTimeException e) {
             return Optional.empty();
         }
     }
@@ -147,8 +152,7 @@ public class JavaDateTimeApi {
             return Optional.of(LocalDate.parse(
                     date,
                     DateTimeFormatter.ofPattern(PATTERN_CUSTOM)));
-        }
-        catch(DateTimeException e){
+        } catch (DateTimeException e) {
             return Optional.empty();
         }
     }
