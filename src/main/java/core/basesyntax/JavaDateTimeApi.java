@@ -16,15 +16,16 @@ import java.util.Optional;
 public class JavaDateTimeApi {
 
     public String todayDate(DateTimePart datePart) {
+        LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case DAY:
-                return String.valueOf(LocalDateTime.now().getDayOfMonth());
+                return String.valueOf(localDate.getDayOfMonth());
             case YEAR:
-                return String.valueOf(LocalDateTime.now().getYear());
+                return String.valueOf(localDate.getYear());
             case MONTH:
-                return String.valueOf(LocalDateTime.now().getMonth());
+                return String.valueOf(localDate.getMonth());
             case FULL:
-                return String.valueOf(LocalDate.now());
+                return String.valueOf(localDate);
             default:
                 throw new DateTimeException("Can't return any date!");
         }
