@@ -13,6 +13,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String TIMEZONE_UKRAINE = "+02:00";
+    private static final String FORMAT_D_MMM_YYYY = "d MMM yyyy";
+    private static final String FORMAT_DD_MMMM_YYYY_HH_MM = "dd MMMM yyyy HH:mm";
     /**
      * Return the current date as a String depending on a query.
      * <p>
@@ -24,6 +27,7 @@ public class JavaDateTimeApi {
      * - DAY - current day of month;
      * In any other case throw DateTimeException.
      **/
+
     public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
         switch (datePart) {
@@ -97,7 +101,8 @@ public class JavaDateTimeApi {
         LocalDate localDate = LocalDate.now();
         if (someDate.isAfter(localDate)) {
             return someDate + " is after " + localDate;
-        } else if (someDate.isBefore(localDate)) {
+        }
+        if (someDate.isBefore(localDate)) {
             return someDate + " is before " + localDate;
         }
         return someDate + " is today";
@@ -124,8 +129,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        final String timezoneUkraine = "+02:00";
-        return ZonedDateTime.of(localTime, ZoneId.of(timezoneUkraine)).toOffsetDateTime();
+        return ZonedDateTime.of(localTime, ZoneId.of(TIMEZONE_UKRAINE)).toOffsetDateTime();
     }
 
     /**
@@ -145,10 +149,9 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        final String localDateFormat = "d MMM yyyy";
         try {
             return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern(localDateFormat, Locale.ENGLISH)));
+                    DateTimeFormatter.ofPattern(FORMAT_D_MMM_YYYY, Locale.ENGLISH)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -161,8 +164,7 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        final String localDateFormat = "dd MMMM yyyy HH:mm";
-        return dateTime.format(DateTimeFormatter.ofPattern(localDateFormat,
+        return dateTime.format(DateTimeFormatter.ofPattern(FORMAT_DD_MMMM_YYYY_HH_MM,
                 Locale.ENGLISH));
     }
 }
