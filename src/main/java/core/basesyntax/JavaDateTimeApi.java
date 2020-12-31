@@ -1,9 +1,13 @@
 package core.basesyntax;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String FORMAT = "%s is %s %s";
+
     /**
      * Return the current date as a String depending on a query.
      * <p>
@@ -85,6 +89,12 @@ public class JavaDateTimeApi {
      * if `someDate` is today;
      */
     public String beforeOrAfter(LocalDate someDate) {
+        LocalDate today = LocalDate.now();
+        if (someDate.isAfter(today)) {
+            return String.format(FORMAT, someDate, "after", today);
+        } else if (someDate.isBefore(today)) {
+            return String.format(FORMAT, someDate, "before", today);
+        }
         return someDate + "is today";
     }
 
@@ -93,7 +103,9 @@ public class JavaDateTimeApi {
      * return LocalDateTime in this timezone.
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return LocalDateTime.now();
+        return ZonedDateTime.parse(dateInString)
+                .withZoneSameInstant(ZoneId.of(zone))
+                .toLocalDateTime();
     }
 
     /**
@@ -107,7 +119,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.now();
+        return OffsetDateTime.of(localTime, (ZoneOffset) ZoneId.systemDefault());
     }
 
     /**
@@ -115,7 +127,7 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        return Optional.empty();
+        return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
     }
 
     /**
@@ -123,7 +135,7 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        return Optional.empty();
+        return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
     }
 
     /**
@@ -133,6 +145,6 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return "";
+        return dateTime.format(DateTimeFormatter.ofPattern(String.valueOf(FormatStyle.LONG)));
     }
 }
