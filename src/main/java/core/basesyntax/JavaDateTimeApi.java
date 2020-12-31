@@ -30,7 +30,7 @@ public class JavaDateTimeApi {
             case FULL:
                 return String.valueOf(localDate);
             default:
-                throw new DateTimeException("Something went wrong");
+                throw new DateTimeException("Something went wrong and we can't return date");
         }
     }
 
