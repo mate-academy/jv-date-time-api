@@ -13,9 +13,9 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final int YEAR = 0;
-    private static final int MONTH = 1;
-    private static final int DAY_OF_MONTH = 2;
+    private static final int YEAR_INDEX = 0;
+    private static final int MONTH_INDEX = 1;
+    private static final int DAY_OF_MONTH_INDEX = 2;
     private static final String UKRAINIAN_TIME = "+02:00";
     private static final String D_MMM_YYYY_FORMAT = "d MMM yyyy";
     private static final String DD_MMMM_YYYY_HH_MM_FORMAT = "dd MMMM yyyy HH:mm";
@@ -52,8 +52,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            return Optional.of(LocalDate.of(dateParams[YEAR],
-                    dateParams[MONTH], dateParams[DAY_OF_MONTH]));
+            return Optional.of(LocalDate.of(dateParams[YEAR_INDEX],
+                    dateParams[MONTH_INDEX], dateParams[DAY_OF_MONTH_INDEX]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
@@ -100,7 +100,8 @@ public class JavaDateTimeApi {
         LocalDate currentDate = LocalDate.now();
         if (currentDate.isAfter(someDate)) {
             return someDate + " is before " + currentDate;
-        } else if (currentDate.isBefore(someDate)) {
+        }
+        if (currentDate.isBefore(someDate)) {
             return someDate + " is after " + currentDate;
         }
         return someDate + " is today";
