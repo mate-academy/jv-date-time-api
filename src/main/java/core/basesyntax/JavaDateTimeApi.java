@@ -14,8 +14,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private final LocalDate currentDate = LocalDate.now();
-
     /**
      * Return the current date as a String depending on a query.
      * <p>
@@ -28,6 +26,7 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
+        final LocalDate currentDate = LocalDate.now();
         switch (datePart) {
             case FULL:
                 return currentDate.toString();
@@ -100,6 +99,7 @@ public class JavaDateTimeApi {
      * if `someDate` is today;
      */
     public String beforeOrAfter(LocalDate someDate) {
+        final LocalDate currentDate = LocalDate.now();
         if (someDate.equals(currentDate)) {
             return someDate + " is today";
         }
