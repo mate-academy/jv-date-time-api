@@ -13,6 +13,9 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final int YEAR = 0;
+    private static final int MONTH = 1;
+    private static final int DAY = 2;
     private static final String OFFSET_UA = "+02:00";
     private static final DateTimeFormatter FULL_FORMATTER =
             DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
@@ -61,7 +64,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+            return Optional.of(LocalDate.of(dateParams[YEAR], dateParams[MONTH], dateParams[DAY]));
         } catch (IndexOutOfBoundsException | DateTimeException d) {
             return Optional.empty();
         }
