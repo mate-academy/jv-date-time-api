@@ -17,12 +17,11 @@ public class JavaDateTimeApi {
     private static final String DATE_PATTERN_SPECIFIC_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static final String TIMEZONE_UTC = "UTC";
     private static final String ZONE_OFFSET = "+02:00";
-    private static final String CUSTOM_PATTERN = "d MMM yyyy";
-    private static final String FORMAT_PATTERN = "dd MMMM yyyy HH:mm";
+    private static final String DATE_PATTERN = "d MMM yyyy";
+    private static final String DATE_TIME_PATTERN = "dd MMMM yyyy HH:mm";
 
     /**
      * Return the current date as a String depending on a query.
-     * <p>
      * The query can be passed for the whole date or for it's part:
      * - FULL - current date as a whole: year, month, day of month
      * formatted as `YYYY-MM-DD` (a default return value);
@@ -51,7 +50,6 @@ public class JavaDateTimeApi {
      * - 1-st element is a `year`;
      * - 2-nd element is s `month`;
      * - 3-rd element is a `day of month`;
-     * <p>
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
@@ -101,17 +99,13 @@ public class JavaDateTimeApi {
      */
     public String beforeOrAfter(LocalDate someDate) {
         LocalDate now = LocalDate.now();
-        String result = "";
         if (someDate.isAfter(now)) {
-            result = someDate + " is after " + now;
+            return someDate + " is after " + now;
         }
         if (someDate.isBefore(now)) {
-            result = someDate + " is before " + now;
+            return someDate + " is before " + now;
         }
-        if (someDate.isEqual(now)) {
-            result = someDate + " is today";
-        }
-        return result;
+        return someDate + " is today";
     }
 
     /**
@@ -132,11 +126,9 @@ public class JavaDateTimeApi {
     /**
      * Given some LocalDateTime, return an OffsetDateTime with the local time offset applied
      * (`+02:00` for Ukraine).
-     * <p>
      * Example: we receive a LocalDateTime with a value `2019-09-06T13:17`.
      * We should return the OffsetDateTime with a value `2019-09-06T13:17+02:00`,
      * where `+02:00` is the offset for our local timezone.
-     * <p>
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
@@ -162,7 +154,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CUSTOM_PATTERN,
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN,
                     Locale.ENGLISH);
             return Optional.of(LocalDate.parse(date, formatter));
         } catch (DateTimeParseException e) {
@@ -173,11 +165,10 @@ public class JavaDateTimeApi {
     /**
      * Given some LocalDateTime, return a String formatted as
      * `day(2-digit) month(full name in English) year(4-digit) hours(24-hour format):minutes`.
-     * <p>
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMAT_PATTERN,
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN,
                 Locale.ENGLISH);
         return dateTime.format(formatter);
     }
