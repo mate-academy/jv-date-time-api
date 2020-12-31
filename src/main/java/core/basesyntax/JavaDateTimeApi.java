@@ -51,14 +51,12 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        Optional<LocalDate> date;
         try {
-            date = Optional.of(LocalDate.of(dateParams[YEAR],
+            return Optional.of(LocalDate.of(dateParams[YEAR],
                     dateParams[MONTH], dateParams[DAY_OF_MONTH]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
-            date = Optional.empty();
+            return Optional.empty();
         }
-        return date;
     }
 
     /**
@@ -137,13 +135,11 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        Optional<LocalDate> localDate;
         try {
-            localDate = Optional.of(LocalDate.from(DateTimeFormatter.BASIC_ISO_DATE.parse(date)));
+            return Optional.of(LocalDate.from(DateTimeFormatter.BASIC_ISO_DATE.parse(date)));
         } catch (DateTimeParseException e) {
-            localDate = Optional.empty();
+            return Optional.empty();
         }
-        return localDate;
     }
 
     /**
@@ -151,14 +147,12 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        Optional<LocalDate> localDate;
         try {
-            localDate = Optional.of(LocalDate.parse(date,
+            return Optional.of(LocalDate.parse(date,
                     DateTimeFormatter.ofPattern(D_MMM_YYYY_FORMAT)));
         } catch (DateTimeParseException e) {
-            localDate = Optional.empty();
+            return Optional.empty();
         }
-        return localDate;
     }
 
     /**
