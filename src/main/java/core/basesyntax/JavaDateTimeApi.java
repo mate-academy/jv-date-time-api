@@ -17,6 +17,8 @@ public class JavaDateTimeApi {
     private static final String DATE_PATTERN_SPECIFIC_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static final String TIMEZONE_UTC = "UTC";
     private static final String ZONE_OFFSET = "+02:00";
+    private static final String CUSTOM_PATTERN = "d MMM yyyy";
+    private static final String FORMAT_PATTERN = "dd MMMM yyyy HH:mm";
 
     /**
      * Return the current date as a String depending on a query.
@@ -160,7 +162,8 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CUSTOM_PATTERN,
+                    Locale.ENGLISH);
             return Optional.of(LocalDate.parse(date, formatter));
         } catch (DateTimeParseException e) {
             return Optional.empty();
@@ -174,7 +177,7 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm",
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMAT_PATTERN,
                 Locale.ENGLISH);
         return dateTime.format(formatter);
     }
