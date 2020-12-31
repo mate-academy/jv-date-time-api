@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String EUROPE_KIEV = "Europe/Kiev";
     private static final String PATTERN_DD_MMM_YYYY = "dd MMM yyyy";
     private static final String PATTERN_DD_MMMM_YYYY_HH_MM = "dd MMMM yyyy HH:mm";
 
@@ -105,7 +106,8 @@ public class JavaDateTimeApi {
         LocalDate now = LocalDate.now();
         if (someDate.isAfter(now)) {
             return someDate + " is after " + now;
-        } else if (someDate.isBefore(now)) {
+        }
+        if (someDate.isBefore(now)) {
             return someDate + " is before " + now;
         }
         return someDate + " is today";
@@ -131,7 +133,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return localTime.atOffset(ZoneId.of("Europe/Kiev").getRules().getOffset(Instant.now()));
+        return localTime.atOffset(ZoneId.of(EUROPE_KIEV).getRules().getOffset(Instant.now()));
     }
 
     /**
