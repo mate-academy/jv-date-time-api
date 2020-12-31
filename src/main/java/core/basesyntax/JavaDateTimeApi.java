@@ -20,7 +20,6 @@ public class JavaDateTimeApi {
     private static final String FULL_DATE_PATTERN = "dd MMMM yyyy HH:mm";
     private static final String UA_OFFSET = "+02:00";
 
-
     public String todayDate(DateTimePart datePart) {
         LocalDate currentDate = LocalDate.now();
         switch (datePart) {
