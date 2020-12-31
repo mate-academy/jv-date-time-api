@@ -100,11 +100,11 @@ public class JavaDateTimeApi {
         LocalDate now = LocalDate.now();
         if (someDate.isAfter(now)) {
             return someDate.toString() + " is after " + LocalDate.now();
-        } else if (someDate.equals(now)) {
-            return someDate.toString() + " is today";
-        } else {
-            return someDate.toString() + " is before " + LocalDate.now();
         }
+        if (someDate.equals(now)) {
+            return someDate.toString() + " is today";
+        }
+        return someDate.toString() + " is before " + LocalDate.now();
     }
 
     /**
