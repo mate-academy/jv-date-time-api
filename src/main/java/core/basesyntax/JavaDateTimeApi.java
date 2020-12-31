@@ -15,7 +15,6 @@ import java.util.Optional;
 public class JavaDateTimeApi {
     private static final int NUMBER_OF_DAYS = 31;
     private static final int NUMBER_OF_MONTH = 12;
-    private static final String OFFSET_UA = "+02:00";
     private static final String TRIMMED_DATE_PATTERN = "dd MMM yyyy";
     private static final String FULL_DATE_PATTERN = "dd MMMM yyyy HH:mm";
     private static final String UA_OFFSET = "+02:00";
