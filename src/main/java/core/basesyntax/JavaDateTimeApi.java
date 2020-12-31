@@ -14,6 +14,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String UKRAINE_ZONE = "+02:00";
+    private static final String DATE_FORMAT = "dd MMM yyyy";
+    private static final String DATE_N_TIME_FORMAT = "dd MMMM yyyy HH:mm";
     /**
      * Return the current date as a String depending on a query.
      *
@@ -25,6 +28,7 @@ public class JavaDateTimeApi {
      *      - DAY - current day of month;
      * In any other case throw DateTimeException.
      **/
+
     public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
         switch (datePart) {
@@ -50,8 +54,11 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
+        int year = 0;
+        int month = 1;
+        int day = 2;
         try {
-            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+            return Optional.of(LocalDate.of(dateParams[year], dateParams[month], dateParams[day]));
         } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
             return Optional.empty();
         }
@@ -124,7 +131,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(UKRAINE_ZONE));
     }
 
     /**
@@ -146,7 +153,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             return Optional.of(LocalDate
-                    .parse(date, DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH)));
+                    .parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT, Locale.UK)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -159,6 +166,6 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.UK));
+        return dateTime.format(DateTimeFormatter.ofPattern(DATE_N_TIME_FORMAT, Locale.UK));
     }
 }
