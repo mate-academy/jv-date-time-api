@@ -18,7 +18,6 @@ public class JavaDateTimeApi {
     private static final String OFFSET_UA = "+02:00";
     private static final String TRIMMED_DATE_PATTERN = "dd MMM yyyy";
     private static final String FULL_DATE_PATTERN = "dd MMMM yyyy HH:mm";
-    private static final String UA_OFFSET = "+02:00";
     private LocalDate currentDate = LocalDate.now();
 
     public String todayDate(DateTimePart datePart) {
@@ -76,6 +75,7 @@ public class JavaDateTimeApi {
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
+        String UA_OFFSET = "+02:00";
         return localTime.atOffset(ZoneOffset.of(UA_OFFSET));
     }
 
