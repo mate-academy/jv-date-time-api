@@ -136,9 +136,8 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        final String pattern = "yyyyMMdd";
         try {
-            return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern)));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -149,7 +148,7 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        final String pattern = "dd MMM yyyy";
+        String pattern = "dd MMM yyyy";
         try {
             return Optional.of(LocalDate.parse(date, DateTimeFormatter
                     .ofPattern(pattern).withLocale(Locale.UK)));
@@ -165,7 +164,7 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        final String pattern = "dd MMMM yyyy HH:mm";
+        String pattern = "dd MMMM yyyy HH:mm";
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern)
                 .withLocale(Locale.UK);
         return dateTime.format(dateTimeFormatter);
