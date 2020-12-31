@@ -55,10 +55,11 @@ public class JavaDateTimeApi {
     }
 
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isAfter(LocalDate.now())
-                ? someDate + " is after " + LocalDate.now()
-                : someDate.isBefore(LocalDate.now())
-                ? someDate + " is before " + LocalDate.now()
+        LocalDate localDate = LocalDate.now();
+        return someDate.isAfter(localDate)
+                ? someDate + " is after " + localDate
+                : someDate.isBefore(localDate)
+                ? someDate + " is before " + localDate
                 : someDate + " is today";
     }
 
@@ -67,7 +68,8 @@ public class JavaDateTimeApi {
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, ZoneOffset.of("+02:00"));
+        final String offsetForUkraine = "+02:00";
+        return OffsetDateTime.of(localTime, ZoneOffset.of(offsetForUkraine));
     }
 
     public Optional<LocalDate> parseDate(String date) {
