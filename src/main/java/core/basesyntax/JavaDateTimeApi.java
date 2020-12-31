@@ -1,9 +1,8 @@
 package core.basesyntax;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -19,7 +18,18 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
-        return "Today";
+        switch (datePart) {
+            case FULL:
+                return String.valueOf(LocalDate.now());
+            case YEAR:
+                return String.valueOf(LocalDate.now().getYear());
+            case MONTH:
+                return String.valueOf(LocalDate.now().getMonth());
+            case DAY:
+                return String.valueOf(LocalDate.now().getDayOfMonth());
+            default:
+                throw new DateTimeException("Wrong date!");
+        }
     }
 
     /**
@@ -38,28 +48,28 @@ public class JavaDateTimeApi {
      * Given the time and the number of hours to add, return the changed time.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        return LocalTime.now();
+        return localTime.plusHours(hoursToAdd);
     }
 
     /**
      * Given the time and the number of minutes to add, return the changed time.
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        return LocalTime.now();
+        return localTime.plusMinutes(minutesToAdd);
     }
 
     /**
      * Given the time and the number of seconds to add, return the changed time.
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        return LocalTime.now();
+        return localTime.plusSeconds(secondsToAdd);
     }
 
     /**
      * Given the date and the number of weeks to add, return the changed date.
      */
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
-        return LocalDate.now();
+        return localDate.plusWeeks(numberOfWeeks);
     }
 
     /**
@@ -102,7 +112,11 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        return Optional.empty();
+        try {
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+        } catch (DateTimeException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -120,6 +134,7 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return "";
+        return dateTime.format(DateTimeFormatter
+                .ofPattern("dd MMMM yyyy HH:mm", Locale.UK));
     }
 }
