@@ -17,7 +17,6 @@ public class JavaDateTimeApi {
     private static final String OFFSET_UA = "+02:00";
     private static final String DATE_PATTERN = "d MMM yyyy";
     private static final String DATE_WITH_TIME_PATTERN = "dd MMMM yyyy HH:mm";
-    private static final LocalDate CURRENT_DATE = LocalDate.now();
 
     /**
      * Return the current date as a String depending on a query.
@@ -31,11 +30,12 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate currentDate = LocalDate.now();
         switch (datePart) {
-            case FULL: return CURRENT_DATE.toString();
-            case YEAR: return String.valueOf(CURRENT_DATE.getYear());
-            case MONTH: return CURRENT_DATE.getMonth().toString();
-            case DAY: return String.valueOf(CURRENT_DATE.getDayOfMonth());
+            case FULL: return currentDate.toString();
+            case YEAR: return String.valueOf(currentDate.getYear());
+            case MONTH: return currentDate.getMonth().toString();
+            case DAY: return String.valueOf(currentDate.getDayOfMonth());
             default: throw new DateTimeException("Wrong option!");
         }
     }
@@ -95,11 +95,12 @@ public class JavaDateTimeApi {
      *                  if `someDate` is today;
      */
     public String beforeOrAfter(LocalDate someDate) {
-        if (someDate.isAfter(CURRENT_DATE)) {
-            return someDate + " is after " + CURRENT_DATE;
+        LocalDate currentDate = LocalDate.now();
+        if (someDate.isAfter(currentDate)) {
+            return someDate + " is after " + currentDate;
         }
-        if (someDate.isBefore(CURRENT_DATE)) {
-            return someDate + " is before " + CURRENT_DATE;
+        if (someDate.isBefore(currentDate)) {
+            return someDate + " is before " + currentDate;
         }
         return someDate + " is today";
     }
