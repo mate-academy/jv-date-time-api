@@ -14,6 +14,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    public static final String DAY_MONTH_YEAR_HOUR_MINUTE = "dd MMMM yyyy HH:mm";
+    public static final String DAY_SHORT_MONTH_YEAR = "d MMM yyyy";
     private static final String OFFSET_UKR_TIME = "+02:00";
 
     public String todayDate(DateTimePart datePart) {
@@ -35,7 +37,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (RuntimeException e) {
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
@@ -60,7 +62,8 @@ public class JavaDateTimeApi {
         LocalDate today = LocalDate.now();
         if (someDate.isAfter(today)) {
             return String.format("%s is after %s", someDate,today);
-        } else if (someDate.isBefore(today)) {
+        }
+        if (someDate.isBefore(today)) {
             return String.format("%s is before %s", someDate,today);
         }
         return String.format("%s is today", someDate);
@@ -75,9 +78,9 @@ public class JavaDateTimeApi {
     }
 
     public Optional<LocalDate> parseDate(String date) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         try {
-            return Optional.of(LocalDate.parse(date, dateTimeFormatter));
+            return Optional.of(LocalDate.parse(date,
+                    DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
@@ -85,7 +88,7 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> customParseDate(String date) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter
-                .ofPattern("d MMM yyyy", Locale.ENGLISH);
+                .ofPattern(DAY_SHORT_MONTH_YEAR, Locale.ENGLISH);
         try {
             return Optional.of(LocalDate.parse(date, dateTimeFormatter));
         } catch (DateTimeParseException e) {
@@ -95,7 +98,7 @@ public class JavaDateTimeApi {
 
     public String formatDate(LocalDateTime dateTime) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter
-                .ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+                .ofPattern(DAY_MONTH_YEAR_HOUR_MINUTE, Locale.ENGLISH);
         return dateTime.format(dateTimeFormatter);
     }
 }
