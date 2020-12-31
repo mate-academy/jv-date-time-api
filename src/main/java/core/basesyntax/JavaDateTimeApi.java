@@ -14,18 +14,19 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String OFFSET_UKR_TIME = "+02:00";
 
     public String todayDate(DateTimePart datePart) {
         LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case DAY:
-                return localDate.getDayOfMonth() + "";
+                return String.valueOf(localDate.getDayOfMonth());
             case YEAR:
-                return localDate.getYear() + "";
+                return String.valueOf(localDate.getYear());
             case MONTH:
-                return localDate.getMonth() + "";
+                return String.valueOf(localDate.getMonth());
             case FULL:
-                return "" + localDate;
+                return String.valueOf(localDate);
             default:
                 throw new DateTimeException("Something went wrong");
         }
@@ -58,11 +59,11 @@ public class JavaDateTimeApi {
     public String beforeOrAfter(LocalDate someDate) {
         LocalDate today = LocalDate.now();
         if (someDate.isAfter(today)) {
-            return someDate + " is after " + today;
+            return String.format("%s is after %s", someDate,today);
         } else if (someDate.isBefore(today)) {
-            return someDate + " is before " + today;
+            return String.format("%s is before %s", someDate,today);
         }
-        return someDate + " is today";
+        return String.format("%s is today", someDate);
     }
 
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
@@ -70,8 +71,7 @@ public class JavaDateTimeApi {
     }
 
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        final String offsetUkrainaTimeZone = "+02:00";
-        return OffsetDateTime.of(localTime, ZoneOffset.of(offsetUkrainaTimeZone));
+        return OffsetDateTime.of(localTime, ZoneOffset.of(OFFSET_UKR_TIME));
     }
 
     public Optional<LocalDate> parseDate(String date) {
