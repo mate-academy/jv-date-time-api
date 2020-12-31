@@ -15,9 +15,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final int DAY_INDEX = 0;
+    private static final int DAY_INDEX = 2;
     private static final int MONTH_INDEX = 1;
-    private static final int YEAR_INDEX = 2;
+    private static final int YEAR_INDEX = 0;
     private static final int UKRAINE_OFFSET = 2;
     private static final String PATTERN_D_MMM_YYYY = "d MMM yyyy";
     private static final String PATTERN_DD_MMMM_YYYY_HH_MM = "dd MMMM yyyy HH:mm";
@@ -59,13 +59,13 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         if (dateParams.length == 0
-                || dateParams[DAY_INDEX] <= 0
+                || dateParams[YEAR_INDEX] <= 0
                 || dateParams[MONTH_INDEX] > 12
-                || dateParams[YEAR_INDEX] > 31) {
+                || dateParams[DAY_INDEX] > 31) {
             return Optional.empty();
         }
-        LocalDate outputDate = LocalDate.of(dateParams[DAY_INDEX],
-                dateParams[MONTH_INDEX], dateParams[YEAR_INDEX]);
+        LocalDate outputDate = LocalDate.of(dateParams[YEAR_INDEX],
+                dateParams[MONTH_INDEX], dateParams[DAY_INDEX]);
         return Optional.of(outputDate);
     }
 
