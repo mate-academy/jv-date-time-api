@@ -29,15 +29,16 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return String.valueOf(LocalDate.now());
+                return String.valueOf(localDate);
             case YEAR:
-                return String.valueOf(LocalDate.now().getYear());
+                return String.valueOf(localDate.getYear());
             case MONTH:
-                return String.valueOf(LocalDate.now().getMonth());
+                return String.valueOf(localDate.getMonth());
             case DAY:
-                return String.valueOf(LocalDate.now().getDayOfMonth());
+                return String.valueOf(localDate.getDayOfMonth());
             default:
                 throw new DateTimeException("Can't get date");
         }
@@ -97,9 +98,10 @@ public class JavaDateTimeApi {
      * if `someDate` is today;
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.equals(LocalDate.now()) ? someDate + " is today"
-                : someDate.isBefore(LocalDate.now()) ? someDate + " is before " + LocalDate.now()
-                : someDate + " is after " + LocalDate.now();
+        LocalDate localDate = LocalDate.now();
+        return someDate.equals(localDate) ? someDate + " is today"
+                : someDate.isBefore(localDate) ? someDate + " is before " + localDate
+                : someDate + " is after " + localDate;
     }
 
     /**
