@@ -12,10 +12,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    private static final int ARRAY_YEAR = 0;
-    private static final int ARRAY_MONTH = 1;
-    private static final int ARRAY_DAY = 2;
-    private static final LocalDate NOW = LocalDate.now();
+    private static final int YEAR_INDEX = 0;
+    private static final int MONTH_INDEX = 1;
+    private static final int DAY_INDEX = 2;
     private static final String DATE_TIME_FORMAT = "dd MMMM yyyy HH:mm";
     private static final String UKRAINE_TIMEZONE = "+02:00";
     private static final String CUSTOM_DATE_PATTERN = "dd MMM yyyy";
@@ -32,15 +31,16 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate now = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return String.valueOf(NOW);
+                return String.valueOf(now);
             case YEAR:
-                return String.valueOf(NOW.getYear());
+                return String.valueOf(now.getYear());
             case MONTH:
-                return String.valueOf(NOW.getMonth());
+                return String.valueOf(now.getMonth());
             case DAY:
-                return String.valueOf(NOW.getDayOfMonth());
+                return String.valueOf(now.getDayOfMonth());
             default:
                 throw new DateTimeException("No such date part");
         }
@@ -59,8 +59,8 @@ public class JavaDateTimeApi {
             return Optional.empty();
         }
         try {
-            return Optional.of(LocalDate.of(dateParams[ARRAY_YEAR],
-                    dateParams[ARRAY_MONTH], dateParams[ARRAY_DAY]));
+            return Optional.of(LocalDate.of(dateParams[YEAR_INDEX],
+                    dateParams[MONTH_INDEX], dateParams[DAY_INDEX]));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -104,11 +104,12 @@ public class JavaDateTimeApi {
      * if `someDate` is today;
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isEqual(NOW)
+        LocalDate now = LocalDate.now();
+        return someDate.isEqual(now)
                 ? someDate + " is today"
-                : someDate.isAfter(NOW)
-                ? someDate + " is after " + NOW
-                : someDate + " is before " + NOW;
+                : someDate.isAfter(now)
+                ? someDate + " is after " + now
+                : someDate + " is before " + now;
     }
 
     /**
