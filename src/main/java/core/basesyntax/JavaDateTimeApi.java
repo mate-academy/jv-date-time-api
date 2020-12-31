@@ -15,7 +15,6 @@ import java.util.Optional;
 public class JavaDateTimeApi {
     public static final String DAY_FULLMONTH_YEAR_HOUR_MINUTE = "dd MMMM yyyy HH:mm";
     public static final String DAY_SHORTMONTH_YEAR = "d MMM yyyy";
-    public static final String YEAR_MONTH_DAY_NOSPACES = "yyyyMMdd";
     public static final String PLUS_2 = "+2";
 
     /**
@@ -137,7 +136,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> parseDate(String date) {
         try {
             return Optional.of(LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern(YEAR_MONTH_DAY_NOSPACES)));
+                    DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
