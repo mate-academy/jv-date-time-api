@@ -30,15 +30,16 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return String.valueOf(LocalDate.now());
+                return String.valueOf(localDate);
             case YEAR:
-                return String.valueOf(LocalDate.now().getYear());
+                return String.valueOf(localDate.getYear());
             case MONTH:
-                return String.valueOf(LocalDate.now().getMonth());
+                return String.valueOf(localDate.getMonth());
             case DAY:
-                return String.valueOf(LocalDate.now().getDayOfMonth());
+                return String.valueOf(localDate.getDayOfMonth());
             default:
                 throw new DateTimeException("Incorrect input date");
         }
@@ -103,13 +104,11 @@ public class JavaDateTimeApi {
      */
     public String beforeOrAfter(LocalDate someDate) {
         LocalDate currentDate = LocalDate.now();
-        if (someDate.isAfter(currentDate)) {
-            return someDate + " is after " + currentDate;
-        } else if (someDate.isBefore(currentDate)) {
-            return someDate + " is before " + currentDate;
-        } else {
-            return someDate + " is today";
-        }
+        return someDate.isAfter(currentDate)
+                ? someDate + " is after " + currentDate
+                : someDate.isBefore(currentDate)
+                ? someDate + " is before " + currentDate
+                : someDate + " is today";
     }
 
     /**
