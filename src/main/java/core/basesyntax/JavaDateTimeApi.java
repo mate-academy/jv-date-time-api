@@ -19,6 +19,7 @@ public class JavaDateTimeApi {
     private static final String PATTERN_FULL = "dd MMMM yyyy HH:mm";
     private static final String PATTERN_CUSTOM = "d MMM yyyy";
     private static final String UA_OFFSET = "+02:00";
+
     /**
      * Return the current date as a String depending on a query.
      * <p>
@@ -105,7 +106,8 @@ public class JavaDateTimeApi {
         LocalDate today = LocalDate.now();
         if (someDate.isAfter(today)) {
             return String.format(FORMAT, someDate, "after", today);
-        } else if (someDate.isBefore(today)) {
+        }
+        if (someDate.isBefore(today)) {
             return String.format(FORMAT, someDate, "before", today);
         }
         return someDate + " is today";
