@@ -7,6 +7,9 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String FORMAT = "%s is %s %s";
+    private static final String PATTERN_OFFSET = "dd MMMM yyyy HH:mm";
+    private static final String PATTERN_CUSTOM = "d MMM yyyy";
+    private static final String UA_OFFSET = "+02:00";
 
     /**
      * Return the current date as a String depending on a query.
@@ -46,7 +49,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
             return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
-        } catch (DateTimeException e) {
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
@@ -95,7 +98,7 @@ public class JavaDateTimeApi {
         } else if (someDate.isBefore(today)) {
             return String.format(FORMAT, someDate, "before", today);
         }
-        return someDate + "is today";
+        return someDate + " is today";
     }
 
     /**
@@ -119,7 +122,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        return OffsetDateTime.of(localTime, (ZoneOffset) ZoneId.systemDefault());
+        return OffsetDateTime.of(localTime, ZoneOffset.of(UA_OFFSET));
     }
 
     /**
@@ -127,7 +130,12 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+        try {
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
+        }
+        catch(DateTimeException e){
+            return Optional.empty();
+        }
     }
 
     /**
@@ -135,16 +143,24 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        return Optional.of(LocalDate.parse(date, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
+        try {
+            return Optional.of(LocalDate.parse(
+                    date,
+                    DateTimeFormatter.ofPattern(PATTERN_CUSTOM)));
+        }
+        catch(DateTimeException e){
+            return Optional.empty();
+        }
     }
 
     /**
      * Given some LocalDateTime, return a String formatted as
      * `day(2-digit) month(full name in English) year(4-digit) hours(24-hour format):minutes`.
      * <p>
-     * Example: "01 January 2000 18:00".
+     * Example: "01 January 2000 18:00". dd MMMM yyyy HH:mm
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern(String.valueOf(FormatStyle.LONG)));
+        return dateTime.format(DateTimeFormatter
+                .ofPattern(PATTERN_OFFSET));
     }
 }
