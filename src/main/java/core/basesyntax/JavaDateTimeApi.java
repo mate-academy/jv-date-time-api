@@ -14,6 +14,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
+    private static final String CUSTOM_FORMAT = "d MMM yyyy";
+    private static final String FORMAT_DATE_AND_TIME = "dd MMMM yyyy H:mm";
+    private static final String FORMAT_PARSE_DATE = "yyyyMMdd";
 
     public String todayDate(DateTimePart datePart) {
 
@@ -80,7 +83,8 @@ public class JavaDateTimeApi {
 
     public Optional<LocalDate> parseDate(String date) {
         try {
-            LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            LocalDate localDate = LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern(FORMAT_PARSE_DATE));
             return Optional.of(localDate);
         } catch (DateTimeException | NullPointerException e) {
             return Optional.empty();
@@ -90,7 +94,7 @@ public class JavaDateTimeApi {
     public Optional<LocalDate> customParseDate(String date) {
         try {
             LocalDate localDate = LocalDate.parse(date, DateTimeFormatter
-                    .ofPattern("d MMM yyyy",Locale.UK));
+                    .ofPattern(CUSTOM_FORMAT,Locale.UK));
             return Optional.ofNullable(localDate);
         } catch (DateTimeParseException e) {
             return Optional.empty();
@@ -98,6 +102,6 @@ public class JavaDateTimeApi {
     }
 
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd MMMM yyyy H:mm", Locale.UK));
+        return dateTime.format(DateTimeFormatter.ofPattern(FORMAT_DATE_AND_TIME, Locale.UK));
     }
 }
