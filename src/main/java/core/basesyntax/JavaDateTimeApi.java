@@ -62,46 +62,39 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        if (dateParams == null || dateParams.length == NO_ELEMENT_ARRAY_LENGTH
-                || dateParams[1] < MIN_MONTH || dateParams[1] > MAX_MONTH) {
+        try {
+            return Optional.ofNullable(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
-        int year = dateParams[0];
-        int month = dateParams[1];
-        int dayOfMonth = dateParams[2];
-        return Optional.ofNullable(LocalDate.of(year, month, dayOfMonth));
     }
 
     /**
      * Given the time and the number of hours to add, return the changed time.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
-        LocalTime changedTime = localTime.plusHours(hoursToAdd);
-        return changedTime;
+        return localTime.plusHours(hoursToAdd);
     }
 
     /**
      * Given the time and the number of minutes to add, return the changed time.
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
-        LocalTime changedTime = localTime.plusMinutes(minutesToAdd);
-        return changedTime;
+        return localTime.plusMinutes(minutesToAdd);
     }
 
     /**
      * Given the time and the number of seconds to add, return the changed time.
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
-        LocalTime changedTime = localTime.plusSeconds(secondsToAdd);
-        return changedTime;
+        return localTime.plusSeconds(secondsToAdd);
     }
 
     /**
      * Given the date and the number of weeks to add, return the changed date.
      */
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
-        LocalDate changedDate = localDate.plusWeeks(numberOfWeeks);
-        return changedDate;
+        return localDate.plusWeeks(numberOfWeeks);
     }
 
     /**
@@ -147,8 +140,7 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        ZoneOffset zoneOffSet = ZoneOffset.of(TIME_ZONE);
-        return localTime.atOffset(zoneOffSet);
+        return localTime.atOffset(ZoneOffset.of(TIME_ZONE));
     }
 
     /**
