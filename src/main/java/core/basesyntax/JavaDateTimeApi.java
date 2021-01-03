@@ -10,6 +10,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
@@ -28,7 +29,7 @@ public class JavaDateTimeApi {
         LocalDate currentDate = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                return currentDate.toString();
             case YEAR:
                 return String.valueOf(currentDate.getYear());
             case MONTH:
@@ -137,8 +138,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-            return Optional.of(LocalDate.parse(date, formatter));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
@@ -165,6 +165,6 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy HH:mm");
-        return dateTime.format(formatter);
+        return dateTime.format(formatter.withLocale(Locale.ENGLISH));
     }
 }
