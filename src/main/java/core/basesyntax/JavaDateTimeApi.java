@@ -125,7 +125,8 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        ZoneOffset zoneOffset = ZonedDateTime.now().getOffset();
+        ZoneId zoneId = ZoneId.of(ZoneId.SHORT_IDS.get("ART"));
+        ZoneOffset zoneOffset = ZonedDateTime.now(zoneId).getOffset();
         return localTime.atOffset(zoneOffset);
     }
 
