@@ -116,7 +116,8 @@ public class JavaDateTimeApi {
      * return LocalDateTime in this timezone.
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        return LocalDateTime.from(ZonedDateTime.parse(dateInString).withZoneSameInstant(ZoneId.of(zone)));
+        return LocalDateTime.from(ZonedDateTime.parse(dateInString)
+                .withZoneSameInstant(ZoneId.of(zone)));
     }
 
     /**
