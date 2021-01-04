@@ -16,7 +16,7 @@ public class JavaDateTimeApi {
     private static final String TIME_ZONE = "+02:00";
     private static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.UK);
-    private static final DateTimeFormatter FORMAT_DATE
+    private static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.UK);
 
     /**
