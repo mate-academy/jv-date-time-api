@@ -126,7 +126,8 @@ public class JavaDateTimeApi {
      * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
-        ZoneId zoneId = ZoneId.of(ZoneId.SHORT_IDS.get("ART"));
+        final String idForUkraine = "ART";
+        ZoneId zoneId = ZoneId.of(ZoneId.SHORT_IDS.get(idForUkraine));
         ZoneOffset zoneOffset = ZonedDateTime.now(zoneId).getOffset();
         return localTime.atOffset(zoneOffset);
     }
@@ -149,8 +150,9 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
+        final String format = "d MMM yyyy";
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
             return Optional.of(LocalDate.parse(date, formatter));
         } catch (DateTimeException e) {
             return Optional.empty();
@@ -164,7 +166,8 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy HH:mm");
+        final String format = "dd LLLL yyyy HH:mm";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return dateTime.format(formatter.withLocale(Locale.ENGLISH));
     }
 }
