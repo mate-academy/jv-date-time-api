@@ -10,17 +10,14 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class JavaDateTimeApi {
 
     public static final int DEFAULT_LENGTH_LOCAL_DATE = 10;
     public static final String DELIMITER = "-";
     public static final String SHORT_IDS_ECT = "ECT";
-    public static final String PATTERN_DATE_YYYY_MM_DD = "yyyyMMdd";
     public static final String PATTERN_DATE_DD_MMM_YYY = "dd MMM yyy";
     public static final String PATTERN_DATE_DD_MMMM_YYYY_HH_MM = "dd MMMM yyyy HH:mm";
 
@@ -60,11 +57,11 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        String collect = Arrays.stream(dateParams)
-                .map(String::valueOf)
-                .collect(Collectors.joining(DELIMITER));
-        return dateParams.length == 0 || collect.length() > DEFAULT_LENGTH_LOCAL_DATE
-                ? Optional.empty() : Optional.ofNullable(LocalDate.parse(collect));
+        try{
+            return Optional.of(LocalDate.of(dateParams[0], (dateParams[1]), dateParams[2]));
+        }catch (ArrayIndexOutOfBoundsException | DateTimeException e){
+            return Optional.empty();
+        }
     }
 
     /**
@@ -141,10 +138,8 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        DateTimeFormatter dateTimeFormatter =
-                DateTimeFormatter.ofPattern(PATTERN_DATE_YYYY_MM_DD);
         try {
-            return Optional.ofNullable(LocalDate.parse(date, dateTimeFormatter));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
