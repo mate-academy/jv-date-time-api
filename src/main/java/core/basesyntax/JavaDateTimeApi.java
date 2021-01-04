@@ -10,19 +10,14 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Optional;
 
 public class JavaDateTimeApi {
-    public static final int NO_ELEMENT_ARRAY_LENGTH = 0;
-    public static final int MIN_MONTH = 1;
-    public static final int MAX_MONTH = 12;
-    public static final int MAX_DAY_IN_MONTH = 31;
     public static final String TIME_ZONE = "+02:00";
-    public static final int START_DAY_POSITION = 0;
-    public static final int END_DAY_POSITION = 2;
-    public static final int START_MONTH_POSITION = 4;
-    public static final int END_MONTH_POSITION = 6;
+    public static final String TIME_FORMATTER_FORMAT_DATE = "dd MMMM yyyy HH:mm";
+    public static final String TIME_FORMATTER_CUSTOM_PARSE_DATE = "d MMM yyyy";
 
     Locale locale = new Locale("en", "US");
 
@@ -112,9 +107,8 @@ public class JavaDateTimeApi {
             return someDate + " is after " + currentDate;
         } else if (someDate.isBefore(LocalDate.now())) {
             return someDate + " is before " + currentDate;
-        } else {
-            return someDate + " is today";
         }
+        return someDate + " is today";
     }
 
     /**
@@ -124,8 +118,7 @@ public class JavaDateTimeApi {
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
         ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateInString);
         LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
-        ZoneId zoneId = ZoneId.of(zone);
-        ZoneOffset zoneOffset = zoneId.getRules().getOffset(localDateTime);
+        ZoneOffset zoneOffset = ZoneId.of(zone).getRules().getOffset(localDateTime);
         return LocalDateTime.ofInstant(Instant.parse(dateInString), zoneOffset);
     }
 
@@ -148,9 +141,12 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
-        return (Integer.parseInt(date.substring(START_MONTH_POSITION, END_MONTH_POSITION))
-                > MAX_MONTH) ? Optional.empty()
-                : Optional.ofNullable(LocalDate.from(DateTimeFormatter.BASIC_ISO_DATE.parse(date)));
+        try {
+            return Optional.ofNullable(LocalDate
+                    .from(DateTimeFormatter.BASIC_ISO_DATE.parse(date)));
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -158,10 +154,13 @@ public class JavaDateTimeApi {
      * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy", locale);
-        return (Integer.parseInt(date.substring(START_DAY_POSITION, END_DAY_POSITION))
-                > MAX_DAY_IN_MONTH) ? Optional.empty()
-                : Optional.ofNullable(LocalDate.from(formatter.parse(date)));
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern(TIME_FORMATTER_CUSTOM_PARSE_DATE, locale);
+        try {
+            return Optional.ofNullable(LocalDate.from(formatter.parse(date)));
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -171,7 +170,8 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", locale);
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern(TIME_FORMATTER_FORMAT_DATE, locale);
         return dateTime.format(formatter);
     }
 }
