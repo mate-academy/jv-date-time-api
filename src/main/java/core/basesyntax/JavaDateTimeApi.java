@@ -8,7 +8,6 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
@@ -19,7 +18,7 @@ public class JavaDateTimeApi {
     public static final String TIME_FORMATTER_FORMAT_DATE = "dd MMMM yyyy HH:mm";
     public static final String TIME_FORMATTER_CUSTOM_PARSE_DATE = "d MMM yyyy";
 
-    Locale locale = new Locale("en", "US");
+    Locale locale = Locale.US;
 
     /**
      * Return the current date as a String depending on a query.
@@ -116,10 +115,7 @@ public class JavaDateTimeApi {
      * return LocalDateTime in this timezone.
      */
     public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
-        ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateInString);
-        LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
-        ZoneOffset zoneOffset = ZoneId.of(zone).getRules().getOffset(localDateTime);
-        return LocalDateTime.ofInstant(Instant.parse(dateInString), zoneOffset);
+        return LocalDateTime.ofInstant(Instant.parse(dateInString), ZoneId.of(zone));
     }
 
     /**
