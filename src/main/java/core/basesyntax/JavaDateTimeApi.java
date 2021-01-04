@@ -161,6 +161,6 @@ public class JavaDateTimeApi {
      * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(FORMAT_DATE);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
