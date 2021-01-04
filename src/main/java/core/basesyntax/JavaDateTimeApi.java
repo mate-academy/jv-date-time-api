@@ -29,15 +29,16 @@ public class JavaDateTimeApi {
      **/
 
     public String todayDate(DateTimePart datePart) {
+        LocalDate currentDate = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return LocalDate.now().toString();
+                return currentDate.toString();
             case YEAR:
-                return String.valueOf(LocalDate.now().getYear());
+                return String.valueOf(currentDate.getYear());
             case MONTH:
-                return LocalDate.now().getMonth().toString();
+                return currentDate.getMonth().toString();
             case DAY:
-                return String.valueOf(LocalDate.now().getDayOfMonth());
+                return String.valueOf(currentDate.getDayOfMonth());
             default:
                 throw new DateTimeException("No such option");
         }
