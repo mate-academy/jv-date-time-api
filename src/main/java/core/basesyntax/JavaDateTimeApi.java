@@ -18,8 +18,6 @@ public class JavaDateTimeApi {
     public static final String TIME_FORMATTER_FORMAT_DATE = "dd MMMM yyyy HH:mm";
     public static final String TIME_FORMATTER_CUSTOM_PARSE_DATE = "d MMM yyyy";
 
-    Locale locale = Locale.US;
-
     /**
      * Return the current date as a String depending on a query.
      * <p>
@@ -151,7 +149,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern(TIME_FORMATTER_CUSTOM_PARSE_DATE, locale);
+                .ofPattern(TIME_FORMATTER_CUSTOM_PARSE_DATE, Locale.US);
         try {
             return Optional.ofNullable(LocalDate.from(formatter.parse(date)));
         } catch (DateTimeParseException e) {
@@ -167,7 +165,7 @@ public class JavaDateTimeApi {
      */
     public String formatDate(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern(TIME_FORMATTER_FORMAT_DATE, locale);
+                .ofPattern(TIME_FORMATTER_FORMAT_DATE, Locale.US);
         return dateTime.format(formatter);
     }
 }
