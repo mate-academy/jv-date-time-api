@@ -30,15 +30,16 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate localDate = LocalDate.now();
         switch (datePart) {
             case DAY:
-                return String.valueOf(LocalDate.now().getDayOfMonth());
+                return String.valueOf(localDate.getDayOfMonth());
             case FULL:
-                return String.valueOf(LocalDate.now());
+                return String.valueOf(localDate);
             case YEAR:
-                return String.valueOf(LocalDate.now().getYear());
+                return String.valueOf(localDate.getYear());
             case MONTH:
-                return String.valueOf(LocalDate.now().getMonth());
+                return String.valueOf(localDate.getMonth());
             default:
                 throw new DateTimeException("Incorrect input");
         }
