@@ -57,9 +57,9 @@ public class JavaDateTimeApi {
      * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
-        try{
+        try {
             return Optional.of(LocalDate.of(dateParams[0], (dateParams[1]), dateParams[2]));
-        }catch (ArrayIndexOutOfBoundsException | DateTimeException e){
+        } catch (ArrayIndexOutOfBoundsException | DateTimeException e) {
             return Optional.empty();
         }
     }
