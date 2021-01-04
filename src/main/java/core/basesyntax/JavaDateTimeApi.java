@@ -55,7 +55,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         try {
-            return Optional.ofNullable(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
+            return Optional.of(LocalDate.of(dateParams[0], dateParams[1], dateParams[2]));
         } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
@@ -102,7 +102,8 @@ public class JavaDateTimeApi {
         LocalDate currentDate = LocalDate.now();
         if (someDate.isAfter(currentDate)) {
             return someDate + " is after " + currentDate;
-        } else if (someDate.isBefore(LocalDate.now())) {
+        }
+        if (someDate.isBefore(LocalDate.now())) {
             return someDate + " is before " + currentDate;
         }
         return someDate + " is today";
@@ -136,7 +137,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            return Optional.ofNullable(LocalDate
+            return Optional.of(LocalDate
                     .from(DateTimeFormatter.BASIC_ISO_DATE.parse(date)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
@@ -151,7 +152,7 @@ public class JavaDateTimeApi {
         DateTimeFormatter formatter = DateTimeFormatter
                 .ofPattern(TIME_FORMATTER_CUSTOM_PARSE_DATE, Locale.US);
         try {
-            return Optional.ofNullable(LocalDate.from(formatter.parse(date)));
+            return Optional.of(LocalDate.from(formatter.parse(date)));
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
