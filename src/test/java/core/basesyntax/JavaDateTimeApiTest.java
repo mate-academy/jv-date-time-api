@@ -75,14 +75,6 @@ public class JavaDateTimeApiTest {
     }
 
     @Test
-    public void getDateIncorrect() {
-        Integer[] dateParams = {2018, 22, 441};
-        Optional<LocalDate> expected = Optional.empty();
-        Optional<LocalDate> result = javaDateTimeApi.getDate(dateParams);
-        Assert.assertEquals(expected, result);
-    }
-
-    @Test
     public void getDateEmpty() {
         Integer[] dateParams = {};
         Optional<LocalDate> expected = Optional.empty();
