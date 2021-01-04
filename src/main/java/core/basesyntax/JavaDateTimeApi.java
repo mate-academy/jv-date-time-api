@@ -14,11 +14,10 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String TIME_ZONE = "+02:00";
-    private static final DateTimeFormatter DATE_TIME_FORMATTER
+    private static final DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.UK);
     private static final DateTimeFormatter FORMAT_DATE
             = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.UK);
-    private static final LocalDate PRESENT_LOCAL_DATE = LocalDate.now();
 
     /**
      * Return the current date as a String depending on a query.
@@ -32,15 +31,16 @@ public class JavaDateTimeApi {
      * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
+        LocalDate presentLocalDate = LocalDate.now();
         switch (datePart) {
             case FULL:
-                return String.valueOf(PRESENT_LOCAL_DATE);
+                return String.valueOf(presentLocalDate);
             case YEAR:
-                return String.valueOf(PRESENT_LOCAL_DATE.getYear());
+                return String.valueOf(presentLocalDate.getYear());
             case MONTH:
-                return String.valueOf(PRESENT_LOCAL_DATE.getMonth());
+                return String.valueOf(presentLocalDate.getMonth());
             case DAY:
-                return String.valueOf(PRESENT_LOCAL_DATE.getDayOfMonth());
+                return String.valueOf(presentLocalDate.getDayOfMonth());
             default:
                 throw new DateTimeException("Wrong date!");
         }
@@ -100,10 +100,11 @@ public class JavaDateTimeApi {
      * if `someDate` is today;
      */
     public String beforeOrAfter(LocalDate someDate) {
-        return someDate.isBefore(PRESENT_LOCAL_DATE) ? someDate + " is before "
-                + PRESENT_LOCAL_DATE
-                : someDate.isAfter(PRESENT_LOCAL_DATE) ? someDate + " is after "
-                + PRESENT_LOCAL_DATE
+        LocalDate presentLocalDate = LocalDate.now();
+        return someDate.isBefore(presentLocalDate) ? someDate + " is before "
+                + presentLocalDate
+                : someDate.isAfter(presentLocalDate) ? someDate + " is after "
+                + presentLocalDate
                 : someDate + " is today";
     }
 
@@ -147,7 +148,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> customParseDate(String date) {
         try {
-            return Optional.of(LocalDate.parse(date, DATE_TIME_FORMATTER));
+            return Optional.of(LocalDate.parse(date, DATE_FORMATTER));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
