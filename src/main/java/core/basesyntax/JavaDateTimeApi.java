@@ -14,7 +14,6 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     private static final String TIME_ZONE_EUROPE = "Europe/Paris";
-    private static final String DATE_FORMAT = "yyyyMMdd";
     private static final String DATE_MONTH_REDUCTION_FORMAT = "d MMM yyyy";
     private static final String DATE_TIME_FORMAT = "dd MMMM yyyy HH:mm";
 
@@ -144,8 +143,7 @@ public class JavaDateTimeApi {
      */
     public Optional<LocalDate> parseDate(String date) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
-            return Optional.of(LocalDate.parse(date, formatter));
+            return Optional.of(LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE));
         } catch (DateTimeException e) {
             return Optional.empty();
         }
