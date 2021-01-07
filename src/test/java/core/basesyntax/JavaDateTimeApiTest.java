@@ -159,7 +159,7 @@ public class JavaDateTimeApiTest {
     public void offsetUkraine() {
         LocalDateTime localDateTime =
                 LocalDateTime.of(2019, Month.SEPTEMBER, 06, 13, 17);
-        OffsetDateTime expected = OffsetDateTime.of(localDateTime, ZoneOffset.of("+02:00"));
+        OffsetDateTime expected = OffsetDateTime.of(localDateTime, ZoneOffset.of("+03:00"));
         OffsetDateTime result = javaDateTimeApi.offsetDateTime(localDateTime);
         Assert.assertEquals(expected, result);
     }
