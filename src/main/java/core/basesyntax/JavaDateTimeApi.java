@@ -8,121 +8,118 @@ import java.util.Optional;
 
 public class JavaDateTimeApi {
     /**
-     * Верните текущую дату в виде строки в зависимости от запроса.
+     * Return the current date as a String depending on a query.
      *
-     * @param datePart Запрос на часть даты или всю дата целиком:
-     *                 - FULL - текущая дата целиком год, месяц, день (число месяца)
-     *                 в формате YYYY-MM-DD, возвращаемое значение по умолчанию;
-     *                 - YEAR - текущий год;
-     *                 - MONTH - название текущего месяца;
-     *                 - DAY - текущий день (число месяца);
-     *                 В любом другом случае бросить DateTimeException
+     * The query can be passed for the whole date or for it's part:
+     *      - FULL - current date as a whole: year, month, day of month
+     *        formatted as `YYYY-MM-DD` (a default return value);
+     *      - YEAR - current year;
+     *      - MONTH - name of the current month;
+     *      - DAY - current day of month;
+     * In any other case throw DateTimeException.
      **/
     public String todayDate(DateTimePart datePart) {
         return "Today";
     }
 
     /**
-     * Верните Optional даты соответствующей дате в массиве.
+     * Given an Array of 3 elements, where
+     *         - 1-st element is a `year`;
+     *         - 2-nd element is s `month`;
+     *         - 3-rd element is a `day of month`;
      *
-     * @param dateParams Дан массив данных состоящий из 3-х элементов, где:
-     *                   - 1-й элемент массива - год;
-     *                   - 2-й элемент массива - месяц;
-     *                   - 3-й элемент массива - день (число);
+     * Return Optional of a date built from these elements.
      */
     public Optional<LocalDate> getDate(Integer[] dateParams) {
         return Optional.empty();
     }
 
     /**
-     * Дано время и на сколько часов нужно его изменить.
-     * Верните измененное время на указаную величину.
+     * Given the time and the number of hours to add, return the changed time.
      */
     public LocalTime addHours(LocalTime localTime, Integer hoursToAdd) {
         return LocalTime.now();
     }
 
     /**
-     * Дано время и на сколько минут нужно его изменить.
-     * Верните измененное время на указаную величину.
+     * Given the time and the number of minutes to add, return the changed time.
      */
     public LocalTime addMinutes(LocalTime localTime, Integer minutesToAdd) {
         return LocalTime.now();
     }
 
     /**
-     * Дано время и на сколько секунд нужно его изменить.
-     * Верните измененное время на указаную величину.
+     * Given the time and the number of seconds to add, return the changed time.
      */
     public LocalTime addSeconds(LocalTime localTime, Integer secondsToAdd) {
         return LocalTime.now();
     }
 
     /**
-     * Дана дата и на сколько недель нужно ее изменить.
-     * Верните получившуюся дату
+     * Given the date and the number of weeks to add, return the changed date.
      */
     public LocalDate addWeeks(LocalDate localDate, Integer numberOfWeeks) {
         return LocalDate.now();
     }
 
     /**
-     * Дана произвольная дата getDate.
-     * Определите соотношение сегодня к someDate и верните строку:
-     * - "someDate is after текущая дата" - если getDate в будующем
-     * - "someDate is before текущая дата" - если getDate в прошлом
-     * - "someDate is today" - если someDate - сегодня
+     * Given a random `someDate` date, return one of the following Strings:
+     *     - "`someDate` is after `currentDate`"
+     *                  if `someDate` is in the future relating to the `current date`;
+     *     - "`someDate` is before `currentDate`"
+     *                  if `someDate` is in the past relating to the `current date`;
+     *     - "`someDate` is today"
+     *                  if `someDate` is today;
      */
     public String beforeOrAfter(LocalDate someDate) {
         return someDate + "is today";
     }
 
     /**
-     * Даны две временные зоны.
-     * Верните Optional часовой разницы между двумя временными зонами.
-     * @return Optional positive Integer
+     * Given a String representation of a date and some timezone,
+     * return LocalDateTime in this timezone.
      */
-    public Optional<Integer> diffBetweenZones(String firstZone, String secondZone) {
-        return Optional.empty();
+    public LocalDateTime getDateInSpecificTimeZone(String dateInString, String zone) {
+        return LocalDateTime.now();
     }
 
     /**
-     * Данны дата и время. Надо вернуть дату и время с местным временным смещением,
-     * пусть это будет для Украины "+02:00".
-     * Приведем пример: при вызове метода передается переменная типа LocalDateTime,
-     * в формате "2019-09-06T13:17", нам надо вернуть переменную типа OffsetDateTime,
-     * в формате "2019-09-06T13:17+02:00", где "+02:00" и будет смещение для нашей
-     * временной зоны.
-     * OffsetDateTime советуют использовать при записи даты в базу данных.
+     * Given some LocalDateTime, return an OffsetDateTime with the local time offset applied
+     * (`+02:00` for Ukraine).
+     *
+     * Example: we receive a LocalDateTime with a value `2019-09-06T13:17`.
+     *          We should return the OffsetDateTime with a value `2019-09-06T13:17+02:00`,
+     *          where `+02:00` is the offset for our local timezone.
+     *
+     * OffsetDateTime is recommended to use for storing date values in a database.
      */
     public OffsetDateTime offsetDateTime(LocalDateTime localTime) {
         return OffsetDateTime.now();
     }
 
     /**
-     * Дана строка в виде "yyyymmdd".
-     * Необходимо вернуть Optional даты в LocalDate формате
+     * Given a String formatted as `yyyymmdd`,
+     * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> parseDate(String date) {
         return Optional.empty();
     }
 
     /**
-     * Дана строка в виде "d MMM yyyy" (MMM - Sep, Oct, etc).
-     * Необходимо вернуть Optional даты в LocalDate формате
+     * Given a String formatted as `d MMM yyyy` (MMM - Sep, Oct, etc),
+     * return Optional of this date as a LocalDate.
      */
     public Optional<LocalDate> customParseDate(String date) {
         return Optional.empty();
     }
 
     /**
-     * Даны произвольные время и дата.
-     * Верните строку с датой и временем в формате
-     * "день(2 цифры) месяц(полное название на английском) год(4 цифры) час(24 часа):минуты",
-     * например: "01 January 2000 18:00",
-     * или сообщение "dateTime can't be formatted!"
+     * Given some LocalDateTime, return a String formatted as
+     * `day(2-digit) month(full name in English) year(4-digit) hours(24-hour format):minutes`.
+     *
+     * Example: "01 January 2000 18:00".
      */
     public String formatDate(LocalDateTime dateTime) {
-        return "Date can't be formatted!";
+        return "";
     }
 }
