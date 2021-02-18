@@ -2,17 +2,19 @@ package core.basesyntax;
 
 import org.junit.Assert;
 import org.junit.Test;
-
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 
 public class JavaDateTimeApiTest {
-
+    private static final MonthOfYear[] VALUES = MonthOfYear.values();
     private JavaDateTimeApi javaDateTimeApi = new JavaDateTimeApi();
     private static final LocalDateTime LOCAL_DATE_TIME =
             LocalDateTime.of(2000, 12, 31, 23, 59, 59);
@@ -25,18 +27,49 @@ public class JavaDateTimeApiTest {
     }
 
     @Test
-    public void getDate() {
-        Integer[] dateParams = {2018, 12, 21};
-        Optional<LocalDate> expected =
-                Optional.of(LocalDate.of(2018, 12, 21));
-        Optional<LocalDate> result = javaDateTimeApi.getDate(dateParams);
+    public void todayDateYear() {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int year = calendar.get(Calendar.YEAR);
+        String expected = String.valueOf(year);
+        String result = javaDateTimeApi.todayDate(DateTimePart.YEAR);
         Assert.assertEquals(expected, result);
     }
 
     @Test
-    public void getDateIncorrect() {
-        Integer[] dateParams = {2018, 22, 441};
-        Optional<LocalDate> expected = Optional.empty();
+    public void todayDateMonth() {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int monthIndex = calendar.get(Calendar.MONTH);
+        String expected = VALUES[monthIndex].toString();
+        String result = javaDateTimeApi.todayDate(DateTimePart.MONTH);
+        Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void todayDateDay() {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int numberOfDay = calendar.get(Calendar.DAY_OF_MONTH);
+        String expected = String.valueOf(numberOfDay);
+        String result = javaDateTimeApi.todayDate(DateTimePart.DAY);
+        Assert.assertEquals(expected, result);
+    }
+
+    @Test(expected = DateTimeException.class)
+    public void todayDateThrowException() {
+        javaDateTimeApi.todayDate(DateTimePart.SECONDS);
+        javaDateTimeApi.todayDate(DateTimePart.MINUTES);
+    }
+
+    @Test
+    public void getDate() {
+        Integer[] dateParams = {2018, 12, 21};
+        Optional<LocalDate> expected =
+                Optional.of(LocalDate.of(2018, 12, 21));
         Optional<LocalDate> result = javaDateTimeApi.getDate(dateParams);
         Assert.assertEquals(expected, result);
     }
@@ -102,17 +135,16 @@ public class JavaDateTimeApiTest {
     }
 
     @Test
-    public void diffBetweenZones() {
-        Optional<Integer> expected = Optional.of(6);
-        Optional<Integer> result = javaDateTimeApi.diffBetweenZones("America/Puerto_Rico", "Europe/Paris");
-        Assert.assertEquals(expected, result);
-    }
+    public void getDateInSpecificTimeZone() {
+        LocalDateTime expectedResult1 = LocalDateTime.parse("2020-04-17T00:23:01");
+        LocalDateTime actualResult1 = javaDateTimeApi
+                .getDateInSpecificTimeZone("2020-04-16T15:23:01Z", "Asia/Tokyo");
+        Assert.assertEquals(expectedResult1, actualResult1);
 
-    @Test
-    public void diffBetweenZonesIncorrect() {
-        Optional<Integer> expected = Optional.empty();
-        Optional<Integer> result = javaDateTimeApi.diffBetweenZones("Europe/Lviv", "Europe/Paris");
-        Assert.assertEquals(expected, result);
+        LocalDateTime expectedResult2 = LocalDateTime.parse("2020-04-16T18:23:01");
+        LocalDateTime actualResult2 = javaDateTimeApi
+                .getDateInSpecificTimeZone("2020-04-16T15:23:01Z", "Europe/Athens");
+        Assert.assertEquals(expectedResult2, actualResult2);
     }
 
     @Test
@@ -159,5 +191,20 @@ public class JavaDateTimeApiTest {
         LocalDateTime localDateTime = LocalDateTime.of(2019, 9, 6, 16, 15, 26);
         String result = javaDateTimeApi.formatDate(localDateTime);
         Assert.assertEquals(expected, result);
+    }
+
+    public enum MonthOfYear {
+        JANUARY,
+        FEBRUARY,
+        MARCH,
+        APRIL,
+        MAY,
+        JUNE,
+        JULY,
+        AUGUST,
+        SEPTEMBER,
+        OCTOBER,
+        NOVEMBER,
+        DECEMBER;
     }
 }
